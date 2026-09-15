@@ -1,0 +1,39 @@
+{
+  "name": "supletivo.net.br",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 3011",
+    "build": "astro build",
+    "preview": "astro preview --port 3011",
+    "assets": "node tools/generate-assets.mjs",
+    "test": "vitest run",
+    "check-types": "tsc --noEmit",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.5",
+    "astro": "^6.4.6",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.39.0",
+    "motion": "^13.1.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@fontsource/archivo-black": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "@playwright/test": "1.62.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "happy-dom": "^20.10.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5",
+    "vitest": "^4.1.8"
+  }
+}
