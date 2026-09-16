@@ -19,12 +19,22 @@ Este projeto é a Landing Page oficial de captação, vendas e registro público
   - Esta landing page NÃO gerencia painel do aluno, aulas ou provas.
   - Assim que o pré-cadastro é validado e o OTP é disparado, o usuário é transferido para `app.supletivo.net.br/autenticacao/otp` para validação e login.
 
-## 🛡️ Diretriz de Isolamento do Frontend & Gestão via Issues
-- **Foco Estrito no Frontend:** Todo desenvolvimento neste repositório deve se concentrar **exclusivamente no frontend da sua respectiva landing page** (UI/UX, componentes, estilização, animações e responsividade).
-- **Contratos e Dependências de Backend via Issues:** Toda solicitação de novos endpoints, documentação esperada, modelos de dados ou integrações de borda/mensageria (ex: Evolution API) deve ser registrada previamente como **issue no repositório correspondente** (ex: `backend.supletivo.net.br`). A lógica de backend e infraestrutura será processada lá a partir da issue documentada, preservando o desacoplamento total entre camadas.
+## 🛡️ Diretriz Mandatória de Isolamento entre Repositórios, Gestão por Issues e Ciclo de Vida
+- **1. Regra de Ouro: Isolamento Absoluto de Repositório ("Não mexa no repositório alheio")**:
+  - Assim como nenhum outro projeto mexe no repositório `supletivo.net.br`, este agente **NUNCA deve alterar, editar, criar ou deletar arquivos em outro repositório/diretório**.
+  - O trabalho de cada agente/sessão fica **estritamente confinado ao repositório de atuação**.
+  - O desacoplamento é absoluto: frontend não toca em backend, backend não toca em frontend, e uma aplicação não altera os arquivos de outra.
+- **2. Avaliação Obrigatória de Dependências Cruzadas ao Final de Cada Ação & Criação de Issues**:
+  - Ao final de **CADA AÇÃO, TAREFA OU ENTREGA**, o agente **DEVE OBRIGATORIAMENTE AVALIAR** se a funcionalidade implementada exige alguma adequação, novo endpoint, contrato de dados, ajuste de schema, webhook ou serviço externo que envolva outro diretório/repositório.
+  - Se for identificada qualquer necessidade externa: **CRIE IMEDIATAMENTE UMA ISSUE NO RESPECTIVO REPOSITÓRIO** (ex: `backend.supletivo.net.br`, `app.supletivo.net.br`, etc.) com a especificação técnica completa, para garantir o alinhamento e não nos perdermos.
+- **3. Versionamento Obrigatório a Cada Atualização (SemVer)**:
+  - A cada atualização, entrega de código, refatoração ou nova funcionalidade, **DEVE-SE ATUALIZAR JUNTO A VERSÃO DO PROJETO** no `package.json` (`patch` para correções/ajustes, `minor` para novas features, `major` para grandes quebras).
+- **4. Momento da Documentação Oficial (Apenas na Subida para Produção)**:
+  - **Documentação oficial do app/projeto SÓ DEVE SER CRIADA quando o app de fato for subir para produção**.
+  - **O usuário dirá explicitamente o momento exato** de redigir e consolidar a documentação final de produção.
+  - É terminantemente proibido criar documentações prematuras, changelogs burocráticos ou issues de documentação final antes da autorização explícita do usuário para entrada em produção.
 
 ## 🌐 Convenções
 - Código e APIs: 100% Inglês.
 - Interface e Copy: 100% PT-BR.
 - URLs públicas: 100% PT-BR.
-
