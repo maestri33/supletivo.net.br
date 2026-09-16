@@ -18,7 +18,7 @@
     top: 0;
     height: 4px;
     z-index: 60;
-    background-color: color-mix(in srgb, #0b1220 10%, rgba(255, 255, 255, 0.08));
+    background-color: color-mix(in srgb, var(--ink) 10%, rgba(255, 255, 255, 0.08));
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     pointer-events: none;
@@ -30,7 +30,7 @@
   .reading-bar {
     height: 100%;
     width: 100%;
-    background-image: linear-gradient(90deg, #00734d 0%, #38d178 28%, #ffc400 60%, #ffd75e 78%, #002776 100%);
+    background-image: linear-gradient(90deg, var(--green) 0%, var(--green-deep) 28%, var(--yellow) 60%, var(--yellow-soft) 78%, var(--blue) 100%);
     transform-origin: 0% 50%;
     will-change: transform;
     transform: scaleX(var(--progress-scale, 0));
@@ -46,7 +46,7 @@
     margin-left: -4px;
     border-radius: 50%;
     background-color: #ffffff;
-    box-shadow: 0 0 10px 2px rgba(255, 215, 94, 0.75), 0 0 4px rgba(0, 39, 118, 0.4);
+    box-shadow: 0 0 10px 2px color-mix(in srgb, var(--yellow-soft) 75%, transparent), 0 0 4px color-mix(in srgb, var(--blue) 40%, transparent);
     will-change: transform;
     transform: translate3d(calc(var(--progress-scale, 0) * (100cqw - 8px)), 0, 0);
   }

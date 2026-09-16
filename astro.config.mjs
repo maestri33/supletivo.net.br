@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
+import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
 import seoFiles from './integrations/seo-files.mjs';
 
@@ -16,7 +17,7 @@ export default defineConfig({
     // CSS pequeno → inline no HTML, elimina request render-blocking
     inlineStylesheets: 'always',
   },
-  integrations: [react(), seoFiles()],
+  integrations: [react(), svelte(), seoFiles()],
   vite: {
     plugins: [tailwindcss()],
   },
