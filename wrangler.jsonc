@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "landing-supletivo-net-br",
+  "compatibility_date": "2026-09-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist"
+  },
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "supletivo.net.br",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.supletivo.net.br",
+      "custom_domain": true
+    }
+  ]
+}

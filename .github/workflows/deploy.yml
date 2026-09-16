@@ -1,22 +1,51 @@
-name: Deploy
-# CD: dispara DEPOIS do workflow CI concluir com sucesso na main → runner self-hosted (CT 30100).
+name: Deploy supletivo.net.br
+
 on:
   workflow_run:
     workflows: ["CI"]
     types: [completed]
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: [self-hosted, landing-supletivo]
+    name: Deploy to Cloudflare Static Assets
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
-      - name: Atualiza, builda e recarrega nginx
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build static site
+        run: pnpm run build
+
+      - name: Deploy to Cloudflare Workers Static Assets
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Aviso de Token Cloudflare
+        if: ${{ env.CLOUDFLARE_API_TOKEN == '' }}
         run: |
-          set -e
-          cd /opt/landing-supletivo
-          git fetch --all --prune
-          git reset --hard origin/main
-          pnpm install --frozen-lockfile || npm ci --no-audit --no-fund
-          pnpm run build || npm run build
-          nginx -t && systemctl reload nginx
-          echo "deploy OK — landing publicada (lembrar de purgar cache CF se mudou HTML)"
+          echo "::warning title=Secret Pendente::CLOUDFLARE_API_TOKEN não está definida em Settings > Secrets. Build e checagens concluídos com sucesso; configure a secret para deploy automático no edge."
