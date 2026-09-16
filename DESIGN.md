@@ -116,6 +116,41 @@ A paleta de cores é inspirada na identidade visual nacional brasileira, calibra
 
 ---
 
+## Media, Imagery & Iconography Guidelines
+
+### 1. Fotografia e Imagens Humanas (Anti-Stock Fake)
+- **Representatividade Real Brasileira**: Retratar o público real do Supletivo (adultos de 25 a 55 anos, trabalhadores, mães, profissionais de serviços, comércio e indústria).
+- **Zero "Modelos de High School Americano"**: Expressamente proibido o uso de fotos genéricas de bancos de imagem com jovens adolescentes brancos segurando livros em corredores de universidade americana. Isso destrói a identificação e aciona desconfiança imediata de golpe no público de EJA.
+- **Iluminação e Textura Natural**: Luz ambiente real (janela de casa, iluminação do local de trabalho). Rostos expressivos de conquista e alívio com imperfeições sutis e humanas (sem efeito plástico de filtros de IA exagerados).
+- **Performance Web**:
+  - Formatos obrigatórios: **WebP** e **AVIF** com compressão balanceada.
+  - Atributos mandatórios em tags `<img>`: `loading="lazy"`, `decoding="async"` e dimensões explícitas (`width` e `height`) para zerar o Cumulative Layout Shift (CLS).
+
+### 2. Vídeos e Depoimentos (Prova Social UGC)
+- **Formato Selfie / UGC (User-Generated Content)**: Alunos reais gravando com o próprio celular em formato vertical (9:16) ou horizontal (16:9), segurando o certificado físico ou diploma oficial em mãos.
+- **Performance-First (Padrão Façade)**:
+  - **Proibido Autoplay com Áudio**: Não surpreenda o usuário nem consuma planos de dados móveis pré-pagos.
+  - **Carregamento sob Demanda (Lazy Video Façade)**: Vídeos na página inicial não devem baixar megabytes de `.mp4` no carregamento da página. Exibe-se apenas uma imagem de capa (poster) leve com um botão de play. O stream só inicia quando o usuário toca para assistir.
+  - **Infraestrutura**: Hospedagem externa em Cloudflare Stream ou Cloudflare R2 com streaming adaptativo. Nenhum arquivo binário de vídeo pesado deve ser commitado no repositório Git.
+
+### 3. Vetores e Ícones (SVG Cirúrgico)
+- **Espessura de Traço Consistente**: Todos os ícones devem manter traço óptico padronizado (`stroke-width: 2` ou `2.2`, `stroke-linecap: round`, `stroke-linejoin: round`).
+- **Cores por Tokens**:
+  - Ícones neutros herdam cor via `stroke="currentColor"`.
+  - Ícones de destaque e validação usam estritamente tokens (`var(--green)`, `var(--yellow)`, `var(--blue)`).
+- **Bundle Zero-Bloat**:
+  - Proibido importar bibliotecas pesadas completas (ex: pacotes de ícones de dezenas de megabytes).
+  - Priorizar SVGs inline otimizados (sem tags `<defs>` ou metadados desnecessários do Illustrator/Figma) ou importação pontual de ícones do `lucide-react`.
+
+### 4. Ilustrações e Diagramas Técnicos (Anti-Corporate Memphis)
+- **Proibição do "Corporate Memphis"**:
+  - Proibido utilizar ilustrações genéricas de tecnologia com pessoas azuis/roxas de membros gigantes e cabeças minúsculas ("slop corporativo de IA"). Esse estilo infantiliza o serviço e reduz a seriedade jurídica do certificado.
+- **Estilo Documental e Técnico**:
+  - Diagramas vetoriais claros dos passos (Matrícula ➔ Conferência de Documentos ➔ Handoff Parceiro ➔ Diploma).
+  - Selos oficiais e marcas d'água mecânicas com linhas de segurança guilhochê (linhas finas inspiradas em notas de papel-moeda e diplomas oficiais).
+
+---
+
 ## Do's and Don'ts
 
 ### DO's
@@ -123,6 +158,8 @@ A paleta de cores é inspirada na identidade visual nacional brasileira, calibra
 - **DO**: Reserve a fonte `Archivo Black` exclusivamente para títulos e números de destaque; mantenha corpo e botões em `Inter`.
 - **DO**: Respeite o kill-switch de movimento `@media (prefers-reduced-motion: reduce)` desativando inclinações 3D e loops visuais.
 - **DO**: Mantenha altura mínima de toque de 48px para todos os campos e botões em telas sensíveis ao toque.
+- **DO**: Use fotos autênticas de brasileiros adultos trabalhadores com luz natural; use o padrão Façade para depoimentos em vídeo.
+- **DO**: Mantenha traços de ícones SVG consistentes (`stroke-width: 2` ou `2.2`) e herança de cor via tokens.
 
 ### DON'Ts
 - **DON'T**: Nunca use texto branco sobre fundo amarelo.
@@ -130,3 +167,6 @@ A paleta de cores é inspirada na identidade visual nacional brasileira, calibra
 - **DON'T**: Nunca permita que o botão principal de conversão quebre em duas linhas no mobile.
 - **DON'T**: Nunca aplique sombras duras, secas e pretas opacas estilo material inicial.
 - **DON'T**: Nunca instale bibliotecas pesadas de ícones que aumentem o bundle; use SVGs otimizados inline.
+- **DON'T**: Nunca use fotos de banco americano com adolescentes em corredores de universidade (anti-stock fake).
+- **DON'T**: Nunca utilize ilustrações estilo "Corporate Memphis" (bonecos roxos desproporcionais).
+- **DON'T**: Nunca faça autoplay de vídeos com áudio ligado em dispositivos móveis.

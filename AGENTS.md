@@ -22,6 +22,9 @@
 - **`app.supletivo.net.br` (Svelte 5 / SvelteKit)**:
   - Plataforma única multi-role orientada a estado (um usuário pode alternar papéis: Aluno, Promotor, Coordenador de Polo).
   - **IMPORTANTE — O aluno NÃO estuda na nossa plataforma**: Nossa plataforma é o motor de captação, pagamento, conferência de documentos e matrícula. Ao matricular e aprovar os documentos, o aluno é **oficialmente redirecionado para o ambiente virtual do parceiro educacional credenciado**.
+- **`*.v7m.live` (Infraestrutura, Ferramentas Públicas e Oráculo de Versão)**:
+  - Todo micro-serviço, utilitário de desenvolvedor, dashboard técnico ou serviço de infraestrutura que precisar ser público **DEVE obrigatoriamente utilizar o domínio `*.v7m.live`** (tendo `version.v7m.live` como serviço pioneiro).
+  - Os domínios `*.supletivo.net.br` são estritamente reservados aos produtos de negócio e usuário final.
 
 ---
 
@@ -31,13 +34,14 @@
   - Linters, testes e builds são obrigações técnicas, jamais validação de entrega. É proibido ao agente autodeclarar trabalho como "validado".
 - **Isolamento de Repositório**:
   - Altere apenas o repositório escopo da sessão. Proibido criar, editar ou excluir arquivos em outros diretórios.
-- **Versionamento SemVer a Cada Commit**:
-  - Toda entrega enviada ao Git DEVE citar a versão incrementada:
+- **Oráculo Central e Versionamento SemVer Único da Plataforma**:
+  - A versão da plataforma é única (Release Train) e centralizada em `version.v7m.live`.
+  - Toda entrega enviada ao Git em qualquer repositório DEVE incrementar a versão global da plataforma:
     - Padrão: `feat(modulo): [v0.0.0-sandbox.X] descrição em inglês` (ou `fix:`, `refactor:`, `docs:`).
-    - `Z` (Patch/Sandbox): O agente incrementa a cada entrega.
+    - `Z` (Patch/Sandbox): O agente incrementa a cada entrega consumindo o oráculo.
     - `Y` (Minor) e transição para `0.0.1beta`: Exclusivo do usuário.
     - `X` (Major): Decisão conjunta prévia.
-  - Consulta pública via `version.v7m.live`.
+  - Consulta pública e auditoria via `https://version.v7m.live/api/version`.
 
 ---
 
