@@ -1,0 +1,937 @@
+---
+/**
+ * Componente de Captura Inteligente de Alunos (Zero-Friction Lead Capture).
+ * Integração com Sofia Smart Omnibar, validação Módulo 11 e The Credential Forger (3D).
+ * Em conformidade com AGENTS.md: acessibilidade WCAG 2A/AA, Safe Area Inset mobile,
+ * e handoff de dupla redundância (URL query + cookie .supletivo.net.br).
+ */
+import { APP_URL } from '../config';
+---
+
+<div
+  id="lead-capture-modal"
+  class="lead-modal-backdrop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="lead-modal-title"
+  aria-hidden="true"
+  hidden
+  inert
+  data-lead-capture-modal
+  data-app-url={APP_URL}
+>
+  <div class="lead-modal-overlay" data-close-modal></div>
+
+  <div class="lead-modal-container">
+    <!-- Drag Handle tátil mobile -->
+    <div class="drag-handle-bar md:hidden" aria-hidden="true">
+      <div class="drag-pill"></div>
+    </div>
+
+    <!-- Botão de Fechar -->
+    <button
+      type="button"
+      class="close-btn"
+      aria-label="Fechar janela de inscrição"
+      data-close-modal
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="lead-modal-layout">
+      <!-- Coluna Principal: Sofia + Omnibar + Etapas -->
+      <div class="interaction-col">
+        <!-- Sofia Assistant Presence -->
+        <div class="sofia-presence">
+          <div class="sofia-orb" aria-hidden="true">
+            <span class="orb-core"></span>
+            <span class="orb-wave"></span>
+            <span class="orb-icon">🎓</span>
+          </div>
+          <div class="sofia-meta">
+            <div class="sofia-badge">
+              <span class="status-pulse" aria-hidden="true"></span>
+              Sofia · Orientadora Educacional
+            </div>
+            <h2 id="lead-modal-title" class="sofia-speech">
+              Olá! Para onde te envio seu plano acelerado e a confirmação de bolsa?
+            </h2>
+          </div>
+        </div>
+
+        <!-- Breadcrumbs Vivos ("Desfazer sem resetar") -->
+        <div id="lead-breadcrumbs" class="lead-breadcrumbs hidden" aria-label="Progresso do formulário">
+          <button type="button" class="breadcrumb-chip" id="chip-phone" title="Clique para editar o telefone">
+            <span class="chip-icon">💬</span>
+            <span class="chip-label" id="chip-phone-text">(11) 98765-4321</span>
+            <span class="chip-edit">✏️</span>
+          </button>
+        </div>
+
+        <!-- Formulário Dinâmico Omnibar -->
+        <form id="lead-capture-form" class="omnibar-form" novalidate>
+          <!-- ETAPA 1: WHATSAPP -->
+          <div id="step-phone" class="step-pane active">
+            <div class="input-wrapper">
+              <span class="input-icon whatsapp-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+              </span>
+              <input
+                type="tel"
+                id="lead-input-phone"
+                class="omnibar-input"
+                placeholder="(DD) 9XXXX-XXXX"
+                inputmode="numeric"
+                autocomplete="tel-national"
+                maxlength="15"
+                required
+                aria-label="Número do seu celular WhatsApp"
+              />
+              <span class="input-status-icon" id="phone-check-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </span>
+            </div>
+            <p class="input-hint" id="phone-hint">
+              Digite seu WhatsApp com DDD. Avanço automático ao completar os 11 dígitos.
+            </p>
+            <button type="button" class="action-btn next-btn mt-3" id="btn-next-step">
+              Continuar
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <!-- ETAPA 2: CPF (MÓDULO 11) -->
+          <div id="step-cpf" class="step-pane hidden">
+            <div class="input-wrapper">
+              <span class="input-icon" aria-hidden="true">🪪</span>
+              <input
+                type="tel"
+                id="lead-input-cpf"
+                class="omnibar-input"
+                placeholder="000.000.000-00"
+                inputmode="numeric"
+                autocomplete="off"
+                maxlength="14"
+                aria-label="Número do seu CPF"
+              />
+              <span class="input-status-icon" id="cpf-check-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </span>
+            </div>
+            <p class="input-hint" id="cpf-hint">
+              Validação oficial instantânea para consultar dispensa de matérias da LDB.
+            </p>
+            <div class="button-group mt-3">
+              <button type="submit" class="action-btn submit-btn" id="btn-submit-lead">
+                <span class="btn-text">Garantir Minha Vaga Oficial</span>
+                <span class="spinner hidden" id="lead-spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ESTADO: CPF JÁ CADASTRADO (ACOLHIMENTO AMIGÁVEL) -->
+          <div id="step-existing" class="step-pane hidden">
+            <div class="existing-user-card">
+              <div class="existing-badge">
+                <span class="star-icon">★</span>
+                Matrícula Localizada
+              </div>
+              <p class="existing-text">
+                Identificamos seu cadastro seguro vinculado ao celular com final
+                <strong id="existing-phone-masked">(XX) •••••-XXXX</strong>.
+              </p>
+              <p class="existing-sub">
+                Enviamos seu código OTP de 6 dígitos no seu WhatsApp para você acessar diretamente.
+              </p>
+              <a href={APP_URL} class="action-btn submit-btn mt-3 text-center" id="btn-existing-redirect">
+                Acessar com Código Seguro
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </form>
+
+        <div class="security-footer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Ambiente Criptografado de Conclusão · Lei Federal 9.394/96 (MEC)</span>
+        </div>
+      </div>
+
+      <!-- Coluna Visual: The Credential Forger (3D Holographic Card) -->
+      <div class="visual-col hidden md:flex">
+        <div class="credential-forger-wrapper">
+          <div class="credential-card-3d spatial-card-3d" id="credential-card-visual" data-tilt-3d data-tilt-max="12">
+            <div class="card-foil-overlay" aria-hidden="true"></div>
+            <div class="card-top">
+              <div class="card-header-badge">
+                <span class="flag-circle" aria-hidden="true">🇧🇷</span>
+                <span class="card-title">SUPLETIVO BRASIL · MEC</span>
+              </div>
+              <div class="chip-hologram">
+                <div class="chip-lines"></div>
+                <span class="chip-led" id="credential-led"></span>
+              </div>
+            </div>
+
+            <div class="card-center">
+              <div class="card-label">NOME DO ESTUDANTE</div>
+              <div class="card-student-name" id="credential-student-name">CANDIDATO OFICIAL</div>
+              <div class="card-doc" id="credential-student-doc">DOCUMENTAÇÃO PENDENTE</div>
+            </div>
+
+            <div class="card-bottom">
+              <div class="card-status-badge" id="credential-status-badge">
+                <span class="status-dot"></span>
+                <span id="credential-status-text">AGUARDANDO CONTATO</span>
+              </div>
+              <div class="card-seal">LOTE 01</div>
+            </div>
+
+            <!-- Faixa Tricolor Nacional Decorativa -->
+            <div class="card-tricolor-strip" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lead-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(3, 7, 18, 0.82);
+    backdrop-filter: blur(14px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease, backdrop-filter 0.28s ease;
+  }
+
+  .lead-modal-backdrop.open {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lead-modal-overlay {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .lead-modal-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 54rem;
+    max-height: 94dvh;
+    background: linear-gradient(180deg, #0d1527 0%, #080d1a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 71, 171, 0.25);
+    border-top-left-radius: 1.75rem;
+    border-top-right-radius: 1.75rem;
+    padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+  }
+
+  @media (min-width: 768px) {
+    .lead-modal-backdrop {
+      align-items: center;
+      padding: 1.5rem;
+    }
+    .lead-modal-container {
+      border-radius: 1.5rem;
+      transform: scale(0.96) translateY(20px);
+      padding: 2.25rem;
+    }
+    .lead-modal-backdrop.open .lead-modal-container {
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .lead-modal-backdrop.open .lead-modal-container {
+    transform: translateY(0);
+  }
+
+  /* Drag handle mobile */
+  .drag-handle-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+  .drag-pill {
+    width: 2.75rem;
+    height: 0.28rem;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+  }
+
+  /* Fechar */
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #94a3b8;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .close-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    transform: rotate(90deg);
+  }
+
+  /* Layout */
+  .lead-modal-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .lead-modal-layout {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+  }
+
+  /* Sofia Presence */
+  .sofia-presence {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .sofia-orb {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #00734d, #002b1c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(0, 115, 77, 0.5);
+  }
+
+  .orb-icon {
+    font-size: 1.4rem;
+    z-index: 2;
+  }
+
+  .orb-wave {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 115, 77, 0.4);
+    animation: orb-pulse 2.8s infinite ease-in-out;
+  }
+
+  @keyframes orb-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.18); opacity: 0.9; }
+  }
+
+  .sofia-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #ffc400;
+    margin-bottom: 0.35rem;
+  }
+
+  .status-pulse {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+  }
+
+  .sofia-speech {
+    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  /* Breadcrumb chips */
+  .lead-breadcrumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .breadcrumb-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    color: #cbd5e1;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .breadcrumb-chip:hover {
+    background: rgba(255, 196, 0, 0.15);
+    border-color: #ffc400;
+    color: #ffffff;
+  }
+
+  /* Omnibar Form */
+  .omnibar-form {
+    position: relative;
+    margin-bottom: 1.25rem;
+  }
+
+  .step-pane {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .step-pane.hidden {
+    display: none;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1rem;
+    padding: 0.2rem 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .input-wrapper:focus-within {
+    border-color: #ffc400;
+    box-shadow: 0 0 20px rgba(255, 196, 0, 0.25);
+  }
+
+  .input-wrapper.valid {
+    border-color: #10b981;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+  }
+
+  .input-icon {
+    font-size: 1.25rem;
+    margin-right: 0.75rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+  }
+  .whatsapp-icon {
+    color: #10b981;
+  }
+
+  .omnibar-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.125rem; /* 18px previne zoom no iOS Safari */
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.85rem 0;
+    outline: none;
+    font-family: inherit;
+  }
+
+  .omnibar-input::placeholder {
+    color: #475569;
+    font-weight: 500;
+  }
+
+  .input-status-icon {
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.2s ease;
+  }
+  .input-wrapper.valid .input-status-icon {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .input-hint {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+  }
+
+  /* Botões de Ação */
+  .action-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, #ffc400 0%, #e6a800 100%);
+    color: #030712;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 0.95rem 1.5rem;
+    border-radius: 0.85rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(255, 196, 0, 0.4);
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+  .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(255, 196, 0, 0.5);
+  }
+
+  /* Cartão de usuário já existente */
+  .existing-user-card {
+    background: rgba(0, 115, 77, 0.12);
+    border: 1px solid rgba(0, 115, 77, 0.35);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .existing-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #00734d;
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    margin-bottom: 0.65rem;
+  }
+  .existing-text {
+    color: #f1f5f9;
+    font-size: 0.92rem;
+    margin-bottom: 0.4rem;
+  }
+  .existing-sub {
+    color: #94a3b8;
+    font-size: 0.8rem;
+  }
+
+  .security-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: #64748b;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 0.85rem;
+  }
+
+  /* 3D The Credential Forger */
+  .credential-forger-wrapper {
+    perspective: 1000px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .credential-card-3d {
+    position: relative;
+    width: 100%;
+    max-width: 22rem;
+    aspect-ratio: 1.586 / 1;
+    background: linear-gradient(135deg, #111e38 0%, #0a1120 100%);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 1.15rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 196, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .card-foil-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(125deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-header-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .card-title {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #ffc400;
+  }
+
+  .chip-hologram {
+    width: 2.2rem;
+    height: 1.65rem;
+    background: linear-gradient(135deg, #d4af37, #aa820a);
+    border-radius: 0.3rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .chip-lines {
+    width: 75%;
+    height: 60%;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 2px;
+  }
+  .chip-led {
+    position: absolute;
+    top: 2px;
+    right: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #64748b;
+    transition: background 0.3s;
+  }
+  .chip-led.verified {
+    background: #10b981;
+    box-shadow: 0 0 6px #10b981;
+  }
+
+  .card-center {
+    margin-block: auto;
+  }
+  .card-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #64748b;
+  }
+  .card-student-name {
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    font-family: var(--font-display, 'Archivo Black', sans-serif);
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .card-doc {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-family: monospace;
+  }
+
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+  }
+  .card-status-badge.authorized {
+    background: rgba(0, 115, 77, 0.3);
+    border: 1px solid #00734d;
+    color: #34d399;
+  }
+  .card-status-badge.authorized .status-dot {
+    background: #10b981;
+    box-shadow: 0 0 6px #10b981;
+  }
+  .status-dot {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: #94a3b8;
+  }
+  .card-seal {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #ffc400;
+    letter-spacing: 0.1em;
+  }
+
+  .card-tricolor-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00734d 0%, #00734d 40%, #ffc400 40%, #ffc400 70%, #0047ab 70%, #0047ab 100%);
+  }
+
+  /* Spinner */
+  .spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-top-color: #000000;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  import { validateCPF, formatCPF } from '../scripts/cpf-validator';
+  import { validatePhone, formatPhone } from '../scripts/phone-validator';
+  import { initAttribution } from '../scripts/attribution';
+  import { track } from '../scripts/track';
+
+  const modal = document.querySelector<HTMLElement>('[data-lead-capture-modal]');
+  if (modal) {
+    const appUrl = modal.dataset.appUrl?.replace(/\/+$/, '') ?? 'https://app.supletivo.net.br';
+    const closeTriggers = modal.querySelectorAll('[data-close-modal]');
+    const speech = modal.querySelector<HTMLElement>('#lead-modal-title');
+    const breadcrumbs = modal.querySelector<HTMLElement>('#lead-breadcrumbs');
+    const chipPhone = modal.querySelector<HTMLElement>('#chip-phone');
+    const chipPhoneText = modal.querySelector<HTMLElement>('#chip-phone-text');
+
+    const stepPhone = modal.querySelector<HTMLElement>('#step-phone');
+    const stepCpf = modal.querySelector<HTMLElement>('#step-cpf');
+    const stepExisting = modal.querySelector<HTMLElement>('#step-existing');
+
+    const inputPhone = modal.querySelector<HTMLInputElement>('#lead-input-phone');
+    const inputCpf = modal.querySelector<HTMLInputElement>('#lead-input-cpf');
+    const phoneWrapper = inputPhone?.closest('.input-wrapper');
+    const cpfWrapper = inputCpf?.closest('.input-wrapper');
+    const btnNext = modal.querySelector<HTMLButtonElement>('#btn-next-step');
+    const btnSubmit = modal.querySelector<HTMLButtonElement>('#btn-submit-lead');
+    const btnExisting = modal.querySelector<HTMLAnchorElement>('#btn-existing-redirect');
+
+    // Elementos da Credencial 3D
+    const credentialLed = modal.querySelector<HTMLElement>('#credential-led');
+    const credentialDoc = modal.querySelector<HTMLElement>('#credential-student-doc');
+    const credentialStatusBadge = modal.querySelector<HTMLElement>('#credential-status-badge');
+    const credentialStatusText = modal.querySelector<HTMLElement>('#credential-status-text');
+
+    // Funções de Abertura / Fechamento
+    function openModal(triggerSource = 'desconhecido') {
+      modal?.removeAttribute('hidden');
+      modal?.removeAttribute('inert');
+      modal?.classList.add('open');
+      modal?.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      track('lead_capture_opened', { source: triggerSource });
+
+      // Foco inicial suave
+      setTimeout(() => {
+        inputPhone?.focus();
+      }, 150);
+    }
+
+    function closeModal() {
+      modal?.classList.remove('open');
+      modal?.setAttribute('aria-hidden', 'true');
+      modal?.setAttribute('hidden', '');
+      modal?.setAttribute('inert', '');
+      document.body.style.overflow = '';
+    }
+
+    closeTriggers.forEach((btn) => btn.addEventListener('click', closeModal));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal?.classList.contains('open')) {
+        closeModal();
+      }
+    });
+
+    // Escuta evento customizado de disparo
+    window.addEventListener('sb:open-lead-capture', (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      openModal(detail?.position ?? 'cta');
+    });
+
+    // ── GESTÃO DA ETAPA 1: WHATSAPP ──────────────────────────────────────────
+    function handlePhoneInput() {
+      if (!inputPhone) return;
+      const raw = inputPhone.value;
+      const digits = raw.replace(/\D/g, '');
+      inputPhone.value = formatPhone(digits);
+
+      const isValid = validatePhone(digits);
+      phoneWrapper?.classList.toggle('valid', isValid);
+
+      if (isValid) {
+        credentialLed?.classList.add('verified');
+        // Auto-avanço em ~220ms (Zero-Click)
+        setTimeout(() => {
+          if (validatePhone(inputPhone.value)) {
+            advanceToCpfStep();
+          }
+        }, 220);
+      } else {
+        credentialLed?.classList.remove('verified');
+      }
+    }
+
+    function advanceToCpfStep() {
+      if (!inputPhone || !validatePhone(inputPhone.value)) return;
+
+      stepPhone?.classList.add('hidden');
+      stepCpf?.classList.remove('hidden');
+
+      if (breadcrumbs && chipPhoneText) {
+        breadcrumbs.classList.remove('hidden');
+        chipPhoneText.textContent = inputPhone.value;
+      }
+
+      if (speech) {
+        speech.textContent = 'Agora digite seu CPF para consultarmos a dispensa de matérias e emitir sua credencial.';
+      }
+
+      setTimeout(() => {
+        inputCpf?.focus();
+      }, 50);
+    }
+
+    inputPhone?.addEventListener('input', handlePhoneInput);
+    btnNext?.addEventListener('click', advanceToCpfStep);
+
+    // Breadcrumb: voltar para o telefone
+    chipPhone?.addEventListener('click', () => {
+      stepCpf?.classList.add('hidden');
+      stepExisting?.classList.add('hidden');
+      stepPhone?.classList.remove('hidden');
+      breadcrumbs?.classList.add('hidden');
+      if (speech) {
+        speech.textContent = 'Olá! Para onde te envio seu plano acelerado e a confirmação de bolsa?';
+      }
+      inputPhone?.focus();
+    });
+
+    // ── GESTÃO DA ETAPA 2: CPF ──────────────────────────────────────────────
+    function handleCpfInput() {
+      if (!inputCpf) return;
+      const raw = inputCpf.value;
+      const digits = raw.replace(/\D/g, '');
+      inputCpf.value = formatCPF(digits);
+
+      const isValid = validateCPF(digits);
+      cpfWrapper?.classList.toggle('valid', isValid);
+
+      if (isValid) {
+        if (credentialDoc) credentialDoc.textContent = `CPF: ${formatCPF(digits)}`;
+        credentialStatusBadge?.classList.add('authorized');
+        if (credentialStatusText) credentialStatusText.textContent = 'PRÉ-MATRÍCULA AUTORIZADA';
+      } else {
+        if (credentialDoc) credentialDoc.textContent = 'DOCUMENTAÇÃO PENDENTE';
+        credentialStatusBadge?.classList.remove('authorized');
+        if (credentialStatusText) credentialStatusText.textContent = 'AGUARDANDO VALIDAÇÃO';
+      }
+    }
+
+    inputCpf?.addEventListener('input', handleCpfInput);
+
+    // ── SUBMISSÃO E HANDOFF ──────────────────────────────────────────────────
+    modal.querySelector('#lead-capture-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const phoneDigits = inputPhone?.value.replace(/\D/g, '') ?? '';
+      const cpfDigits = inputCpf?.value.replace(/\D/g, '') ?? '';
+
+      if (!validatePhone(phoneDigits)) {
+        inputPhone?.focus();
+        return;
+      }
+
+      const attr = initAttribution();
+      const spinner = modal.querySelector('#lead-spinner');
+      const btnText = modal.querySelector('.btn-text');
+
+      spinner?.classList.remove('hidden');
+      if (btnText) btnText.textContent = 'Processando...';
+
+      try {
+        // Redundância First-Party: Gravação de Cookie de Domínio .supletivo.net.br
+        const sessionPayload = JSON.stringify({
+          phone: phoneDigits,
+          cpf: cpfDigits || undefined,
+          ref: attr?.ref,
+          ts: Date.now(),
+        });
+        document.cookie = `supletivo.session=${encodeURIComponent(sessionPayload)}; path=/; domain=.supletivo.net.br; max-age=1800; SameSite=Lax`;
+
+        // Disparo de tracking analítico
+        track('lead_capture_submitted', {
+          has_cpf: Boolean(cpfDigits),
+          ref: attr?.ref ?? 'direct',
+        });
+
+        // Simulação de chamada de API ou fallback seguro para a transição
+        // Em ambiente de produção o client envia para https://backend.supletivo.net.br/api/v1/clients/auth/check
+        // Construção da URL de Redirecionamento oficial para /autenticacao/otp
+        const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
+        targetUrl.searchParams.set('tel', phoneDigits);
+        if (cpfDigits) targetUrl.searchParams.set('cpf', cpfDigits);
+        if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
+
+        // Aguarda transição visual e redireciona
+        setTimeout(() => {
+          window.location.href = targetUrl.toString();
+        }, 350);
+      } catch (err) {
+        console.error('[lead-capture] Falha ao processar captura:', err);
+        // Fallback garantido: redireciona mesmo em caso de erro no script
+        window.location.href = `${appUrl}/autenticacao/otp?tel=${phoneDigits}`;
+      }
+    });
+  }
+</script>

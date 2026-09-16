@@ -6,10 +6,12 @@ import { initAttribution, decorateCtas, ATTR_KEYS } from './attribution';
 import { initDynamicPricing } from './dynamic-pricing';
 import { track } from './track';
 import { initAntigravityTilt } from './antigravity-tilt';
+import { setupLeadCaptureTrigger } from './lead-capture';
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 initAntigravityTilt();
+setupLeadCaptureTrigger();
 const attr = initAttribution();
 decorateCtas(attr);
 void initDynamicPricing(attr);
