@@ -44,7 +44,7 @@ const priceChars = perMonthBRL.split('');
       </div>
 
       <p class="price-old hidden" data-price-old data-tilt-sublayer="20">
-        de <s><span data-price-old-val>{fullBRL}</span><svg class="scissors" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="7.2" r="2.1" stroke="var(--yellow)" stroke-width="1.7"></circle><circle cx="5" cy="16.8" r="2.1" stroke="var(--yellow)" stroke-width="1.7"></circle><path class="sc-a" d="M6.8 8.4 20 14.6" stroke="var(--yellow)" stroke-width="1.7" stroke-linecap="round"></path><path class="sc-b" d="M6.8 15.6 20 9.4" stroke="var(--yellow)" stroke-width="1.7" stroke-linecap="round"></path></svg></s>
+        de <s><span data-price-old-val>{fullBRL}</span></s>
       </p>
 
       <p class="price-main" data-tilt-sublayer="50">
@@ -67,10 +67,27 @@ const priceChars = perMonthBRL.split('');
         <span class="price-save hidden" data-price-save-line>— você economiza <span data-price-savings>{savingsBRL}</span></span>
       </p>
 
-      <p class="price-guarantee" data-tilt-sublayer="25">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2.2 2.2L15.5 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Garantia incondicional de 7 dias: cancelou, devolvemos 100% (art. 49 do CDC).
-      </p>
+      <!-- Tríade de Confiança Decisória -->
+      <ul class="trust-triad" data-tilt-sublayer="35">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span><strong>Certificado Oficial</strong> credenciado ao MEC com publicação no Diário Oficial</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span><strong>Validade Nacional</strong> aceita em faculdades, concursos públicos e CNH</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span><strong>Garantia de 7 Dias:</strong> cancelou, devolvemos 100% do valor (Art. 49 CDC)</span>
+        </li>
+      </ul>
 
       <div data-tilt-sublayer="45" class="w-full">
         <CtaButton position="preco" class="btn-xl" />
@@ -121,11 +138,11 @@ const priceChars = perMonthBRL.split('');
   }
 
   .price-card.has-consultant-discount {
-    border-color: #facc15;
-    box-shadow: 0 0 35px rgba(250, 204, 21, 0.2), 0 0 60px rgba(220, 38, 38, 0.15);
+    border-color: var(--yellow);
+    box-shadow: 0 0 35px color-mix(in srgb, var(--yellow) 25%, transparent), 0 0 60px color-mix(in srgb, var(--danger) 15%, transparent);
   }
 
-  /* Aleta de Alerta no Card de Preço — Cores Fortes e Alta Visibilidade */
+  /* Aleta de Alerta no Card de Preço — Conforme Design System */
   .card-aleta {
     display: flex;
     justify-content: center;
@@ -140,11 +157,11 @@ const priceChars = perMonthBRL.split('');
     align-items: center;
     gap: 0.65rem;
     padding: 0.6rem 1.4rem;
-    background: linear-gradient(90deg, #991b1b 0%, #dc2626 50%, #991b1b 100%);
-    border: 1.8px solid #facc15;
+    background: linear-gradient(90deg, #7f1d1d 0%, var(--danger) 50%, #7f1d1d 100%);
+    border: 1.8px solid var(--yellow);
     border-radius: 9999px;
     box-shadow:
-      0 4px 24px rgba(220, 38, 38, 0.55),
+      0 4px 24px color-mix(in srgb, var(--danger) 55%, transparent),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
     color: #ffffff;
     font-size: clamp(0.75rem, 2.3vw, 0.86rem);
@@ -158,8 +175,8 @@ const priceChars = perMonthBRL.split('');
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #facc15;
-    box-shadow: 0 0 12px #facc15, 0 0 20px #facc15;
+    background: var(--yellow);
+    box-shadow: 0 0 12px var(--yellow), 0 0 20px var(--yellow);
     flex-shrink: 0;
     animation: aletaBlink 1.2s infinite ease-in-out;
   }
@@ -172,11 +189,11 @@ const priceChars = perMonthBRL.split('');
   @keyframes aletaPulse {
     0%, 100% {
       transform: scale(1);
-      box-shadow: 0 4px 24px rgba(220, 38, 38, 0.55);
+      box-shadow: 0 4px 24px color-mix(in srgb, var(--danger) 55%, transparent);
     }
     50% {
       transform: scale(1.025);
-      box-shadow: 0 6px 30px rgba(220, 38, 38, 0.8);
+      box-shadow: 0 6px 30px color-mix(in srgb, var(--danger) 80%, transparent);
     }
   }
 
@@ -191,7 +208,7 @@ const priceChars = perMonthBRL.split('');
     }
   }
 
-  /* Carimbo Grande Físico com Cores Fortes — Efeito Rubber Stamp de Cartório */
+  /* Carimbo de Selo Oficial */
   .card-stamp {
     display: flex;
     justify-content: center;
@@ -210,14 +227,14 @@ const priceChars = perMonthBRL.split('');
   .stamp-seal {
     display: inline-block;
     padding: 0.5rem 0.7rem;
-    border: 3.5px double #ff2a2a;
+    border: 3.5px double var(--danger);
     border-radius: 12px;
-    background: rgba(220, 38, 38, 0.18);
+    background: color-mix(in srgb, var(--danger) 18%, transparent);
     box-shadow:
-      0 0 35px rgba(255, 42, 42, 0.45),
-      inset 0 0 22px rgba(220, 38, 38, 0.25);
-    transform: rotate(-9deg);
-    color: #ff3b3b;
+      0 0 35px color-mix(in srgb, var(--danger) 45%, transparent),
+      inset 0 0 22px color-mix(in srgb, var(--danger) 25%, transparent);
+    transform: rotate(-8deg);
+    color: var(--danger);
     text-align: center;
     backdrop-filter: blur(6px);
   }
@@ -227,7 +244,7 @@ const priceChars = perMonthBRL.split('');
     flex-direction: column;
     align-items: center;
     gap: 0.3rem;
-    border: 1.8px dashed rgba(255, 75, 75, 0.85);
+    border: 1.8px dashed color-mix(in srgb, var(--danger) 85%, transparent);
     padding: 0.6rem 1.6rem;
     border-radius: 8px;
   }
@@ -236,8 +253,8 @@ const priceChars = perMonthBRL.split('');
     font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 0.16em;
-    color: #fde047;
-    text-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+    color: var(--yellow-soft);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--yellow) 80%, transparent);
   }
 
   .stamp-seal-title {
@@ -248,8 +265,8 @@ const priceChars = perMonthBRL.split('');
     line-height: 1;
     color: #ffffff;
     text-shadow:
-      0 0 14px #ff2a2a,
-      0 0 28px rgba(239, 68, 68, 0.8),
+      0 0 14px var(--danger),
+      0 0 28px color-mix(in srgb, var(--danger) 80%, transparent),
       0 2px 4px rgba(0, 0, 0, 0.9);
     text-transform: uppercase;
   }
@@ -258,10 +275,40 @@ const priceChars = perMonthBRL.split('');
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.12em;
-    color: #fef08a;
-    text-shadow: 0 0 8px rgba(254, 240, 138, 0.6);
+    color: var(--yellow-soft);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--yellow-soft) 60%, transparent);
     text-transform: uppercase;
   }
+
+  .trust-triad {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem auto 1.8rem;
+    max-width: 32rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    text-align: left;
+  }
+
+  .trust-triad li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: var(--muted-on-dark);
+  }
+
+  .trust-triad li svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex: none;
+    margin-top: 0.15rem;
+  }
+
+  .trust-triad li strong {
+    color: #ffffff;
   }
 
   @keyframes stampSlam {

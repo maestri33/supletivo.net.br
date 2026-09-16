@@ -452,6 +452,29 @@ textarea:focus-visible {
   transform: translateZ(40px);
 }
 
+/* Estados interativos e de acessibilidade (Issue #8, Item 15) */
+.btn:disabled,
+.action-btn:disabled,
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.btn:active,
+.action-btn:active,
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.input-wrapper.invalid,
+input.invalid,
+input:invalid:not(:placeholder-shown) {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 18%, transparent);
+}
+
 /* Kill-switch global de movimento */
 @media (prefers-reduced-motion: reduce) {
   *,

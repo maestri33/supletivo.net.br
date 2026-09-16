@@ -2,12 +2,31 @@
 /**
  * Seção 6 — A virada. Certificado se "montando" em SVG + projeção de futuro.
  */
-const wins = [
-  'Matrícula na faculdade',
-  'Inscrição em concursos públicos',
-  'CNH e cursos técnicos',
-  'Vagas melhores de emprego',
-  'E o orgulho da sua família — e o seu',
+const outcomeCards = [
+  {
+    icon: '🏛️',
+    title: 'Concursos Públicos',
+    desc: 'Editais municipais, estaduais e federais com estabilidade e plano de cargos.',
+    tag: 'Estabilidade',
+  },
+  {
+    icon: '🎓',
+    title: 'Faculdade e Cursos Técnicos',
+    desc: 'Matrícula imediata em faculdades credenciadas pelo MEC, SENAI e ETECs.',
+    tag: 'Ensino Superior',
+  },
+  {
+    icon: '🚗',
+    title: 'Primeira CNH',
+    desc: 'Atendimento do requisito legal de escolaridade junto ao Detran em todo o Brasil.',
+    tag: 'Habilitação',
+  },
+  {
+    icon: '💼',
+    title: 'Crescimento Profissional',
+    desc: 'Elegibilidade para cargos de liderança, promoções e aumento de remuneração.',
+    tag: 'Carreira',
+  },
 ];
 ---
 
@@ -23,24 +42,32 @@ const wins = [
         Com o certificado do ensino médio — ou do fundamental — na mão,
         destrava o que estava parado há anos:
       </p>
-      <ul class="wins">
+      <div class="outcome-grid" data-reveal style="--d: 2">
         {
-          wins.map((win, i) => (
-            <li data-reveal style={`--d: ${i + 2}`}>
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M5 12.5l4.5 4.5L19 7.5"
-                  stroke="var(--green)"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <span>{win}</span>
-            </li>
+          outcomeCards.map((card) => (
+            <div class="outcome-card">
+              <div class="outcome-card-top">
+                <span class="outcome-icon" aria-hidden="true">{card.icon}</span>
+                <span class="outcome-tag">{card.tag}</span>
+              </div>
+              <h3 class="outcome-title">{card.title}</h3>
+              <p class="outcome-desc">{card.desc}</p>
+            </div>
           ))
         }
-      </ul>
+      </div>
+      <p class="outcome-pride" data-reveal style="--d: 3">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M5 12.5l4.5 4.5L19 7.5"
+            stroke="var(--green)"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span>E o orgulho da sua família — e o seu.</span>
+      </p>
     </div>
 
     <figure class="cert-wrap" data-cert>
@@ -211,24 +238,87 @@ const wins = [
     max-width: 42ch;
   }
 
-  .wins {
-    list-style: none;
+  .outcome-grid {
     margin: 1.8rem 0 0;
-    padding: 0;
     display: grid;
-    gap: 0.85rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .wins li {
+  @media (min-width: 540px) {
+    .outcome-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .outcome-card {
+    background: var(--paper);
+    border: 1px solid rgb(0 39 118 / 0.1);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    box-shadow: 0 4px 12px rgb(11 18 32 / 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .outcome-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgb(11 18 32 / 0.08);
+  }
+
+  .outcome-card-top {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-weight: 700;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
   }
 
-  .wins svg {
-    width: 1.35rem;
-    height: 1.35rem;
+  .outcome-icon {
+    font-size: 1.4rem;
+  }
+
+  .outcome-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--green) 12%, transparent);
+    color: var(--green);
+  }
+
+  .outcome-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 0.35rem;
+    line-height: 1.25;
+  }
+
+  .outcome-desc {
+    font-size: 0.84rem;
+    line-height: 1.4;
+    color: var(--muted-on-light);
+    margin: 0;
+  }
+
+  .outcome-pride {
+    margin-top: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--ink);
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--yellow) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--yellow) 45%, transparent);
+  }
+
+  .outcome-pride svg {
+    width: 1.25rem;
+    height: 1.25rem;
     flex: none;
   }
 

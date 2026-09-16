@@ -15,19 +15,19 @@
     </div>
     <div class="spatial-badge badge-online" data-tilt-sublayer="45">
       <span class="badge-dot dot-yellow" aria-hidden="true"></span>
-      <span>100% Online no Celular</span>
+      <span>Estudo Online · Prova no Polo</span>
     </div>
     <svg viewBox="0 0 560 380" fill="none">
     <defs>
       <linearGradient id="df-sheet-g" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#007a52"></stop>
-        <stop offset="1" stop-color="#00543a"></stop>
+        <stop offset="0" stop-color="var(--green)"></stop>
+        <stop offset="1" stop-color="var(--green-deep)"></stop>
       </linearGradient>
       <linearGradient id="df-roll-g" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#003d29"></stop>
-        <stop offset="0.45" stop-color="#00875b"></stop>
-        <stop offset="0.7" stop-color="#00543a"></stop>
-        <stop offset="1" stop-color="#002e1f"></stop>
+        <stop offset="0" stop-color="var(--ink)"></stop>
+        <stop offset="0.45" stop-color="var(--green)"></stop>
+        <stop offset="0.7" stop-color="var(--green-deep)"></stop>
+        <stop offset="1" stop-color="var(--ink)"></stop>
       </linearGradient>
     </defs>
 
@@ -182,35 +182,35 @@
     transform-origin: left center;
   }
 
-  /* Ciclo de animação: repouso fechado, desenrolar, exibição e fechamento */
+  /* Ciclo de animação: desenrolar inicial elegante que permanece aberto e legível */
   @media (prefers-reduced-motion: no-preference) {
     .df-sheet {
-      clip-path: inset(0 94% 0 0 round 12px);
-      animation: df-clip 12s infinite;
+      clip-path: inset(0 0% 0 0 round 12px);
+      animation: df-clip 2s cubic-bezier(0.5, 0.05, 0.2, 1) forwards;
     }
 
     .df-roll {
-      animation: df-travel 12s infinite;
+      animation: df-travel 2s cubic-bezier(0.5, 0.05, 0.2, 1) forwards;
     }
 
     .df-shadow {
-      transform: scaleX(0.14);
-      animation: df-shadow 12s infinite;
+      transform: scaleX(1);
+      animation: df-shadow 2s cubic-bezier(0.5, 0.05, 0.2, 1) forwards;
     }
 
     .df-ribbon {
-      animation: df-ribbon 12s infinite;
+      animation: df-ribbon 1.6s ease-out forwards;
     }
 
     .df-check {
       stroke-dasharray: 1;
-      stroke-dashoffset: 1;
-      animation: df-check 12s infinite;
+      stroke-dashoffset: 0;
+      animation: df-check 2.2s ease-out forwards;
     }
 
     .df-stamp {
-      opacity: 0;
-      animation: df-stamp 12s infinite;
+      opacity: 1;
+      animation: df-stamp 2.4s ease-out forwards;
     }
 
     .diploma-flag {

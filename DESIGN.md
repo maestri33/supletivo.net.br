@@ -170,3 +170,40 @@ A paleta de cores é inspirada na identidade visual nacional brasileira, calibra
 - **DON'T**: Nunca use fotos de banco americano com adolescentes em corredores de universidade (anti-stock fake).
 - **DON'T**: Nunca utilize ilustrações estilo "Corporate Memphis" (bonecos roxos desproporcionais).
 - **DON'T**: Nunca faça autoplay de vídeos com áudio ligado em dispositivos móveis.
+
+---
+
+## Section Composition Blueprints
+
+### 1. Hero Assimétrico (Mobile Seguro em 360px)
+- **Superfície**: Escura (`--blue` / `--blue-deep` / `--ink`) com iluminação radial suave em `--yellow`.
+- **Hierarquia**:
+  1. Eyebrow com ponto pulsante (`.dot`) e tipografia institucional `Inter`.
+  2. Display H1 em `Archivo Black` com contraste de opacidade (passado vazado / futuro sólido com swoosh `--yellow`).
+  3. Chips de benefícios imediatos com losango-check.
+  4. Componente de conversão sem atrito (`SofiaLeadCapture`) com fallback `<noscript>`.
+- **Regra de Ergonomia 360px**: Padding superior com `max(clamp(...), env(safe-area-inset-top))` e folga mínima de 60px para a dobra mobile.
+
+### 2. Bloco Documental / Validade LDB
+- **Superfície**: Ritmo claro ou transição solene com fundo papel/certidão.
+- **Hierarquia**:
+  1. Kicker de validação e H2 em display imponente.
+  2. Grid de certificação com 4 pilares: Credenciamento MEC, Publicação em Diário Oficial, Validade Nacional e Prova Presencial no Polo.
+  3. Bloco aberto permanente de Amparo Legal: Arts. 37 e 38 da Lei Federal nº 9.394/96 (LDB) com link direto para o Planalto.
+- **Regra de Transparência**: Proibido esconder a base jurídica atrás de modais ou botões de interrogação colapsados.
+
+### 3. Bloco de Preço Transparente (Tríade de Confiança)
+- **Superfície**: Escura solene (`--ink`) com radial suave em `--yellow` e cards em `glass-panel`.
+- **Hierarquia**:
+  1. Preço de tabela e parcela em destaque (`12x de R$ 99` ou `R$ 999 no Pix`).
+  2. Tríade de Confiança Decisória acoplada ao preço (MEC + Diário Oficial + Art. 49 CDC).
+  3. Botão de conversão principal com tamanho `btn-xl`.
+  4. Microcopy reforçando ausência de taxas surpresa e início imediato.
+
+### 4. CTA Final Triunfante
+- **Superfície**: Azul institucional (`--blue` / `--blue-deep`) com contraste de palco.
+- **Hierarquia**:
+  1. Display de fechamento emocional ("O seu diploma está esperando").
+  2. Três pontos de vitória com losango-check.
+  3. Botão de CTA primário com pulso halo discreto.
+  4. Microcopy de garantia e tempo estimado de matrícula.
