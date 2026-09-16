@@ -11,6 +11,12 @@ const rawAppUrl =
 // sem barra final: evita ref colado em path duplicado e 301 no destino
 export const APP_URL: string = rawAppUrl.replace(/\/+$/, '');
 
+const rawBackendUrl =
+  import.meta.env.PUBLIC_BACKEND_URL ??
+  (import.meta.env.DEV ? 'http://localhost:8585/rest/Supletivo+Backend+API/1.0.0' : 'https://backend.supletivo.net.br');
+
+export const BACKEND_URL: string = rawBackendUrl.replace(/\/+$/, '');
+
 export const BRAND = 'Supletivo Brasil';
 
 /** Texto único de CTA em toda a página (regra de copy) */

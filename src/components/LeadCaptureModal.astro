@@ -5,7 +5,7 @@
  * Em conformidade com AGENTS.md: acessibilidade WCAG 2A/AA, Safe Area Inset mobile,
  * e handoff de dupla redundância (URL query + cookie .supletivo.net.br).
  */
-import { APP_URL } from '../config';
+import { APP_URL, BACKEND_URL } from '../config';
 ---
 
 <div
@@ -19,6 +19,7 @@ import { APP_URL } from '../config';
   inert
   data-lead-capture-modal
   data-app-url={APP_URL}
+  data-backend-url={BACKEND_URL}
 >
   <div class="lead-modal-overlay" data-close-modal></div>
 
@@ -934,10 +935,57 @@ import { APP_URL } from '../config';
           ref: attr?.ref ?? 'direct',
         });
 
-        // Simulação de chamada de API ou fallback seguro para a transição
-        // Em ambiente de produção o client envia para https://backend.supletivo.net.br/api/v1/clients/auth/check
+        const backendUrl = modal.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
+
+        // Disparo real ou simulado ao endpoint de check/captura do backend
+        let externalId: string | undefined;
+        try {
+          const apiRes = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: phoneDigits,
+              cpf: cpfDigits || undefined,
+              ref: attr?.ref || undefined,
+              send_otp: true,
+              attribution: attr
+                ? {
+                    ref: attr.ref,
+                    utm_source: attr.utm_source,
+                    utm_medium: attr.utm_medium,
+                    utm_campaign: attr.utm_campaign,
+                    gclid: attr.gclid,
+                    fbclid: attr.fbclid,
+                  }
+                : undefined,
+            }),
+            signal: AbortSignal.timeout(3500),
+          });
+
+          if (apiRes.ok) {
+            const data = await apiRes.json();
+            externalId = data?.external_id;
+
+            // Se for cadastro existente em outro telefone, exibe tela de acolhimento
+            if (data?.found && data?.masked_phone && data?.masked_phone !== phoneDigits) {
+              const existingCard = modal.querySelector<HTMLElement>('#step-existing');
+              const existingPhoneMasked = modal.querySelector<HTMLElement>('#existing-phone-masked');
+              const stepCpf = modal.querySelector<HTMLElement>('#step-cpf');
+              if (existingPhoneMasked) existingPhoneMasked.textContent = data.masked_phone;
+              stepCpf?.classList.add('hidden');
+              existingCard?.classList.remove('hidden');
+              spinner?.classList.add('hidden');
+              if (btnText) btnText.textContent = 'Garantir Minha Vaga Oficial';
+              return;
+            }
+          }
+        } catch (fetchErr) {
+          console.warn('[lead-capture] Backend indisponível ou timeout, seguindo com fallback:', fetchErr);
+        }
+
         // Construção da URL de Redirecionamento oficial para /autenticacao/otp
         const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
+        if (externalId) targetUrl.searchParams.set('id', externalId);
         targetUrl.searchParams.set('tel', phoneDigits);
         if (cpfDigits) targetUrl.searchParams.set('cpf', cpfDigits);
         if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
