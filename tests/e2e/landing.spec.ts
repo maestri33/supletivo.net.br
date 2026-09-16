@@ -113,6 +113,37 @@ test('checador de elegibilidade: 18+ mostra CTA qualificado', async ({ page }) =
   expect(faixa).toBe('18mais');
 });
 
+test.describe('alerta flutuante de indicação (FloatingPromoAlert)', () => {
+  test('sem ?ref= o alerta permanece oculto', async ({ page }) => {
+    await page.goto('/');
+    const alert = page.locator('[data-floating-promo]');
+    await expect(alert).toHaveClass(/hidden/);
+  });
+
+  test('com ?ref= ativa alerta com cópia ética e sem falsa escassez', async ({ page }) => {
+    await page.goto('/?ref=consultor01');
+    const alert = page.locator('[data-floating-promo]');
+    await expect(alert).toHaveClass(/is-visible/);
+    await expect(alert).toContainText('Condição por Indicação Ativada');
+    await expect(alert).toContainText('Economia de');
+    const text = await alert.textContent();
+    expect(text).not.toContain('primeiras 100 matrículas');
+    expect(text).not.toContain('depois sobe para');
+  });
+
+  test('botão de fechar dispensa o alerta e persiste na sessão', async ({ page }) => {
+    await page.goto('/?ref=consultor01');
+    const alert = page.locator('[data-floating-promo]');
+    await expect(alert).toHaveClass(/is-visible/);
+    await page.evaluate(() => window.scrollTo(0, 150));
+    await page.waitForTimeout(200);
+    await page.locator('[data-close-promo-alert]').click();
+    await expect(alert).toHaveClass(/hidden/);
+    const dismissed = await page.evaluate(() => sessionStorage.getItem('sb_promo_dismissed'));
+    expect(dismissed).toBe('1');
+  });
+});
+
 test.describe('acessibilidade (axe)', () => {
   for (const path of [
     '/',

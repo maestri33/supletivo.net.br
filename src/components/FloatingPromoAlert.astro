@@ -1,12 +1,15 @@
 ---
 /**
- * Alerta flutuante de lote promocional ativado por indicação (?ref=).
- * Fica inicialmente oculto; quando um parâmetro de indicação é detectado,
- * surge com animação suave e acompanha a página informando a vantagem exclusiva.
+ * Alerta flutuante refinado de Condição por Indicação (?ref=).
+ * Alinhado estritamente ao Design System (Dark Glassmorphism, Antigravity).
+ * Sem falsa escassez ou contadores artificiais.
+ * Posicionado no desktop à direita (sem sobrepor o Hero CTA) e
+ * com ativação inteligente que não obstrui o Hero mobile.
  */
+import { savingsBRL, cardLine, pixBRL } from '../data/price';
 ---
 
-<div
+<aside
   id="floating-promo-alert"
   class="floating-promo-alert hidden"
   data-floating-promo
@@ -14,189 +17,257 @@
   role="status"
 >
   <div class="promo-alert-card">
-    <div class="promo-alert-icon" aria-hidden="true">
-      <span class="sparkle">✦</span>
-    </div>
-    <div class="promo-alert-text">
-      <div class="promo-alert-badge">
-        <span class="pulse-dot"></span>
-        <span>Condição por Indicação Ativada</span>
+    <div class="promo-alert-header">
+      <div class="promo-alert-pill">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span class="promo-alert-pill-text">Condição por Indicação Ativada</span>
       </div>
-      <p class="promo-alert-title">
-        Lote 01 Promocional Liberado: <strong>12x de R$ 99</strong>
-      </p>
-      <p class="promo-alert-desc">
-        Válido para as <strong>primeiras 100 matrículas</strong> (depois sobe para R$ 1.615).
-      </p>
+      <button
+        type="button"
+        class="promo-alert-close"
+        data-close-promo-alert
+        aria-label="Fechar aviso promocional"
+        title="Dispensar aviso"
+      >
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
-    <a href="#preco" class="promo-alert-cta" data-cta="floating-alert" aria-label="Ver condição de preço com desconto">
-      Garantir vaga
-      <span aria-hidden="true">→</span>
-    </a>
-    <button
-      type="button"
-      class="promo-alert-close"
-      data-close-promo-alert
-      aria-label="Fechar aviso promocional"
-    >
-      ×
-    </button>
+
+    <div class="promo-alert-body">
+      <div class="promo-alert-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+        </svg>
+      </div>
+
+      <div class="promo-alert-content">
+        <p class="promo-alert-headline">
+          Economia de <span class="promo-highlight" data-price-savings>{savingsBRL}</span> aplicada
+        </p>
+        <p class="promo-alert-sub">
+          Por <strong data-price-card-line>{cardLine}</strong> ou <strong data-price-pix-val>{pixBRL}</strong> no Pix
+        </p>
+      </div>
+    </div>
+
+    <div class="promo-alert-footer">
+      <a href="#preco" class="promo-alert-cta" data-cta="floating-alert" aria-label="Ver condição especial de preço">
+        <span>Aproveitar condição</span>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="7 13 12 18 17 13"></polyline>
+          <line x1="12" y1="6" x2="12" y2="18"></line>
+        </svg>
+      </a>
+      <span class="promo-alert-micro">Consultor Autorizado Supletivo Brasil</span>
+    </div>
   </div>
-</div>
+</aside>
 
 <style>
   .floating-promo-alert {
     position: fixed;
-    bottom: 1.5rem;
-    left: 1.5rem;
+    bottom: 2rem;
+    right: 2rem;
     z-index: 55;
-    max-width: min(92vw, 440px);
+    width: min(92vw, 390px);
     pointer-events: auto;
   }
 
   .floating-promo-alert.hidden {
-    display: none;
+    display: none !important;
   }
 
-  .floating-promo-alert.hidden-by-section {
+  .floating-promo-alert.hidden-by-section,
+  .floating-promo-alert.hidden-by-hero {
     opacity: 0 !important;
     pointer-events: none !important;
-    transform: translateY(20px) !important;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(16px) scale(0.96) !important;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
   .floating-promo-alert.is-visible {
     display: block;
-    animation: alertSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: alertSlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .promo-alert-card {
     position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 0.9rem 1.1rem;
-    padding-right: 2.2rem;
-    border-radius: 18px;
-    background: rgba(11, 18, 32, 0.88);
+    padding: 1rem 1.15rem;
+    border-radius: 20px;
+    background: rgba(11, 18, 32, 0.9);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 196, 0, 0.35);
+    border: 1.5px solid rgba(255, 196, 0, 0.4);
     box-shadow:
-      0 16px 36px -10px rgba(0, 0, 0, 0.7),
-      0 0 20px -5px rgba(255, 196, 0, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      0 18px 40px -12px rgba(0, 0, 0, 0.8),
+      0 0 24px -6px rgba(255, 196, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
     color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
   }
 
-  .promo-alert-icon {
-    flex-shrink: 0;
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, var(--yellow), var(--yellow-soft));
-    color: var(--ink);
+  .promo-alert-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 800;
-    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.4);
+    justify-content: space-between;
+    gap: 0.5rem;
   }
 
-  .promo-alert-text {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .promo-alert-badge {
+  .promo-alert-pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--yellow);
-    margin-bottom: 0.2rem;
+    gap: 0.45rem;
+    padding: 0.22rem 0.65rem;
+    border-radius: 9999px;
+    background: rgba(255, 196, 0, 0.12);
+    border: 1px solid rgba(255, 196, 0, 0.3);
   }
 
   .pulse-dot {
     width: 6px;
     height: 6px;
-    border-radius: 9999px;
+    border-radius: 50%;
     background: var(--yellow);
     box-shadow: 0 0 8px var(--yellow);
-    animation: dotBlink 2s ease-in-out infinite;
+    animation: dotPulse 1.8s infinite ease-in-out;
   }
 
-  @keyframes dotBlink {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
+  @keyframes dotPulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.35;
+      transform: scale(0.8);
+    }
   }
 
-  .promo-alert-title {
-    font-size: 0.88rem;
-    font-weight: 600;
-    line-height: 1.25;
-    margin: 0;
-    color: #ffffff;
-  }
-
-  .promo-alert-title strong {
+  .promo-alert-pill-text {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--yellow);
   }
 
-  .promo-alert-desc {
+  .promo-alert-close {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--muted-on-dark);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .promo-alert-close:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+
+  .promo-alert-body {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .promo-alert-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--yellow), var(--yellow-soft));
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.35);
+  }
+
+  .promo-alert-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .promo-alert-headline {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+  }
+
+  .promo-highlight {
+    color: var(--yellow);
+    font-weight: 800;
+  }
+
+  .promo-alert-sub {
+    margin: 0.15rem 0 0 0;
     font-size: 0.76rem;
     color: var(--muted-on-dark);
-    margin-top: 0.15rem;
-    line-height: 1.2;
+    line-height: 1.3;
+  }
+
+  .promo-alert-sub strong {
+    color: #ffffff;
+  }
+
+  .promo-alert-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .promo-alert-cta {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 0.45rem 0.75rem;
-    border-radius: 999px;
+    gap: 0.35rem;
+    padding: 0.42rem 0.85rem;
+    border-radius: 9999px;
     background: var(--yellow);
     color: var(--ink);
+    font-size: 0.76rem;
+    font-weight: 800;
     text-decoration: none;
+    transition: transform 0.18s var(--ease-out), filter 0.18s var(--ease-out);
     white-space: nowrap;
-    transition: transform 0.18s var(--ease-out);
-    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(255, 196, 0, 0.3);
   }
 
   .promo-alert-cta:hover {
     transform: translateY(-1px);
+    filter: brightness(1.06);
   }
 
-  .promo-alert-close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.6rem;
-    background: transparent;
-    border: none;
+  .promo-alert-micro {
+    font-size: 0.68rem;
     color: var(--muted-on-dark);
-    font-size: 1.2rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    transition: color 0.15s ease;
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .promo-alert-close:hover {
-    color: #ffffff;
-  }
-
-  @keyframes alertSlideUp {
+  @keyframes alertSlideIn {
     from {
       opacity: 0;
-      transform: translateY(24px) scale(0.96);
+      transform: translateY(24px) scale(0.95);
     }
     to {
       opacity: 1;
@@ -204,21 +275,38 @@
     }
   }
 
-  /* No mobile e tablets, posiciona logo acima do sticky CTA */
+  /* Ajustes responsivos para tablets e mobile */
   @media (max-width: 899px) {
     .floating-promo-alert {
-      bottom: 4.8rem;
-      left: 0.75rem;
       right: 0.75rem;
-      max-width: calc(100vw - 1.5rem);
+      left: 0.75rem;
+      bottom: calc(4.8rem + env(safe-area-inset-bottom, 0px));
+      width: calc(100vw - 1.5rem);
+      max-width: none;
     }
+
     .promo-alert-card {
-      padding: 0.75rem 0.9rem;
-      padding-right: 1.8rem;
-      gap: 0.6rem;
+      padding: 0.85rem 1rem;
+      gap: 0.5rem;
     }
-    .promo-alert-cta {
-      display: none; /* No mobile o sticky CTA já está na tela */
+
+    .promo-alert-micro {
+      display: none;
+    }
+
+    .promo-alert-footer {
+      justify-content: flex-end;
+      padding-top: 0.2rem;
+      border-top: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-promo-alert.is-visible {
+      animation: none !important;
+    }
+    .pulse-dot {
+      animation: none !important;
     }
   }
 </style>

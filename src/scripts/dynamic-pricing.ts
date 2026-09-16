@@ -114,8 +114,9 @@ function applyPricingToDom(config: {
   });
 
   const saveLine = document.querySelector<HTMLElement>('[data-price-save-line]');
-  const saveEl = document.querySelector<HTMLElement>('[data-price-savings]');
-  if (saveEl) saveEl.textContent = brl(savings);
+  document.querySelectorAll<HTMLElement>('[data-price-savings]').forEach((el) => {
+    el.textContent = brl(savings);
+  });
   if (saveLine) {
     if (isPromo && savings > 0) {
       saveLine.classList.remove('hidden');

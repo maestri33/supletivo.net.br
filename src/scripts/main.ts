@@ -301,3 +301,21 @@ if (precoSection && floatingPromo && 'IntersectionObserver' in window) {
   promoSectionObserver.observe(precoSection);
 }
 
+// No mobile/tablet, esconde o alerta flutuante na dobra inicial do Hero para evitar bloquear o CTA principal
+if (floatingPromo) {
+  const updateMobileHeroVisibility = () => {
+    if (window.innerWidth <= 899) {
+      if (window.scrollY < 90) {
+        floatingPromo.classList.add('hidden-by-hero');
+      } else {
+        floatingPromo.classList.remove('hidden-by-hero');
+      }
+    } else {
+      floatingPromo.classList.remove('hidden-by-hero');
+    }
+  };
+  updateMobileHeroVisibility();
+  window.addEventListener('scroll', updateMobileHeroVisibility, { passive: true });
+  window.addEventListener('resize', updateMobileHeroVisibility, { passive: true });
+}
+
