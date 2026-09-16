@@ -1,6 +1,6 @@
 {
   "name": "supletivo.net.br",
-  "version": "0.0.0-sandbox.6",
+  "version": "0.0.0-sandbox.7",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,12 +17,14 @@
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",
+    "@astrojs/svelte": "^9.0.1",
     "astro": "^7.3.2",
     "clsx": "^2.1.1",
     "lucide-react": "^1.39.0",
     "motion": "^13.1.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "svelte": "^5.57.0",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
