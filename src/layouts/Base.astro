@@ -93,15 +93,7 @@ const ogImage = new URL(ogImagePath, site);
 
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
 
-    <!--
-      ANALYTICS / TAGS DE TERCEIROS
-      =============================
-      Nenhum pixel instalado por decisão de projeto. Quando for a hora:
-      - GTM: colar o snippet oficial AQUI (head) + <noscript> logo após <body>.
-      - GA4 / Meta Pixel diretos: também aqui.
-      A camada de eventos já existe: window.dataLayer recebe page_view,
-      cta_click, faq_open e scroll_depth (ver src/scripts/track.ts e main.ts).
-    -->
+    <!-- Camada de eventos dataLayer ativa via scripts/track.ts. Pixels de terceiros podem ser injetados aqui. -->
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>

@@ -132,7 +132,7 @@ export const MarqueeScroller: React.FC<MarqueeScrollerProps> = ({
       }}
     >
       <style>{`
-        @keyframes v7m-marquee-scroll {
+        @keyframes sb-marquee-scroll {
           0% {
             transform: translateX(0%);
           }
@@ -140,18 +140,18 @@ export const MarqueeScroller: React.FC<MarqueeScrollerProps> = ({
             transform: translateX(-50%);
           }
         }
-        .v7m-marquee-track {
+        .sb-marquee-track {
           display: flex;
           width: max-content;
           gap: 1.25rem;
-          animation: v7m-marquee-scroll ${speedSeconds}s linear infinite;
+          animation: sb-marquee-scroll ${speedSeconds}s linear infinite;
         }
-        .v7m-marquee-track:hover {
+        .sb-marquee-track:hover {
           animation-play-state: paused;
         }
       `}</style>
 
-      <div className="v7m-marquee-track py-4">
+      <div className="sb-marquee-track py-4">
         {loopList.map((logo, index) => (
           <div
             key={`${logo.name}-${index}`}

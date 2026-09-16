@@ -9,6 +9,14 @@
 
 <div class="diploma-wrap spatial-stage" aria-hidden="true">
   <div class="diploma-flag spatial-card-3d" data-tilt-3d data-tilt-max="10">
+    <div class="spatial-badge badge-mec" data-tilt-sublayer="35">
+      <span class="badge-dot" aria-hidden="true"></span>
+      <span>Certificado Válido Nacional</span>
+    </div>
+    <div class="spatial-badge badge-online" data-tilt-sublayer="45">
+      <span class="badge-dot dot-yellow" aria-hidden="true"></span>
+      <span>100% Online no Celular</span>
+    </div>
     <svg viewBox="0 0 560 380" fill="none">
     <defs>
       <linearGradient id="df-sheet-g" x1="0" y1="0" x2="0" y2="1">
@@ -87,7 +95,67 @@
 
 <style>
   .diploma-flag {
+    position: relative;
+    pointer-events: auto;
     filter: drop-shadow(0 18px 30px rgb(0 0 0 / 0.35));
+  }
+
+  .spatial-badge {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(11, 18, 32, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    z-index: 10;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .badge-mec {
+    top: 5%;
+    right: -4%;
+    transform: translateZ(35px);
+  }
+
+  .badge-online {
+    bottom: 8%;
+    left: -4%;
+    transform: translateZ(45px);
+  }
+
+  .badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: var(--green-light, #38d178);
+    box-shadow: 0 0 8px #38d178;
+  }
+
+  .dot-yellow {
+    background: var(--yellow);
+    box-shadow: 0 0 8px var(--yellow);
+  }
+
+  @media (max-width: 640px) {
+    .badge-mec {
+      top: 0%;
+      right: 0%;
+      font-size: 0.7rem;
+    }
+    .badge-online {
+      bottom: 2%;
+      left: 0%;
+      font-size: 0.7rem;
+    }
   }
 
   .diploma-flag svg {
@@ -114,7 +182,7 @@
     transform-origin: left center;
   }
 
-  /* ===== loop: pausado fechado → desenrola → aberto (check) → enrola ===== */
+  /* Ciclo de animação: repouso fechado, desenrolar, exibição e fechamento */
   @media (prefers-reduced-motion: no-preference) {
     .df-sheet {
       clip-path: inset(0 94% 0 0 round 12px);

@@ -1,0 +1,141 @@
+---
+/**
+ * Componente Carimbo (Stamp) Independente.
+ * Exibe um selo estilo carimbo físico de cartório/consultor com física de impacto
+ * (escala, leve rotação, reverberação de sombra).
+ * Possui ciclo autônomo: surge com impacto, permanece alguns segundos e desvanece suavemente.
+ * Controlado estritamente pela presença do parâmetro ?ref=.
+ */
+---
+
+<div id="promo-stamp" class="stamp-container hidden" data-promo-stamp aria-hidden="true">
+  <div class="stamp-badge">
+    <div class="stamp-inner">
+      <span class="stamp-stars">★★★</span>
+      <span class="stamp-title">CONDIÇÃO EXCLUSIVA</span>
+      <span class="stamp-sub">INDICAÇÃO APROVADA</span>
+      <span class="stamp-date">CERTIFICAÇÃO OFICIAL MEC</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stamp-container {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 45;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .stamp-container.hidden {
+    display: none !important;
+  }
+
+  .stamp-container.is-stamping {
+    display: block !important;
+    animation: stamp-impact 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  }
+
+  .stamp-container.is-fading {
+    display: block !important;
+    animation: stamp-fade-out 0.8s ease forwards;
+  }
+
+  .stamp-badge {
+    position: relative;
+    padding: 0.5rem 1.1rem;
+    border: 3px double #00734d;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 12px 28px -6px rgba(0, 115, 77, 0.35), inset 0 0 12px rgba(0, 115, 77, 0.12);
+    transform: rotate(-12deg);
+    color: #00734d;
+    font-family: var(--font-display);
+    text-align: center;
+    backdrop-filter: blur(8px);
+  }
+
+  .stamp-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    border: 1px dashed rgba(0, 115, 77, 0.6);
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+  }
+
+  .stamp-stars {
+    font-size: 0.75rem;
+    letter-spacing: 0.2rem;
+    color: #ffc400;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .stamp-title {
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+  }
+
+  .stamp-sub {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #002776;
+  }
+
+  .stamp-date {
+    font-size: 0.55rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
+
+  @keyframes stamp-impact {
+    0% {
+      opacity: 0;
+      transform: scale(2.6) rotate(-28deg);
+      filter: blur(6px);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(0.92) rotate(-10deg);
+      filter: blur(0);
+    }
+    75% {
+      transform: scale(1.05) rotate(-13deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(-12deg);
+    }
+  }
+
+  @keyframes stamp-fade-out {
+    0% {
+      opacity: 1;
+      transform: scale(1) rotate(-12deg);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.85) rotate(-8deg) translateY(10px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .stamp-container {
+      bottom: 5.5rem;
+      left: 1rem;
+    }
+    .stamp-badge {
+      padding: 0.35rem 0.75rem;
+      transform: rotate(-8deg) scale(0.88);
+    }
+  }
+</style>

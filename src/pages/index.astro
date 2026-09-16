@@ -1,12 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProgressBar from '../components/ProgressBar.astro';
+import Header from '../components/Header.astro';
 import PromoterBanner from '../components/PromoterBanner.astro';
-import SupletivoModernHeroIsland from '../components/SupletivoModernHeroIsland.astro';
+import FloatingPromoAlert from '../components/FloatingPromoAlert.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
 import Mirror from '../components/Mirror.astro';
 import Steps from '../components/Steps.astro';
 import Eligibility from '../components/Eligibility.astro';
 import Trust from '../components/Trust.astro';
+import TestimonialsIsland from '../components/TestimonialsIsland.astro';
 import Validity from '../components/Validity.astro';
 import Pricing from '../components/Pricing.astro';
 import Virada from '../components/Virada.astro';
@@ -68,13 +72,30 @@ const schema = {
 
 <Base {title} {description} {schema}>
   <ProgressBar />
+  <Header />
   <PromoterBanner />
+  <FloatingPromoAlert />
   <main id="conteudo">
-    <SupletivoModernHeroIsland />
+    <Hero />
     <Mirror />
     <Steps />
     <Eligibility />
     <Trust />
+    <TestimonialsIsland />
+    <div class="testimonials-band" aria-hidden="true">
+      <Marquee
+        items={[
+          'Casos reais de superação',
+          'Aprovação em concursos públicos',
+          'Matrícula imediata na faculdade',
+          'Promoção e plano de carreira',
+          'Certificado com validade nacional',
+        ]}
+        variant="ink"
+        speed={32}
+        tilt={1.2}
+      />
+    </div>
     <Validity />
     <Pricing />
     <Virada />
@@ -84,3 +105,13 @@ const schema = {
   <Footer />
   <StickyCta />
 </Base>
+
+<style>
+  .testimonials-band {
+    position: relative;
+    z-index: 5;
+    margin-top: -1.2rem;
+    margin-bottom: -1.2rem;
+    overflow: clip;
+  }
+</style>

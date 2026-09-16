@@ -1,0 +1,224 @@
+---
+/**
+ * Alerta flutuante de lote promocional ativado por indicação (?ref=).
+ * Fica inicialmente oculto; quando um parâmetro de indicação é detectado,
+ * surge com animação suave e acompanha a página informando a vantagem exclusiva.
+ */
+---
+
+<div
+  id="floating-promo-alert"
+  class="floating-promo-alert hidden"
+  data-floating-promo
+  aria-live="polite"
+  role="status"
+>
+  <div class="promo-alert-card">
+    <div class="promo-alert-icon" aria-hidden="true">
+      <span class="sparkle">✦</span>
+    </div>
+    <div class="promo-alert-text">
+      <div class="promo-alert-badge">
+        <span class="pulse-dot"></span>
+        <span>Condição por Indicação Ativada</span>
+      </div>
+      <p class="promo-alert-title">
+        Lote 01 Promocional Liberado: <strong>12x de R$ 99</strong>
+      </p>
+      <p class="promo-alert-desc">
+        Válido para as <strong>primeiras 100 matrículas</strong> (depois sobe para R$ 1.615).
+      </p>
+    </div>
+    <a href="#preco" class="promo-alert-cta" data-cta="floating-alert" aria-label="Ver condição de preço com desconto">
+      Garantir vaga
+      <span aria-hidden="true">→</span>
+    </a>
+    <button
+      type="button"
+      class="promo-alert-close"
+      data-close-promo-alert
+      aria-label="Fechar aviso promocional"
+    >
+      ×
+    </button>
+  </div>
+</div>
+
+<style>
+  .floating-promo-alert {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 55;
+    max-width: min(92vw, 440px);
+    pointer-events: auto;
+  }
+
+  .floating-promo-alert.hidden {
+    display: none;
+  }
+
+  .floating-promo-alert.hidden-by-section {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(20px) !important;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .floating-promo-alert.is-visible {
+    display: block;
+    animation: alertSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .promo-alert-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.9rem 1.1rem;
+    padding-right: 2.2rem;
+    border-radius: 18px;
+    background: rgba(11, 18, 32, 0.88);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 196, 0, 0.35);
+    box-shadow:
+      0 16px 36px -10px rgba(0, 0, 0, 0.7),
+      0 0 20px -5px rgba(255, 196, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+
+  .promo-alert-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--yellow), var(--yellow-soft));
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.4);
+  }
+
+  .promo-alert-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .promo-alert-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--yellow);
+    margin-bottom: 0.2rem;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--yellow);
+    box-shadow: 0 0 8px var(--yellow);
+    animation: dotBlink 2s ease-in-out infinite;
+  }
+
+  @keyframes dotBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .promo-alert-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0;
+    color: #ffffff;
+  }
+
+  .promo-alert-title strong {
+    color: var(--yellow);
+  }
+
+  .promo-alert-desc {
+    font-size: 0.76rem;
+    color: var(--muted-on-dark);
+    margin-top: 0.15rem;
+    line-height: 1.2;
+  }
+
+  .promo-alert-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.18s var(--ease-out);
+    flex-shrink: 0;
+  }
+
+  .promo-alert-cta:hover {
+    transform: translateY(-1px);
+  }
+
+  .promo-alert-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.6rem;
+    background: transparent;
+    border: none;
+    color: var(--muted-on-dark);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: color 0.15s ease;
+  }
+
+  .promo-alert-close:hover {
+    color: #ffffff;
+  }
+
+  @keyframes alertSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* No mobile e tablets, posiciona logo acima do sticky CTA */
+  @media (max-width: 899px) {
+    .floating-promo-alert {
+      bottom: 4.8rem;
+      left: 0.75rem;
+      right: 0.75rem;
+      max-width: calc(100vw - 1.5rem);
+    }
+    .promo-alert-card {
+      padding: 0.75rem 0.9rem;
+      padding-right: 1.8rem;
+      gap: 0.6rem;
+    }
+    .promo-alert-cta {
+      display: none; /* No mobile o sticky CTA já está na tela */
+    }
+  }
+</style>

@@ -5,7 +5,7 @@
  */
 import CtaButton from './CtaButton.astro';
 import Marquee from './Marquee.astro';
-import { cardLine, pixBRL, perMonthBRL } from '../data/price';
+import { perMonthBRL, cardLine, pixBRL } from '../data/price';
 
 /* partículas dos fogos: 6 losangos irradiando por explosão */
 const PARTICLES = Array.from({ length: 6 }, (_, i) => {
@@ -43,9 +43,10 @@ const PARTICLES = Array.from({ length: 6 }, (_, i) => {
 
   <span class="final-diamond" aria-hidden="true"></span>
 
-  <div class="container narrow final-inner">
-    <h2 id="final-title" data-reveal>
-      Comece por {perMonthBRL}.
+  <div class="container narrow final-inner spatial-stage">
+    <div class="final-card-spatial spatial-card-3d" data-tilt-3d data-tilt-max="5">
+    <h2 id="final-title" data-reveal data-tilt-sublayer="20">
+      Comece por <span data-price-per-month>{perMonthBRL}</span>.
       <span class="hl">
         Sem risco.
         <svg class="fsw" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true">
@@ -77,9 +78,10 @@ const PARTICLES = Array.from({ length: 6 }, (_, i) => {
       <span class="cta-pulse">
         <CtaButton position="final" class="btn-xl" />
       </span>
-      <p class="microcopy">
-        {cardLine} no cartão ou {pixBRL} no Pix · matrícula em poucos minutos
+      <p class="microcopy" data-tilt-sublayer="15">
+        <strong data-price-card-line>{cardLine}</strong> no cartão ou <span data-price-pix-val>{pixBRL}</span> no Pix · matrícula em poucos minutos
       </p>
+    </div>
     </div>
   </div>
 </section>

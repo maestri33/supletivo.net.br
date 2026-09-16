@@ -16,7 +16,7 @@ export const BRAND = 'Supletivo Brasil';
 /** Texto único de CTA em toda a página (regra de copy) */
 export const CTA_LABEL = 'Quero meu diploma';
 
-/** Site institucional da empresa (Maestri Group) */
-export const COMPANY_URL = 'https://maestri.group';
+/** Site institucional oficial */
+export const COMPANY_URL = 'https://supletivo.net.br';
 /** Página de captação de promotores / parceiros */
-export const CAREERS_URL = 'https://maestri.group';
+export const CAREERS_URL = 'https://promotor.supletivo.net.br';

@@ -1,0 +1,88 @@
+---
+/**
+ * Bloco de confirmação de Condição Promocional por Indicação.
+ * Estritamente sem fake timers, sem metas explícitas de vagas e sem contagens regressivas.
+ */
+---
+
+<aside
+  class="promo-scarcity"
+  data-promo-scarcity
+  aria-labelledby="promo-scarcity-title"
+>
+  <div class="promo-scarcity-header">
+    <div class="promo-scarcity-pill">
+      <span class="scarcity-pulse" aria-hidden="true"></span>
+      <span id="promo-scarcity-title">Condição Promocional Ativa</span>
+    </div>
+    <span class="promo-scarcity-status">
+      Link de indicação verificado
+    </span>
+  </div>
+
+  <p class="promo-scarcity-note">
+    Desconto promocional aplicado com sucesso via consultor autorizado Supletivo Brasil.
+  </p>
+</aside>
+
+<style>
+  .promo-scarcity {
+    margin-block: 1.2rem 1.4rem;
+    padding: 0.95rem 1.2rem;
+    border-radius: 14px;
+    background: rgba(0, 39, 118, 0.28);
+    border: 1px solid rgba(255, 196, 0, 0.35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    text-align: left;
+  }
+
+  .promo-scarcity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .promo-scarcity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--yellow);
+  }
+
+  .scarcity-pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: var(--yellow);
+    box-shadow: 0 0 8px var(--yellow);
+    animation: pulseGlow 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .promo-scarcity-status {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #38d178;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .promo-scarcity-note {
+    font-size: 0.82rem;
+    color: var(--muted-on-dark);
+    margin: 0;
+    line-height: 1.4;
+  }
+</style>

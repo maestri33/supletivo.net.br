@@ -25,6 +25,8 @@ const icons = [
   `<path d="M3.5 6.2c2.6-1.5 5.2-1.5 7.6 0v12c-2.4-1.5-5-1.5-7.6 0z"></path><path d="M11.1 6.2c2.4-1.5 5-1.5 7.6 0v6"></path><circle cx="17.4" cy="16.4" r="4.2"></circle><path class="i-hand" d="M17.4 14.4v2l1.5 1"></path>`,
   `<path d="M21 13.6V6.2a1.8 1.8 0 0 0-1.8-1.8H4.8A1.8 1.8 0 0 0 3 6.2v9.6a1.8 1.8 0 0 0 1.8 1.8h7"></path><path d="M7 9h8M7 12.4h5"></path><g class="i-medal"><circle cx="17.2" cy="16.8" r="3"></circle><path d="M15.9 19.5l-.8 2.6 2.1-1.1 2.1 1.1-.8-2.6"></path></g>`,
 ];
+
+import Marquee from './Marquee.astro';
 ---
 
 <section id="como-funciona" class="steps section" aria-labelledby="steps-title" data-section="como-funciona">
@@ -45,14 +47,15 @@ const icons = [
           pathLength="100"></path>
       </svg>
 
-      <ol class="steps-grid">
+      <ol class="steps-grid spatial-stage">
         {steps.map((step, i) => (
           <li data-reveal style={`--d: ${i + 1}`}>
-            <article class="step-card">
-              <span class="step-n" aria-hidden="true"><i>{i + 1}</i></span>
+            <article class="step-card spatial-card-3d" data-tilt-3d data-tilt-max="6">
+              <span class="step-n" aria-hidden="true" data-tilt-sublayer="25"><i>{i + 1}</i></span>
               <span class="step-watermark" aria-hidden="true" data-n={`0${i + 1}`}></span>
               <svg
                 class="step-icon"
+                data-tilt-sublayer="30"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -62,8 +65,8 @@ const icons = [
                 aria-hidden="true"
                 set:html={icons[i]}
               />
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
+              <h3 data-tilt-sublayer="20">{step.title}</h3>
+              <p data-tilt-sublayer="15">{step.text}</p>
             </article>
           </li>
         ))}
@@ -73,6 +76,21 @@ const icons = [
     <p class="steps-note" data-reveal style="--d: 4">
       Estude 100% online · prova final presencial · você define o ritmo
     </p>
+  </div>
+
+  <div class="steps-band">
+    <Marquee
+      items={[
+        'Reconhecido por lei',
+        'Instituição parceira credenciada ao MEC',
+        'Válido em todo o território nacional',
+        'Idade mínima 15 anos para Fundamental',
+        'Idade mínima 18 anos para Médio',
+      ]}
+      variant="green"
+      speed={32}
+      tilt={-1.5}
+    />
   </div>
 </section>
 
@@ -179,14 +197,12 @@ const icons = [
     border: 1px solid var(--line-light);
     border-radius: var(--radius);
     padding: 2.1rem 1.6rem 1.8rem;
-    overflow: clip;
+    overflow: visible;
     box-shadow: 0 14px 34px -22px rgb(11 18 32 / 0.25);
-    transition:
-      transform 0.3s var(--ease-out),
-      box-shadow 0.3s var(--ease-out);
+    transition: box-shadow 0.3s var(--ease-out);
   }
 
-  /* rotação editorial alternada; endireita no hover */
+  /* rotação editorial alternada em repouso */
   @media (min-width: 880px) {
     .steps-grid li:nth-child(1) .step-card {
       transform: rotate(-1.2deg);
@@ -201,7 +217,6 @@ const icons = [
     }
 
     .steps-grid li .step-card:hover {
-      transform: rotate(0deg) translateY(-6px);
       box-shadow: 0 24px 44px -22px rgb(11 18 32 / 0.35);
     }
   }
@@ -320,5 +335,12 @@ const icons = [
     font-weight: 700;
     color: var(--green);
     font-size: 0.95rem;
+  }
+
+  .steps-band {
+    margin-top: 4.5rem;
+    margin-bottom: calc(-1 * var(--space-section));
+    position: relative;
+    z-index: 5;
   }
 </style>

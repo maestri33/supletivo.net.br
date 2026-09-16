@@ -21,8 +21,8 @@ import CtaButton from './CtaButton.astro';
       Pela lei, depende só da sua idade. Confere aí:
     </p>
 
-    <div class="elig-widget elig-card" data-reveal style="--d: 2">
-      <div class="elig-options" role="group" aria-label="Selecione a sua faixa de idade">
+    <div class="elig-widget elig-card spatial-card-3d" data-tilt-3d data-tilt-max="6" data-reveal style="--d: 2">
+      <div class="elig-options" role="group" aria-label="Selecione a sua faixa de idade" data-tilt-sublayer="25">
         <!-- alvo principal com peso de CTA; demais faixas como secundários -->
         <button type="button" class="elig-btn elig-btn--primary" data-elig="18mais" aria-pressed="false">
           Tenho 18 anos ou mais
@@ -41,7 +41,7 @@ import CtaButton from './CtaButton.astro';
       </div>
 
       <!-- cancela: levanta quando a resposta libera o caminho -->
-      <div class="elig-gate" aria-hidden="true">
+      <div class="elig-gate" aria-hidden="true" data-tilt-sublayer="35">
         <svg viewBox="0 0 170 84" fill="none">
           <rect x="12" y="16" width="11" height="58" rx="3" fill="#ffffff24"></rect>
           <rect x="7" y="70" width="21" height="7" rx="2.5" fill="#ffffff30"></rect>

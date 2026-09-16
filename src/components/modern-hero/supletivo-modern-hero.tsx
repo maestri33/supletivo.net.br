@@ -27,23 +27,23 @@ export const SupletivoModernHero: React.FC<SupletivoModernHeroProps> = ({
   className = '',
 }) => {
   return (
-    <section id="hero" data-section="hero" className={`v7m-hero-section ${className}`}>
+    <section id="hero" data-section="hero" className={`sb-hero-section ${className}`}>
       {/* 2. Main Hero Container & Video Background */}
-      <div className="v7m-hero-card">
+      <div className="sb-hero-card">
         {/* Underlying layer for background video */}
-        <div className="v7m-hero-video-wrap">
+        <div className="sb-hero-video-wrap">
           <video
             src={videoSrc}
             autoPlay
             loop
             muted
             playsInline
-            className="v7m-hero-video"
+            className="sb-hero-video"
           />
         </div>
 
         {/* 3. Hero Text Content */}
-        <div className="v7m-hero-content">
+        <div className="sb-hero-content">
           <motion.div
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,18 +51,18 @@ export const SupletivoModernHero: React.FC<SupletivoModernHeroProps> = ({
             style={{ width: '100%' }}
           >
             {/* Pill Eyebrow */}
-            <div className="v7m-hero-eyebrow">
-              <span className="v7m-hero-eyebrow-dot" />
+            <div className="sb-hero-eyebrow">
+              <span className="sb-hero-eyebrow-dot" />
               <span>Supletivo Online · Ensino Fundamental e Médio EJA</span>
             </div>
 
             {/* Headline */}
-            <h1 className="v7m-hero-title">
+            <h1 className="sb-hero-title">
               Você parou.{' '}
-              <span className="v7m-hero-title-accent">
+              <span className="sb-hero-title-accent">
                 Mas não acabou.
                 <svg
-                  className="v7m-hero-title-swoosh"
+                  className="sb-hero-title-swoosh"
                   viewBox="0 0 200 8"
                   fill="none"
                   preserveAspectRatio="none"
@@ -78,19 +78,19 @@ export const SupletivoModernHero: React.FC<SupletivoModernHeroProps> = ({
             </h1>
 
             {/* Subheadline */}
-            <p className="v7m-hero-sub">
+            <p className="sb-hero-sub">
               Termine o <strong>Ensino Fundamental</strong> ou o <strong>Ensino Médio</strong> pelo celular,
               100% online e no seu ritmo — com certificado oficial válido pelo MEC em todo o Brasil.
             </p>
 
             {/* Feature Chips */}
-            <ul className="v7m-hero-chips">
+            <ul className="sb-hero-chips">
               {[
                 'Certificado válido no Brasil inteiro',
                 'Estude pelo celular',
                 'No seu próprio ritmo',
               ].map((chip) => (
-                <li key={chip} className="v7m-hero-chip">
+                <li key={chip} className="sb-hero-chip">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{chip}</span>
                 </li>
@@ -98,24 +98,24 @@ export const SupletivoModernHero: React.FC<SupletivoModernHeroProps> = ({
             </ul>
 
             {/* CTA Group */}
-            <div className="v7m-hero-cta-group">
+            <div className="sb-hero-cta-group">
               <motion.a
                 href={appUrl}
                 data-cta="hero"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="v7m-hero-btn-primary"
+                className="sb-hero-btn-primary"
               >
                 <span>Quero meu diploma</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.a>
 
-              <div className="v7m-hero-price-meta">
-                <span className="v7m-hero-price-main">
+              <div className="sb-hero-price-meta">
+                <span className="sb-hero-price-main">
                   {cardPriceLine} <span style={{ fontWeight: 'normal', color: '#64748b' }}>ou {pixPrice} no Pix</span>
                 </span>
-                <span className="v7m-hero-price-sub">
+                <span className="sb-hero-price-sub">
                   Matrícula 100% online · Garantia de 7 dias
                 </span>
               </div>
@@ -124,7 +124,7 @@ export const SupletivoModernHero: React.FC<SupletivoModernHeroProps> = ({
         </div>
 
         {/* 4. Floating Bottom Navbar */}
-        <div className="v7m-hero-navbar">
+        <div className="sb-hero-navbar">
           <motion.nav
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -134,24 +134,24 @@ export const SupletivoModernHero: React.FC<SupletivoModernHeroProps> = ({
             {/* Logo Badge */}
             <a
               href="#hero"
-              className="v7m-hero-nav-star"
+              className="sb-hero-nav-star"
               title="Supletivo Brasil"
             >
               ✦
             </a>
 
             {/* Quick Anchor Links */}
-            <div className="v7m-hero-nav-links">
-              <a href="#como-funciona" className="v7m-hero-nav-link">
+            <div className="sb-hero-nav-links">
+              <a href="#como-funciona" className="sb-hero-nav-link">
                 Como funciona
               </a>
-              <a href="#validade" className="v7m-hero-nav-link">
+              <a href="#validade" className="sb-hero-nav-link">
                 Validade MEC
               </a>
-              <a href="#preco" className="v7m-hero-nav-link">
+              <a href="#preco" className="sb-hero-nav-link">
                 Preço
               </a>
-              <a href="#faq" className="v7m-hero-nav-link">
+              <a href="#faq" className="sb-hero-nav-link">
                 Dúvidas
               </a>
             </div>
@@ -160,7 +160,7 @@ export const SupletivoModernHero: React.FC<SupletivoModernHeroProps> = ({
             <a
               href={appUrl}
               data-cta="navbar"
-              className="v7m-hero-nav-action"
+              className="sb-hero-nav-action"
             >
               <span>Fazer Matrícula</span>
               <ChevronRight className="w-3.5 h-3.5" />

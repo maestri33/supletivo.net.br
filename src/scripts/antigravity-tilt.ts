@@ -124,20 +124,7 @@ export function initAntigravityTilt(): void {
             el.style.transform = `translate3d(${subX}px, ${subY}px, ${subZ})`;
           });
         }
-      } else if (!s.isHovered && (Math.abs(s.currX) > 0.01 || Math.abs(s.currY) > 0.01)) {
-        s.currX += dx * 0.12;
-        s.currY += dy * 0.12;
-        hasMotion = true;
-        s.el.style.transform = `perspective(1000px) rotateX(${s.currX.toFixed(2)}deg) rotateY(${s.currY.toFixed(2)}deg) translateZ(0px)`;
-
-        if (s.sublayers.length > 0) {
-          s.sublayers.forEach(({ el, depth }) => {
-            const subX = (s.currY * (depth / s.maxTilt) * 0.5).toFixed(2);
-            const subY = (-s.currX * (depth / s.maxTilt) * 0.5).toFixed(2);
-            el.style.transform = `translate3d(${subX}px, ${subY}px, 0px)`;
-          });
-        }
-      } else if (!s.isHovered) {
+      } else {
         s.currX = 0;
         s.currY = 0;
         s.el.style.transform = '';

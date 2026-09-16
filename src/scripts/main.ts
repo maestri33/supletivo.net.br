@@ -6,18 +6,13 @@ import { initAttribution, decorateCtas, ATTR_KEYS } from './attribution';
 import { initDynamicPricing } from './dynamic-pricing';
 import { track } from './track';
 import { initAntigravityTilt } from './antigravity-tilt';
-import { initMagneticGravity } from './magnetic-gravity';
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ---------- Antigravity 3D Tilt & Magnetic Motion ---------- */
 initAntigravityTilt();
-initMagneticGravity();
-
-/* ---------- Atribuição + Precificação Dinâmica + page_view ---------- */
 const attr = initAttribution();
 decorateCtas(attr);
-void initDynamicPricing();
+void initDynamicPricing(attr);
 
 const attrPayload: Record<string, unknown> = {};
 if (attr) {
@@ -25,14 +20,32 @@ if (attr) {
 }
 track('page_view', attrPayload);
 
-/* ---------- cta_click (delegado) ---------- */
+let ctaClickedInSession = false;
+try {
+  ctaClickedInSession = sessionStorage.getItem('sb_cta_clicked') === '1';
+} catch {}
+
 document.addEventListener('click', (e) => {
   const target = e.target as Element | null;
   const cta = target?.closest<HTMLAnchorElement>('a[data-cta]');
-  if (cta) track('cta_click', { position: cta.dataset.cta });
+  if (cta) {
+    const value = Number(cta.dataset.ctaValue) || undefined;
+    const isFirstInSession = !ctaClickedInSession;
+    if (isFirstInSession) {
+      ctaClickedInSession = true;
+      try {
+        sessionStorage.setItem('sb_cta_clicked', '1');
+      } catch {}
+    }
+    track('cta_click', {
+      position: cta.dataset.cta,
+      value,
+      currency: 'BRL',
+      first_interaction: isFirstInSession,
+    });
+  }
 });
 
-/* ---------- faq_open ---------- */
 document.querySelectorAll<HTMLDetailsElement>('details[data-faq]').forEach((details) => {
   details.addEventListener('toggle', () => {
     const question = details.querySelector('summary')?.textContent?.trim() ?? '';
@@ -40,7 +53,6 @@ document.querySelectorAll<HTMLDetailsElement>('details[data-faq]').forEach((deta
   });
 });
 
-/* ---------- section_view: funil por seção ---------- */
 const sections = document.querySelectorAll<HTMLElement>('[data-section]');
 if (sections.length > 0 && 'IntersectionObserver' in window) {
   const sectionIo = new IntersectionObserver(
@@ -57,7 +69,6 @@ if (sections.length > 0 && 'IntersectionObserver' in window) {
   sections.forEach((el) => sectionIo.observe(el));
 }
 
-/* ---------- Erros de runtime → dataLayer (visível quando o GTM entrar) ---------- */
 window.addEventListener('error', (e) => {
   track('js_error', { message: String(e.message ?? 'erro').slice(0, 150) });
 });
@@ -65,7 +76,6 @@ window.addEventListener('unhandledrejection', (e) => {
   track('js_error', { message: `unhandledrejection: ${String(e.reason ?? '')}`.slice(0, 150) });
 });
 
-/* ---------- scroll_depth (25/50/75/100) ---------- */
 const depthMarks = [25, 50, 75, 100];
 const fired = new Set<number>();
 function checkDepth(): void {
@@ -85,7 +95,6 @@ function checkDepth(): void {
 window.addEventListener('scroll', checkDepth, { passive: true });
 checkDepth();
 
-/* ---------- Typewriter: "Seu nome aqui" no certificado ---------- */
 function typeName(el: Element): void {
   const full = el.getAttribute('data-type') ?? '';
   if (!full) return;
@@ -99,7 +108,6 @@ function typeName(el: Element): void {
   setTimeout(tick, 1000);
 }
 
-/* ---------- Reveals por scroll (Intersection Observer) ---------- */
 const revealEls = document.querySelectorAll('[data-reveal], [data-seal], [data-cert]');
 if (REDUCED || !('IntersectionObserver' in window)) {
   revealEls.forEach((el) => el.classList.add('in-view'));
@@ -133,7 +141,6 @@ if (REDUCED || !('IntersectionObserver' in window)) {
   toObserve.forEach((el) => io.observe(el));
 }
 
-/* ---------- Frases que "acendem" ao cruzar o centro (espelho) ---------- */
 const litEls = document.querySelectorAll('[data-lit]');
 if (litEls.length > 0) {
   if (REDUCED || !('IntersectionObserver' in window)) {
@@ -154,7 +161,6 @@ if (litEls.length > 0) {
   }
 }
 
-/* ---------- Tilt 3D do certificado (desktop, ponteiro fino) ---------- */
 const certWrap = document.querySelector<HTMLElement>('[data-cert]');
 if (certWrap && !REDUCED && window.matchMedia('(pointer: fine)').matches) {
   certWrap.addEventListener('pointermove', (e) => {
@@ -168,7 +174,6 @@ if (certWrap && !REDUCED && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
-/* ---------- Spotlight do card de preço segue o mouse ---------- */
 const priceCard = document.querySelector<HTMLElement>('[data-price]');
 if (priceCard && !REDUCED && window.matchMedia('(pointer: fine)').matches) {
   priceCard.addEventListener('pointermove', (e) => {
@@ -178,15 +183,13 @@ if (priceCard && !REDUCED && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
-/* ---------- Sticky CTA ----------
- * Visível só quando: já passou do hero E nenhum CTA da própria página está
- * na tela (senão o sticky cobre exatamente o botão que o usuário ia tocar). */
+// Sticky CTA: exibido quando a rolagem ultrapassa o hero e nenhum CTA inline está visível no viewport.
 const sticky = document.querySelector<HTMLElement>('.sticky-cta');
 if (sticky && 'IntersectionObserver' in window) {
   const hero = document.querySelector('#hero');
   const inlineCtas = document.querySelectorAll('a[data-cta]:not([data-cta="sticky"])');
 
-  let pastHero = !hero; // páginas sem hero: sticky liberado desde o topo
+  let pastHero = !hero;
   const ctasOnScreen = new Set<Element>();
   const updateSticky = (): void => {
     sticky.classList.toggle('visible', pastHero && ctasOnScreen.size === 0);
@@ -218,25 +221,81 @@ if (sticky && 'IntersectionObserver' in window) {
   sticky?.classList.add('visible');
 }
 
-/* ---------- Barra de progresso de leitura ---------- */
-const bar = document.querySelector<HTMLElement>('.progress-bar');
-if (bar) {
+const readingTrack = document.querySelector<HTMLElement>('.reading-track');
+if (
+  readingTrack &&
+  !(typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('animation-timeline', 'scroll()'))
+) {
   let ticking = false;
-  const update = (): void => {
+  let cachedMax = 1;
+  const updateMetrics = (): void => {
     const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    bar.style.transform = `scaleX(${max > 0 ? doc.scrollTop / max : 0})`;
-    ticking = false;
+    cachedMax = Math.max(1, doc.scrollHeight - window.innerHeight);
   };
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
+  const onScroll = (): void => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        const ratio = Math.min(1, Math.max(0, (window.scrollY || document.documentElement.scrollTop) / cachedMax));
+        readingTrack.style.setProperty('--progress-scale', ratio.toFixed(4));
+        ticking = false;
+      });
+    }
+  };
+  updateMetrics();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', updateMetrics, { passive: true });
+}
+
+const legalBtn = document.querySelector<HTMLButtonElement>('#legal-info-btn');
+const legalContainer = document.querySelector<HTMLElement>('.legal-info-container');
+if (legalBtn && legalContainer) {
+  legalBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = legalContainer.classList.toggle('is-open');
+    legalBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!legalContainer.contains(e.target as Node)) {
+      legalContainer.classList.remove('is-open');
+      legalBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && legalContainer.classList.contains('is-open')) {
+      legalContainer.classList.remove('is-open');
+      legalBtn.setAttribute('aria-expanded', 'false');
+      legalBtn.focus();
+    }
+  });
+}
+
+document.querySelector('[data-close-promo-alert]')?.addEventListener('click', () => {
+  sessionStorage.setItem('sb_promo_dismissed', '1');
+  const alertEl = document.querySelector<HTMLElement>('[data-floating-promo]');
+  if (alertEl) {
+    alertEl.classList.remove('is-visible');
+    alertEl.classList.add('hidden');
+  }
+});
+
+const precoSection = document.getElementById('preco');
+const floatingPromo = document.querySelector<HTMLElement>('[data-floating-promo]');
+if (precoSection && floatingPromo && 'IntersectionObserver' in window) {
+  const promoSectionObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          floatingPromo.classList.add('hidden-by-section');
+        } else {
+          floatingPromo.classList.remove('hidden-by-section');
+        }
       }
     },
-    { passive: true }
+    { threshold: 0.1 }
   );
-  update();
+  promoSectionObserver.observe(precoSection);
 }
+

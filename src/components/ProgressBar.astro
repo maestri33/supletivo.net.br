@@ -1,34 +1,104 @@
 ---
 /**
- * Barra fina de progresso de leitura no topo (remete às barrinhas de stories).
- * Atualizada via transform: scaleX em scripts/main.ts (compositor-friendly).
+ * Barra de progresso de leitura hardware-accelerated com assinatura visual Supletivo Brasil.
+ * Renderiza o gradiente verde-amarelo e o bead luminoso viajando em sincronia com o scroll.
+ * Suporta CSS Scroll-Driven Animations nativo com fallback em scripts/main.ts.
  */
 ---
 
-<div class="progress" aria-hidden="true">
-  <div class="progress-bar"></div>
+<div class="reading-track" aria-hidden="true" role="presentation">
+  <div class="reading-bar"></div>
+  <div class="reading-bead"></div>
 </div>
 
 <style>
-  .progress {
+  .reading-track {
     position: fixed;
     inset-inline: 0;
     top: 0;
     height: 4px;
     z-index: 60;
-    background: rgb(255 255 255 / 0.12);
+    background-color: color-mix(in srgb, #0b1220 10%, rgba(255, 255, 255, 0.08));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     pointer-events: none;
+    container-type: inline-size;
+    padding-inline: env(safe-area-inset-left, 0) env(safe-area-inset-right, 0);
+    overflow: visible;
   }
 
-  .progress-bar {
+  .reading-bar {
     height: 100%;
-    background: linear-gradient(90deg, var(--yellow), var(--yellow-soft));
-    transform: scaleX(0);
-    transform-origin: left;
+    width: 100%;
+    background-image: linear-gradient(90deg, #00734d 0%, #38d178 28%, #ffc400 60%, #ffd75e 78%, #002776 100%);
+    transform-origin: 0% 50%;
+    will-change: transform;
+    transform: scaleX(var(--progress-scale, 0));
   }
 
-  /* Sem JS não há atualização — esconde para não virar listra morta */
-  :global(html:not(.js)) .progress {
+  .reading-bead {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    margin-left: -4px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 2px rgba(255, 215, 94, 0.75), 0 0 4px rgba(0, 39, 118, 0.4);
+    will-change: transform;
+    transform: translate3d(calc(var(--progress-scale, 0) * (100cqw - 8px)), 0, 0);
+  }
+
+  /* CSS Scroll-Driven Animation (Compositor Level) */
+  @supports (animation-timeline: scroll()) {
+    .reading-bar {
+      animation: progress-scale linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0% 100%;
+    }
+
+    .reading-bead {
+      animation: bead-travel linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0% 100%;
+    }
+  }
+
+  @keyframes progress-scale {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  @keyframes bead-travel {
+    0% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0;
+    }
+    2% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(calc(100cqw - 8px), 0, 0);
+      opacity: 1;
+    }
+  }
+
+  /* Exibição exclusiva em viewports mobile (< 768px) */
+  @media (min-width: 768px) {
+    .reading-track {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reading-track {
+      display: none !important;
+    }
+  }
+
+  :global(html:not(.js)) .reading-track {
     display: none;
   }
 </style>

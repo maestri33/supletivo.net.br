@@ -110,24 +110,24 @@ export const SupletivoTrustMarquee: React.FC<SupletivoTrustMarqueeProps> = ({
   const loopBadges = [...badges, ...badges];
 
   return (
-    <div className={`v7m-marquee-scroller-wrap ${className}`}>
-      <div className="v7m-marquee-track" style={{ animationDuration: `${speedSeconds}s` }}>
+    <div className={`sb-marquee-scroller-wrap ${className}`}>
+      <div className="sb-marquee-track" style={{ animationDuration: `${speedSeconds}s` }}>
         {loopBadges.map((item, idx) => {
           const IconComponent = item.icon;
           return (
-            <div key={`${item.id}-${idx}`} className="v7m-marquee-card">
+            <div key={`${item.id}-${idx}`} className="sb-marquee-card">
               {/* Radial gradient background scale + opacity hover effect */}
-              <div className="v7m-marquee-glow" style={item.gradientStyle} />
+              <div className="sb-marquee-glow" style={item.gradientStyle} />
 
               {/* Badge Icon */}
-              <div className="v7m-marquee-icon-box">
+              <div className="sb-marquee-icon-box">
                 <IconComponent className="w-5 h-5" />
               </div>
 
               {/* Badge Text */}
-              <div className="v7m-marquee-text-box">
-                <span className="v7m-marquee-card-title">{item.title}</span>
-                <span className="v7m-marquee-card-subtitle">{item.subtitle}</span>
+              <div className="sb-marquee-text-box">
+                <span className="sb-marquee-card-title">{item.title}</span>
+                <span className="sb-marquee-card-subtitle">{item.subtitle}</span>
               </div>
             </div>
           );

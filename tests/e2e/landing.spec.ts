@@ -114,7 +114,15 @@ test('checador de elegibilidade: 18+ mostra CTA qualificado', async ({ page }) =
 });
 
 test.describe('acessibilidade (axe)', () => {
-  for (const path of ['/', '/supletivo-online/', '/termos/']) {
+  for (const path of [
+    '/',
+    '/supletivo-online/',
+    '/supletivo-ensino-fundamental/',
+    '/eja-a-distancia/',
+    '/terminar-ensino-medio/',
+    '/termos/',
+    '/privacidade/',
+  ]) {
     test(`sem violações em ${path}`, async ({ page }) => {
       await page.goto(path);
       const results = await new AxeBuilder({ page })

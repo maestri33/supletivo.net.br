@@ -10,11 +10,14 @@
     "assets": "node tools/generate-assets.mjs",
     "test": "vitest run",
     "check-types": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "checkpoint": "sh scripts/checkpoint/checkpoint.sh",
+    "checkpoint:fast": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier fast",
+    "checkpoint:agent": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier agent"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",
-    "astro": "^6.4.6",
+    "astro": "^7.3.2",
     "clsx": "^2.1.1",
     "lucide-react": "^1.39.0",
     "motion": "^13.1.1",
@@ -27,7 +30,6 @@
     "@fontsource/archivo-black": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
     "@playwright/test": "1.62.1",
-    "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",

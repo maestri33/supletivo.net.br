@@ -2,11 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-// O Playwright 1.60 quer chromium-1223, mas essa imagem tem 1228 pré-instalado
-// (de outro projeto). Resolve a versão mais nova presente em
-// `~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome`; cai pra
-// `/usr/bin/chromium` se não houver; em último caso, deixa o Playwright
-// reclamar (e o usuário roda `npx playwright install chromium`).
+/**
+ * Resolves local or container Chromium binaries when default cache differs across build environments.
+ * {@link https://github.com/microsoft/playwright/issues/24838}
+ */
 function resolveChromium(): string | undefined {
   if (process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH) {
     return process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;

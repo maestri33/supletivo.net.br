@@ -30,13 +30,25 @@ import { cardLineShort } from '../data/price';
     inset-inline: 0;
     bottom: 0;
     z-index: 50;
-    background: rgb(11 18 32 / 0.93);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-top: 2px solid var(--yellow);
-    padding: 0.6rem max(1rem, env(safe-area-inset-left))
-      max(0.6rem, calc(0.45rem + env(safe-area-inset-bottom)))
+    background: rgb(11 18 32 / 0.94);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-top: none;
+    padding: 0.65rem max(1rem, env(safe-area-inset-left))
+      max(0.65rem, calc(0.45rem + env(safe-area-inset-bottom)))
       max(1rem, env(safe-area-inset-right));
+  }
+
+  .sticky-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00734d 0%, #38d178 28%, #ffc400 62%, #ffd75e 78%, #002776 100%);
+    box-shadow: 0 0 10px rgba(255, 196, 0, 0.4), 0 0 8px rgba(0, 39, 118, 0.3);
+    pointer-events: none;
   }
 
   @media (min-width: 900px) {

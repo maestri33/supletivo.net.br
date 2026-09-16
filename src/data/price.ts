@@ -20,9 +20,8 @@ const rawBackendUrl =
 const ENDPOINT = `${rawBackendUrl.replace(/\/+$/, '')}/api/v1/clients/pricing`;
 
 // âncora de marketing (preço cheio riscado). Backend de pricing não modela isto.
-const ANCHOR_FULL = 1615;
+const ANCHOR_FULL = 1932;
 
-// pisos de sanidade: um curso não custa centavos — barra valores de teste/erro.
 const MIN_PER_MONTH = 10;
 const MIN_PIX = 100;
 
@@ -42,9 +41,9 @@ export interface Price {
 const FALLBACK: Price = {
   full: ANCHOR_FULL,
   installments: 12,
-  perMonth: 99,
-  cardTotal: 1188,
-  pixTotal: 999,
+  perMonth: 161,
+  cardTotal: 1932,
+  pixTotal: 1615,
 };
 
 async function loadPrice(): Promise<Price> {
@@ -97,11 +96,10 @@ export function brl(value: number): string {
   );
 }
 
-// ---- strings reutilizadas (uma fonte para toda a página) ----
-export const perMonthBRL = brl(PRICE.perMonth); // "R$ 99"
-export const pixBRL = brl(PRICE.pixTotal); // "R$ 999"
-export const fullBRL = brl(PRICE.full); // "R$ 1.615"
-export const savingsBRL = brl(savings); // "R$ 616"
+export const perMonthBRL = brl(PRICE.perMonth);
+export const pixBRL = brl(PRICE.pixTotal);
+export const fullBRL = brl(PRICE.full);
+export const savingsBRL = brl(savings);
 
 /** "12x de R$ 99" */
 export const cardLine = `${PRICE.installments}x de ${perMonthBRL}`;
