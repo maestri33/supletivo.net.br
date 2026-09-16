@@ -23,6 +23,22 @@
   --muted-on-dark: #b9c3db;  /* sobre --ink / --blue */
   --muted-on-light: #49536a; /* sobre --paper / --paper-soft */
 
+  /* Feedback Semântico (Auditado WCAG AA - mínimo 4.5:1) */
+  --danger: #b91c1c;
+  --danger-bg: #fee2e2;
+  --success: #15803d;
+  --success-bg: #dcfce7;
+  --warning: #92400e;
+  --warning-bg: #fef3c7;
+  --info: #0369a1;
+  --info-bg: #e0f2fe;
+
+  /* Formulários & Ergonomia Touch Mobile */
+  --input-height: 48px;
+  --input-radius: 10px;
+  --input-border: 1px solid var(--line-light);
+  --input-focus-ring: 2px solid var(--blue);
+
   /* Tipografia */
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Archivo Black', system-ui, sans-serif;

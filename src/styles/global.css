@@ -61,6 +61,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img,
@@ -244,6 +245,59 @@ strong {
 /* Fundos escuros precisam de anel claro */
 .on-dark :focus-visible {
   outline-color: var(--yellow);
+}
+
+/* Entradas de formulário e ergonomia touch mobile */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+select,
+textarea {
+  min-height: var(--input-height);
+  padding: 0.65rem 1rem;
+  border-radius: var(--input-radius);
+  border: var(--input-border);
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  width: 100%;
+  transition: border-color 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+}
+
+input[type="text"]:focus-visible,
+input[type="email"]:focus-visible,
+input[type="tel"]:focus-visible,
+input[type="number"]:focus-visible,
+input[type="password"]:focus-visible,
+input[type="search"]:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgb(0 39 118 / 0.18);
+}
+
+/* Feedback semântico utilitário */
+.badge-danger {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+.badge-success {
+  color: var(--success);
+  background: var(--success-bg);
+}
+.badge-warning {
+  color: var(--warning);
+  background: var(--warning-bg);
+}
+.badge-info {
+  color: var(--info);
+  background: var(--info-bg);
 }
 
 /* CTA (botão principal) */
