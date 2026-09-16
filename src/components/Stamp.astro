@@ -46,12 +46,12 @@
   .stamp-badge {
     position: relative;
     padding: 0.5rem 1.1rem;
-    border: 3px double #00734d;
+    border: 3px double var(--green);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 12px 28px -6px rgba(0, 115, 77, 0.35), inset 0 0 12px rgba(0, 115, 77, 0.12);
+    box-shadow: 0 12px 28px -6px color-mix(in srgb, var(--green) 35%, transparent), inset 0 0 12px color-mix(in srgb, var(--green) 12%, transparent);
     transform: rotate(-12deg);
-    color: #00734d;
+    color: var(--green);
     font-family: var(--font-display);
     text-align: center;
     backdrop-filter: blur(8px);
@@ -62,7 +62,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.15rem;
-    border: 1px dashed rgba(0, 115, 77, 0.6);
+    border: 1px dashed color-mix(in srgb, var(--green) 60%, transparent);
     padding: 0.35rem 0.75rem;
     border-radius: 4px;
   }
@@ -70,7 +70,7 @@
   .stamp-stars {
     font-size: 0.75rem;
     letter-spacing: 0.2rem;
-    color: #ffc400;
+    color: var(--yellow);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
@@ -85,7 +85,7 @@
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.06em;
-    color: #002776;
+    color: var(--blue);
   }
 
   .stamp-date {
@@ -93,7 +93,7 @@
     font-family: var(--font-body);
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: var(--muted);
+    color: var(--muted-on-light);
     margin-top: 0.1rem;
   }
 

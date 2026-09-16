@@ -93,7 +93,7 @@ import { APP_URL } from '../config';
                 aria-label="Número do seu celular WhatsApp"
               />
               <span class="input-status-icon" id="phone-check-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </span>
@@ -125,7 +125,7 @@ import { APP_URL } from '../config';
                 aria-label="Número do seu CPF"
               />
               <span class="input-status-icon" id="cpf-check-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </span>
@@ -166,7 +166,7 @@ import { APP_URL } from '../config';
         </form>
 
         <div class="security-footer">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.2">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
@@ -246,9 +246,9 @@ import { APP_URL } from '../config';
     width: 100%;
     max-width: 54rem;
     max-height: 94dvh;
-    background: linear-gradient(180deg, #0d1527 0%, #080d1a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 71, 171, 0.25);
+    background: linear-gradient(180deg, var(--ink-soft) 0%, var(--ink) 100%);
+    border: 1px solid var(--glass-border-dark);
+    box-shadow: var(--shadow-floating), 0 0 40px color-mix(in srgb, var(--blue) 25%, transparent);
     border-top-left-radius: 1.75rem;
     border-top-right-radius: 1.75rem;
     padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
@@ -296,7 +296,7 @@ import { APP_URL } from '../config';
     right: 1rem;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #94a3b8;
+    color: var(--muted-on-dark);
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 50%;
@@ -339,12 +339,12 @@ import { APP_URL } from '../config';
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #00734d, #002b1c);
+    background: radial-gradient(circle at 35% 35%, var(--green), var(--green-deep));
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 0 20px rgba(0, 115, 77, 0.5);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--green) 50%, transparent);
   }
 
   .orb-icon {
@@ -356,7 +356,7 @@ import { APP_URL } from '../config';
     position: absolute;
     inset: -4px;
     border-radius: 50%;
-    border: 2px solid rgba(0, 115, 77, 0.4);
+    border: 2px solid color-mix(in srgb, var(--green) 40%, transparent);
     animation: orb-pulse 2.8s infinite ease-in-out;
   }
 
@@ -373,7 +373,7 @@ import { APP_URL } from '../config';
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #ffc400;
+    color: var(--yellow);
     margin-bottom: 0.35rem;
   }
 
@@ -381,8 +381,8 @@ import { APP_URL } from '../config';
     width: 0.45rem;
     height: 0.45rem;
     border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 8px #10b981;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
   }
 
   .sofia-speech {
@@ -407,15 +407,15 @@ import { APP_URL } from '../config';
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 999px;
     padding: 0.3rem 0.75rem;
-    color: #cbd5e1;
+    color: var(--muted-on-dark);
     font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
   }
   .breadcrumb-chip:hover {
-    background: rgba(255, 196, 0, 0.15);
-    border-color: #ffc400;
+    background: color-mix(in srgb, var(--yellow) 15%, transparent);
+    border-color: var(--yellow);
     color: #ffffff;
   }
 
@@ -436,32 +436,32 @@ import { APP_URL } from '../config';
     position: relative;
     display: flex;
     align-items: center;
-    background: rgba(15, 23, 42, 0.9);
-    border: 2px solid rgba(255, 255, 255, 0.14);
-    border-radius: 1rem;
+    background: var(--ink-soft);
+    border: 2px solid var(--glass-border-dark);
+    border-radius: var(--input-radius, 10px);
     padding: 0.2rem 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
 
   .input-wrapper:focus-within {
-    border-color: #ffc400;
-    box-shadow: 0 0 20px rgba(255, 196, 0, 0.25);
+    border-color: var(--yellow);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--yellow) 25%, transparent);
   }
 
   .input-wrapper.valid {
-    border-color: #10b981;
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+    border-color: var(--success);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--success) 25%, transparent);
   }
 
   .input-icon {
     font-size: 1.25rem;
     margin-right: 0.75rem;
-    color: #94a3b8;
+    color: var(--muted-on-dark);
     display: flex;
     align-items: center;
   }
   .whatsapp-icon {
-    color: #10b981;
+    color: var(--success);
   }
 
   .omnibar-input {
@@ -472,13 +472,15 @@ import { APP_URL } from '../config';
     font-size: 1.125rem; /* 18px previne zoom no iOS Safari */
     font-weight: 700;
     letter-spacing: 0.04em;
-    padding: 0.85rem 0;
+    min-height: var(--input-height, 48px);
+    height: var(--input-height, 48px);
+    padding: 0;
     outline: none;
     font-family: inherit;
   }
 
   .omnibar-input::placeholder {
-    color: #475569;
+    color: color-mix(in srgb, var(--muted-on-dark) 60%, transparent);
     font-weight: 500;
   }
 
@@ -494,7 +496,7 @@ import { APP_URL } from '../config';
 
   .input-hint {
     font-size: 0.78rem;
-    color: #94a3b8;
+    color: var(--muted-on-dark);
     margin-top: 0.5rem;
     line-height: 1.4;
   }
@@ -502,31 +504,32 @@ import { APP_URL } from '../config';
   /* Botões de Ação */
   .action-btn {
     width: 100%;
+    min-height: var(--input-height, 48px);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
-    background: linear-gradient(135deg, #ffc400 0%, #e6a800 100%);
-    color: #030712;
+    background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-soft) 100%);
+    color: var(--ink);
     font-weight: 800;
     font-size: 1rem;
-    padding: 0.95rem 1.5rem;
-    border-radius: 0.85rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--input-radius, 10px);
     border: none;
     cursor: pointer;
-    box-shadow: 0 10px 25px -5px rgba(255, 196, 0, 0.4);
-    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 10px 25px -5px color-mix(in srgb, var(--yellow) 40%, transparent);
+    transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out);
   }
   .action-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 30px -5px rgba(255, 196, 0, 0.5);
+    box-shadow: 0 15px 30px -5px color-mix(in srgb, var(--yellow) 50%, transparent);
   }
 
   /* Cartão de usuário já existente */
   .existing-user-card {
-    background: rgba(0, 115, 77, 0.12);
-    border: 1px solid rgba(0, 115, 77, 0.35);
-    border-radius: 1rem;
+    background: color-mix(in srgb, var(--green) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--green) 35%, transparent);
+    border-radius: var(--input-radius, 10px);
     padding: 1.25rem;
     text-align: center;
   }
@@ -534,7 +537,7 @@ import { APP_URL } from '../config';
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    background: #00734d;
+    background: var(--green);
     color: #ffffff;
     font-size: 0.72rem;
     font-weight: 800;
@@ -550,7 +553,7 @@ import { APP_URL } from '../config';
     margin-bottom: 0.4rem;
   }
   .existing-sub {
-    color: #94a3b8;
+    color: var(--muted-on-dark);
     font-size: 0.8rem;
   }
 
@@ -559,7 +562,7 @@ import { APP_URL } from '../config';
     align-items: center;
     gap: 0.5rem;
     font-size: 0.72rem;
-    color: #64748b;
+    color: var(--muted-on-dark);
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     padding-top: 0.85rem;
   }
@@ -577,14 +580,14 @@ import { APP_URL } from '../config';
     width: 100%;
     max-width: 22rem;
     aspect-ratio: 1.586 / 1;
-    background: linear-gradient(135deg, #111e38 0%, #0a1120 100%);
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink) 100%);
+    border: 1px solid color-mix(in srgb, var(--yellow) 30%, transparent);
     border-radius: 1.15rem;
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 196, 0, 0.05);
+    box-shadow: var(--shadow-zero-g), inset 0 0 20px color-mix(in srgb, var(--yellow) 5%, transparent);
     overflow: hidden;
   }
 
@@ -609,7 +612,7 @@ import { APP_URL } from '../config';
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.12em;
-    color: #ffc400;
+    color: var(--yellow);
   }
 
   .chip-hologram {
@@ -635,12 +638,12 @@ import { APP_URL } from '../config';
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #64748b;
+    background: var(--muted-on-dark);
     transition: background 0.3s;
   }
   .chip-led.verified {
-    background: #10b981;
-    box-shadow: 0 0 6px #10b981;
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
   }
 
   .card-center {
@@ -650,7 +653,7 @@ import { APP_URL } from '../config';
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.1em;
-    color: #64748b;
+    color: var(--muted-on-dark);
   }
   .card-student-name {
     font-size: 1.05rem;
@@ -663,7 +666,7 @@ import { APP_URL } from '../config';
   }
   .card-doc {
     font-size: 0.72rem;
-    color: #94a3b8;
+    color: var(--muted-on-dark);
     font-family: monospace;
   }
 
@@ -680,29 +683,29 @@ import { APP_URL } from '../config';
     font-weight: 800;
     letter-spacing: 0.06em;
     background: rgba(255, 255, 255, 0.08);
-    color: #cbd5e1;
+    color: var(--muted-on-dark);
     padding: 0.25rem 0.6rem;
     border-radius: 999px;
   }
   .card-status-badge.authorized {
-    background: rgba(0, 115, 77, 0.3);
-    border: 1px solid #00734d;
-    color: #34d399;
+    background: color-mix(in srgb, var(--green) 30%, transparent);
+    border: 1px solid var(--green);
+    color: var(--success-bg, #dcfce7);
   }
   .card-status-badge.authorized .status-dot {
-    background: #10b981;
-    box-shadow: 0 0 6px #10b981;
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
   }
   .status-dot {
     width: 0.38rem;
     height: 0.38rem;
     border-radius: 50%;
-    background: #94a3b8;
+    background: var(--muted-on-dark);
   }
   .card-seal {
     font-size: 0.65rem;
     font-weight: 800;
-    color: #ffc400;
+    color: var(--yellow);
     letter-spacing: 0.1em;
   }
 
@@ -712,7 +715,7 @@ import { APP_URL } from '../config';
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #00734d 0%, #00734d 40%, #ffc400 40%, #ffc400 70%, #0047ab 70%, #0047ab 100%);
+    background: linear-gradient(90deg, var(--green) 0%, var(--green) 40%, var(--yellow) 40%, var(--yellow) 70%, var(--blue) 70%, var(--blue) 100%);
   }
 
   /* Spinner */
