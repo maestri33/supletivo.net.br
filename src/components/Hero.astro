@@ -8,7 +8,6 @@
 import CtaButton from './CtaButton.astro';
 import DiplomaFlag from './DiplomaFlag.astro';
 import Marquee from './Marquee.astro';
-import SofiaLeadCapture from './interactive/SofiaLeadCapture.svelte';
 import { cardLine, pixBRL } from '../data/price';
 
 const LINE_1 = 'Você parou.';
@@ -97,18 +96,12 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
       ))}
     </ul>
 
-    <div class="hero-capture anim-up" style="--i: 9">
-      <SofiaLeadCapture client:load />
+    <div class="hero-cta anim-up" style="--i: 9">
+      <CtaButton position="hero" class="btn-xl" />
+      <p class="microcopy">
+        <strong data-price-card-line>{cardLine}</strong> ou <span data-price-pix-val>{pixBRL}</span> no Pix · matrícula 100% online
+      </p>
     </div>
-
-    <noscript>
-      <div class="hero-cta anim-up" style="--i: 9">
-        <CtaButton position="hero" class="btn-xl" />
-        <p class="microcopy">
-          <strong data-price-card-line>{cardLine}</strong> ou <span data-price-pix-val>{pixBRL}</span> no Pix · matrícula 100% online
-        </p>
-      </div>
-    </noscript>
   </div>
 
   <a class="scroll-cue" href="#espelho" aria-label="Rolar para a próxima seção">
@@ -239,30 +232,34 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     order: 1;
   }
 
-  .hero-capture {
-    width: 100%;
-    margin-top: clamp(1.5rem, 3vh, 2.5rem);
-  }
-
   @media (min-width: 960px) {
-    /* A credencial 3D interativa da Sofia substitui a bandeira estática */
+    /* peça maior, ancorada à direita com leve sangria: ocupa de fato a
+       metade direita do hero em vez de flutuar pequena no canto */
     .hero-diploma {
-      display: none;
+      position: absolute;
+      right: clamp(-3rem, -1.5vw, 0rem);
+      top: 50%;
+      translate: 0 -50%;
+      width: min(46vw, 620px);
+      margin: 0;
+      z-index: 1;
     }
 
-    /* losangos saem de cena */
+    /* losangos saem de cena onde o diploma assume */
     .hero-diamonds {
       display: none;
     }
 
-    /* largura total para a experiência 3D e o Omnibar */
+    /* abre espaço pro texto não disputar com a peça */
     .hero-inner {
-      padding-right: 0;
-      max-width: 100%;
+      padding-right: min(42vw, 540px);
     }
 
+    /* coluna de texto encolheu: o display gigante quebraria palavra a
+       palavra — recalibra pra manter "Você parou." inteiro na linha.
+       (.hero no seletor: vence a base que vem depois no source) */
     .hero .hero-title {
-      font-size: clamp(3.2rem, 5vw, 4.4rem);
+      font-size: clamp(3.4rem, 5.4vw, 4.8rem);
     }
   }
 

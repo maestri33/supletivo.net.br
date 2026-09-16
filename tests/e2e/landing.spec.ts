@@ -22,14 +22,14 @@ test.describe('atribuição de afiliados (ref)', () => {
   test('revisita sem ref mantém o primeiro ref (first-touch)', async ({ page }) => {
     await page.goto('/?ref=teste123');
     await page.goto('/');
-    const href = await page.locator('a[data-cta="hero"]').getAttribute('href');
+    const href = await page.locator('a[data-cta="header"]').getAttribute('href');
     expect(href).toContain('ref=teste123');
   });
 
   test('ref novo sobrescreve o anterior', async ({ page }) => {
     await page.goto('/?ref=teste123');
     await page.goto('/?ref=outro');
-    const href = await page.locator('a[data-cta="hero"]').getAttribute('href');
+    const href = await page.locator('a[data-cta="header"]').getAttribute('href');
     expect(href).toContain('ref=outro');
     expect(href).not.toContain('teste123');
   });
@@ -42,7 +42,7 @@ test.describe('eventos no dataLayer', () => {
     // cta_click sem navegar
     await page.evaluate(() => {
       document.addEventListener('click', (e) => e.preventDefault());
-      document.querySelector<HTMLAnchorElement>('a[data-cta="hero"]')!.click();
+      document.querySelector<HTMLAnchorElement>('a[data-cta="header"]')!.click();
     });
     // faq_open
     await page.evaluate(() => {
