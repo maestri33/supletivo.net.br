@@ -10,7 +10,7 @@
  * Pelo Playwright: `command: 'node tools/preview-server.mjs'` com `port: 0`
  *                  ou um número específico em `webServer.port`.
  */
-import { spawn } from 'node:child_process';
+import { preview } from 'astro';
 import { createServer } from 'node:net';
 import { writeFileSync, unlinkSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -52,24 +52,14 @@ const port = await pickPort();
 const portFile = resolve(process.cwd(), '.preview-port');
 writeFileSync(portFile, String(port) + '\n');
 
-const astroBin = resolve(process.cwd(), 'node_modules', 'astro', 'bin', 'astro.mjs');
-const child = spawn(
-  process.execPath,
-  [astroBin, 'preview', '--port', String(port), '--host', HOST],
-  {
-    stdio: 'inherit',
-    env: { ...process.env, ASTRO_PREVIEW_BACKGROUND: 'true' },
-  }
-);
+const server = await preview({
+  server: { port, host: HOST },
+});
 
 const cleanup = () => {
   try { unlinkSync(portFile); } catch {}
+  try { server.stop?.(); } catch {}
 };
 process.on('exit', cleanup);
 process.on('SIGINT', () => { cleanup(); process.exit(130); });
 process.on('SIGTERM', () => { cleanup(); process.exit(143); });
-
-child.on('exit', (code, signal) => {
-  cleanup();
-  process.exit(code ?? (signal ? 1 : 0));
-});
