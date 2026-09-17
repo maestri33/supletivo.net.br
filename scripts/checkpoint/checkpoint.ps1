@@ -86,12 +86,14 @@ foreach ($relPath in $Files) {
     }
 
     # A. Checagem de Marcas Proibidas (Regra AGENTS.md)
-    # Permite exceção apenas em arquivos de regras do checkpoint
-    if ($relPath -notmatch 'tools/checkpoint' -and $relPath -notmatch '\.agent-checkpoint\.json') {
+    # Permite exceção em scripts de checkpoint e permite domínio técnico canônico *.v7m.live
+    if ($relPath -notmatch 'scripts/checkpoint' -and $relPath -notmatch 'tools/checkpoint' -and $relPath -notmatch '\.agent-checkpoint\.json') {
         for ($i = 0; $i -lt $lines.Length; $i++) {
             $line = $lines[$i]
+            # Exceção mandatória: domínio de ferramentas técnicas (*.v7m.live) permitido pelo AGENTS.md
+            $cleanLine = $line -replace '(?i)\b[a-z0-9_\-\.]*\.?v7m\.live\b', ''
             foreach ($brand in $ForbiddenBrands) {
-                if ($line -match "(?i)\b$([regex]::Escape($brand))\b") {
+                if ($cleanLine -match "(?i)\b$([regex]::Escape($brand))\b") {
                     $Violations.Add("[${relPath}:$($i + 1)] Prohibited legacy brand detected ('$brand'): $($line.Trim())")
                 }
             }
