@@ -188,10 +188,11 @@ const year = new Date().getFullYear();
     font-weight: 700;
     font-size: 0.92rem;
     text-decoration: none;
-    /* área de toque ≥ 44px sem inflar o layout */
-    display: inline-block;
-    padding-block: 0.55rem;
-    margin-block: -0.25rem;
+    /* área de toque ≥ 48px sem inflar o layout */
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding-block: 0.5rem;
   }
 
   .footer-nav a:hover {

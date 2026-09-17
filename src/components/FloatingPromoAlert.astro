@@ -157,10 +157,10 @@ import { savingsBRL, cardLine, pixBRL } from '../data/price';
   }
 
   .promo-alert-close {
-    width: 38px;
-    height: 38px;
-    min-width: 44px;
-    min-height: 44px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -239,12 +239,14 @@ import { savingsBRL, cardLine, pixBRL } from '../data/price';
   .promo-alert-cta {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.35rem;
-    padding: 0.42rem 0.85rem;
+    min-height: 48px;
+    padding: 0.5rem 1.1rem;
     border-radius: 9999px;
     background: var(--yellow);
     color: var(--ink);
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     font-weight: 800;
     text-decoration: none;
     transition: transform 0.18s var(--ease-out), filter 0.18s var(--ease-out);

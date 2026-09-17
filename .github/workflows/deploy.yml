@@ -45,6 +45,13 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
+      - name: Acionar Oráculo Central de Versão
+        if: ${{ success() && env.CLOUDFLARE_API_TOKEN != '' }}
+        run: |
+          curl -s -X POST https://version.v7m.live/api/version/bump \
+            -H "Content-Type: application/json" \
+            -d '{"service": "landing-aluno", "repo": "supletivo.net.br"}' || true
+
       - name: Aviso de Token Cloudflare
         if: ${{ env.CLOUDFLARE_API_TOKEN == '' }}
         run: |
