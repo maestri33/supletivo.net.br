@@ -90,6 +90,14 @@ describe('initAttribution — first-touch', () => {
     expect(attr).not.toHaveProperty('malicioso');
     expect(attr).not.toHaveProperty('foo');
   });
+
+  it('parâmetros com caracteres inseguros ou mais de 120 caracteres são descartados', () => {
+    const longParam = 'a'.repeat(121);
+    const attr = initAttribution(`?ref=${longParam}&utm_source=safe_source&utm_campaign=bad<script>`);
+    expect(attr?.ref).toBeUndefined();
+    expect(attr?.utm_source).toBe('safe_source');
+    expect(attr?.utm_campaign).toBeUndefined();
+  });
 });
 
 describe('decorateCtas', () => {
