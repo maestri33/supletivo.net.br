@@ -15,7 +15,7 @@ export const testimonialsSupletivo: Testimonial[] = [
     designation: "42 anos · São Paulo - SP",
     badge: "Encarregado de Obras",
     outcome: "+60% de renda e liderança de equipe",
-    src: "/images/testimonials/reginaldo.png",
+    src: "/images/testimonials/reginaldo.webp",
   },
   {
     quote:
@@ -24,7 +24,7 @@ export const testimonialsSupletivo: Testimonial[] = [
     designation: "34 anos · Belo Horizonte - MG",
     badge: "Estudante Universitária",
     outcome: "Aprovada no Vestibular de Enfermagem",
-    src: "/images/testimonials/claudia.png",
+    src: "/images/testimonials/claudia.webp",
   },
   {
     quote:
@@ -33,7 +33,7 @@ export const testimonialsSupletivo: Testimonial[] = [
     designation: "29 anos · Salvador - BA",
     badge: "Servidor Público Concursado",
     outcome: "Aprovado e Empossado em Concurso",
-    src: "/images/testimonials/marcos.png",
+    src: "/images/testimonials/marcos.webp",
   },
   {
     quote:
@@ -42,7 +42,7 @@ export const testimonialsSupletivo: Testimonial[] = [
     designation: "47 anos · Curitiba - PR",
     badge: "Supervisora Comercial",
     outcome: "Promovida a Gestão de Setor",
-    src: "/images/testimonials/luciana.png",
+    src: "/images/testimonials/luciana.webp",
   },
   {
     quote:
@@ -51,6 +51,6 @@ export const testimonialsSupletivo: Testimonial[] = [
     designation: "36 anos · Goiânia - GO",
     badge: "Técnico em Eletrotécnica",
     outcome: "Registro Profissional Homologado",
-    src: "/images/testimonials/edson.png",
+    src: "/images/testimonials/edson.webp",
   },
 ];

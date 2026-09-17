@@ -58,25 +58,30 @@ import { APP_URL, BACKEND_URL } from '../config';
               Sofia · Orientadora Educacional
             </div>
             <h2 id="lead-modal-title" class="sofia-speech">
-              Olá! Para onde te envio seu plano acelerado e a confirmação de bolsa?
+              Olá! Para onde te envio seu plano acelerado e a confirmação da sua pré-matrícula?
             </h2>
           </div>
         </div>
 
         <!-- Breadcrumbs Vivos ("Desfazer sem resetar") -->
         <div id="lead-breadcrumbs" class="lead-breadcrumbs hidden" aria-label="Progresso do formulário">
-          <button type="button" class="breadcrumb-chip" id="chip-phone" title="Clique para editar o telefone">
+          <button type="button" class="breadcrumb-chip" id="chip-phone" title="Clique para editar o telefone" aria-label="Voltar para editar WhatsApp">
             <span class="chip-icon">💬</span>
             <span class="chip-label" id="chip-phone-text">(11) 98765-4321</span>
             <span class="chip-edit">✏️</span>
           </button>
+          <button type="button" class="breadcrumb-chip hidden" id="chip-cpf" title="Clique para editar o CPF" aria-label="Voltar para editar CPF">
+            <span class="chip-icon">🪪</span>
+            <span class="chip-label" id="chip-cpf-text">000.000.000-00</span>
+            <span class="chip-edit">✏️</span>
+          </button>
         </div>
 
-        <!-- Formulário Dinâmico Omnibar -->
+        <!-- Formulário Dinâmico Omnibar Zero-Button -->
         <form id="lead-capture-form" class="omnibar-form" novalidate>
           <!-- ETAPA 1: WHATSAPP -->
           <div id="step-phone" class="step-pane active">
-            <div class="input-wrapper">
+            <div class="input-wrapper" id="phone-wrapper">
               <span class="input-icon whatsapp-icon" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
@@ -102,18 +107,11 @@ import { APP_URL, BACKEND_URL } from '../config';
             <p class="input-hint" id="phone-hint">
               Digite seu WhatsApp com DDD. Avanço automático ao completar os 11 dígitos.
             </p>
-            <button type="button" class="action-btn next-btn mt-3" id="btn-next-step">
-              Continuar
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </button>
           </div>
 
           <!-- ETAPA 2: CPF (MÓDULO 11) -->
           <div id="step-cpf" class="step-pane hidden">
-            <div class="input-wrapper">
+            <div class="input-wrapper" id="cpf-wrapper">
               <span class="input-icon" aria-hidden="true">🪪</span>
               <input
                 type="tel"
@@ -132,13 +130,38 @@ import { APP_URL, BACKEND_URL } from '../config';
               </span>
             </div>
             <p class="input-hint" id="cpf-hint">
-              Validação oficial instantânea para consultar dispensa de matérias da LDB.
+              Validação cadastral oficial e elegibilidade legal pela LDB.
             </p>
-            <div class="button-group mt-3">
-              <button type="submit" class="action-btn submit-btn" id="btn-submit-lead">
-                <span class="btn-text">Garantir Minha Vaga Oficial</span>
+          </div>
+
+          <!-- ETAPA 3: E-MAIL (AUTO-DISPATCH) -->
+          <div id="step-email" class="step-pane hidden">
+            <div class="input-wrapper" id="email-wrapper">
+              <span class="input-icon" aria-hidden="true">✉️</span>
+              <input
+                type="email"
+                id="lead-input-email"
+                class="omnibar-input"
+                placeholder="seu@email.com"
+                inputmode="email"
+                autocomplete="email"
+                aria-label="Seu melhor endereço de e-mail"
+              />
+              <span class="input-status-icon" id="email-check-icon" aria-hidden="true">
+                <svg class="check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
                 <span class="spinner hidden" id="lead-spinner" aria-hidden="true"></span>
-              </button>
+              </span>
+            </div>
+            <p class="input-hint" id="email-hint">
+              Digite seu e-mail para receber a cópia oficial do plano acelerado.
+            </p>
+            <div class="email-domain-chips" id="email-domain-chips" aria-label="Provedores rápidos de e-mail">
+              <button type="button" class="domain-chip" data-domain="gmail.com">@gmail.com</button>
+              <button type="button" class="domain-chip" data-domain="hotmail.com">@hotmail.com</button>
+              <button type="button" class="domain-chip" data-domain="outlook.com">@outlook.com</button>
+              <button type="button" class="domain-chip" data-domain="yahoo.com.br">@yahoo.com.br</button>
             </div>
           </div>
 
@@ -171,7 +194,7 @@ import { APP_URL, BACKEND_URL } from '../config';
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
-          <span>Ambiente Criptografado de Conclusão · Lei Federal 9.394/96 (MEC)</span>
+          <span>Ambiente Criptografado de Conclusão · Escola Autorizada CEE / LDB nº 9.394/96</span>
         </div>
       </div>
 
@@ -187,7 +210,7 @@ import { APP_URL, BACKEND_URL } from '../config';
                   <polygon points="10,2 18,7 10,12 2,7" fill="var(--yellow)" />
                   <circle cx="10" cy="7" r="3" fill="var(--blue)" />
                 </svg>
-                <span class="card-title">SUPLETIVO BRASIL · MEC</span>
+                <span class="card-title">SUPLETIVO BRASIL · CEE / LDB</span>
               </div>
               <div class="chip-hologram">
                 <div class="chip-lines"></div>
@@ -306,7 +329,7 @@ import { APP_URL, BACKEND_URL } from '../config';
     border-radius: 999px;
   }
 
-  /* Fechar */
+  /* Fechar (Touch target 48x48px WCAG AA) */
   .close-btn {
     position: absolute;
     top: 1rem;
@@ -314,8 +337,10 @@ import { APP_URL, BACKEND_URL } from '../config';
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: var(--muted-on-dark);
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 3rem;
+    height: 3rem;
+    min-width: 48px;
+    min-height: 48px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -410,27 +435,57 @@ import { APP_URL, BACKEND_URL } from '../config';
     margin: 0;
   }
 
-  /* Breadcrumb chips */
+  /* Breadcrumb chips (Touch Target 48px) */
   .lead-breadcrumbs {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1rem;
   }
   .breadcrumb-chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.45rem;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 999px;
-    padding: 0.3rem 0.75rem;
+    padding: 0.5rem 0.9rem;
+    min-height: 48px;
     color: var(--muted-on-dark);
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
   }
   .breadcrumb-chip:hover {
+    background: color-mix(in srgb, var(--yellow) 15%, transparent);
+    border-color: var(--yellow);
+    color: #ffffff;
+  }
+
+  /* Domain chips para e-mail rápido */
+  .email-domain-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .domain-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    min-height: var(--input-height, 48px);
+    color: var(--muted-on-dark);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .domain-chip:hover {
     background: color-mix(in srgb, var(--yellow) 15%, transparent);
     border-color: var(--yellow);
     color: #ffffff;
@@ -753,7 +808,8 @@ import { APP_URL, BACKEND_URL } from '../config';
 <script>
   import { validateCPF, formatCPF } from '../scripts/cpf-validator';
   import { validatePhone, formatPhone } from '../scripts/phone-validator';
-  import { initAttribution } from '../scripts/attribution';
+  import { isEmailFormatValid, completeEmailWithDomain } from '../lib/email';
+  import { initAttribution, cookieDomain } from '../scripts/attribution';
   import { track } from '../scripts/track';
 
   const modal = document.querySelector<HTMLElement>('[data-lead-capture-modal]');
@@ -764,24 +820,32 @@ import { APP_URL, BACKEND_URL } from '../config';
     const breadcrumbs = modal.querySelector<HTMLElement>('#lead-breadcrumbs');
     const chipPhone = modal.querySelector<HTMLElement>('#chip-phone');
     const chipPhoneText = modal.querySelector<HTMLElement>('#chip-phone-text');
+    const chipCpf = modal.querySelector<HTMLElement>('#chip-cpf');
+    const chipCpfText = modal.querySelector<HTMLElement>('#chip-cpf-text');
 
     const stepPhone = modal.querySelector<HTMLElement>('#step-phone');
     const stepCpf = modal.querySelector<HTMLElement>('#step-cpf');
+    const stepEmail = modal.querySelector<HTMLElement>('#step-email');
     const stepExisting = modal.querySelector<HTMLElement>('#step-existing');
 
     const inputPhone = modal.querySelector<HTMLInputElement>('#lead-input-phone');
     const inputCpf = modal.querySelector<HTMLInputElement>('#lead-input-cpf');
+    const inputEmail = modal.querySelector<HTMLInputElement>('#lead-input-email');
     const phoneWrapper = inputPhone?.closest('.input-wrapper');
     const cpfWrapper = inputCpf?.closest('.input-wrapper');
-    const btnNext = modal.querySelector<HTMLButtonElement>('#btn-next-step');
-    const btnSubmit = modal.querySelector<HTMLButtonElement>('#btn-submit-lead');
-    const btnExisting = modal.querySelector<HTMLAnchorElement>('#btn-existing-redirect');
+    const emailWrapper = inputEmail?.closest('.input-wrapper');
+
+    const leadSpinner = modal.querySelector<HTMLElement>('#lead-spinner');
+    const emailCheckSvg = modal.querySelector<HTMLElement>('.check-svg');
 
     // Elementos da Credencial 3D
     const credentialLed = modal.querySelector<HTMLElement>('#credential-led');
     const credentialDoc = modal.querySelector<HTMLElement>('#credential-student-doc');
     const credentialStatusBadge = modal.querySelector<HTMLElement>('#credential-status-badge');
     const credentialStatusText = modal.querySelector<HTMLElement>('#credential-status-text');
+
+    let isSubmitting = false;
+    let emailDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
     // Funções de Abertura / Fechamento
     function openModal(triggerSource = 'desconhecido') {
@@ -832,12 +896,12 @@ import { APP_URL, BACKEND_URL } from '../config';
 
       if (isValid) {
         credentialLed?.classList.add('verified');
-        // Auto-avanço em ~220ms (Zero-Click)
+        // Auto-avanço em ~200ms (Zero-Button)
         setTimeout(() => {
           if (validatePhone(inputPhone.value)) {
             advanceToCpfStep();
           }
-        }, 220);
+        }, 200);
       } else {
         credentialLed?.classList.remove('verified');
       }
@@ -848,14 +912,17 @@ import { APP_URL, BACKEND_URL } from '../config';
 
       stepPhone?.classList.add('hidden');
       stepCpf?.classList.remove('hidden');
+      stepEmail?.classList.add('hidden');
 
       if (breadcrumbs && chipPhoneText) {
         breadcrumbs.classList.remove('hidden');
+        chipPhone?.classList.remove('hidden');
         chipPhoneText.textContent = inputPhone.value;
+        chipCpf?.classList.add('hidden');
       }
 
       if (speech) {
-        speech.textContent = 'Agora digite seu CPF para consultarmos a dispensa de matérias e emitir sua credencial.';
+        speech.textContent = 'Agora digite seu CPF para validação cadastral e elegibilidade legal pela LDB.';
       }
 
       setTimeout(() => {
@@ -864,18 +931,30 @@ import { APP_URL, BACKEND_URL } from '../config';
     }
 
     inputPhone?.addEventListener('input', handlePhoneInput);
-    btnNext?.addEventListener('click', advanceToCpfStep);
 
-    // Breadcrumb: voltar para o telefone
+    // Breadcrumbs: navegação reversa segura
     chipPhone?.addEventListener('click', () => {
       stepCpf?.classList.add('hidden');
+      stepEmail?.classList.add('hidden');
       stepExisting?.classList.add('hidden');
       stepPhone?.classList.remove('hidden');
       breadcrumbs?.classList.add('hidden');
       if (speech) {
-        speech.textContent = 'Olá! Para onde te envio seu plano acelerado e a confirmação de bolsa?';
+        speech.textContent = 'Olá! Para onde te envio seu plano acelerado e a confirmação da sua pré-matrícula?';
       }
       inputPhone?.focus();
+    });
+
+    chipCpf?.addEventListener('click', () => {
+      stepEmail?.classList.add('hidden');
+      stepPhone?.classList.add('hidden');
+      stepExisting?.classList.add('hidden');
+      stepCpf?.classList.remove('hidden');
+      chipCpf?.classList.add('hidden');
+      if (speech) {
+        speech.textContent = 'Agora digite seu CPF para validação cadastral e elegibilidade legal pela LDB.';
+      }
+      inputCpf?.focus();
     });
 
     // ── GESTÃO DA ETAPA 2: CPF ──────────────────────────────────────────────
@@ -892,6 +971,13 @@ import { APP_URL, BACKEND_URL } from '../config';
         if (credentialDoc) credentialDoc.textContent = `CPF: ${formatCPF(digits)}`;
         credentialStatusBadge?.classList.add('authorized');
         if (credentialStatusText) credentialStatusText.textContent = 'PRÉ-MATRÍCULA AUTORIZADA';
+
+        // Auto-avanço em ~200ms para E-mail (Zero-Button)
+        setTimeout(() => {
+          if (validateCPF(inputCpf.value)) {
+            advanceToEmailStep();
+          }
+        }, 200);
       } else {
         if (credentialDoc) credentialDoc.textContent = 'DOCUMENTAÇÃO PENDENTE';
         credentialStatusBadge?.classList.remove('authorized');
@@ -899,53 +985,151 @@ import { APP_URL, BACKEND_URL } from '../config';
       }
     }
 
+    function advanceToEmailStep() {
+      if (!inputCpf || !validateCPF(inputCpf.value)) return;
+
+      stepPhone?.classList.add('hidden');
+      stepCpf?.classList.add('hidden');
+      stepEmail?.classList.remove('hidden');
+
+      if (breadcrumbs && chipCpf && chipCpfText) {
+        breadcrumbs.classList.remove('hidden');
+        chipCpf.classList.remove('hidden');
+        chipCpfText.textContent = inputCpf.value;
+      }
+
+      if (speech) {
+        speech.textContent = 'E para qual e-mail enviamos a cópia do seu plano de estudos?';
+      }
+
+      setTimeout(() => {
+        inputEmail?.focus();
+      }, 50);
+    }
+
     inputCpf?.addEventListener('input', handleCpfInput);
 
-    // ── SUBMISSÃO E HANDOFF ──────────────────────────────────────────────────
-    modal.querySelector('#lead-capture-form')?.addEventListener('submit', async (e) => {
+    // ── GESTÃO DA ETAPA 3: E-MAIL ───────────────────────────────────────────
+    function handleEmailInput() {
+      if (!inputEmail) return;
+      const val = inputEmail.value.trim();
+      const isValid = isEmailFormatValid(val);
+      emailWrapper?.classList.toggle('valid', isValid);
+
+      if (emailDebounceTimer) {
+        clearTimeout(emailDebounceTimer);
+        emailDebounceTimer = null;
+      }
+
+      if (isValid && !isSubmitting) {
+        // Auto-dispatch com debounce de 350ms
+        emailDebounceTimer = setTimeout(() => {
+          if (isEmailFormatValid(inputEmail.value.trim())) {
+            submitLeadCapture();
+          }
+        }, 350);
+      }
+    }
+
+    inputEmail?.addEventListener('input', handleEmailInput);
+    inputEmail?.addEventListener('blur', () => {
+      if (inputEmail && isEmailFormatValid(inputEmail.value.trim()) && !isSubmitting) {
+        submitLeadCapture();
+      }
+    });
+
+    // Single-tap domain chips
+    modal.querySelectorAll<HTMLButtonElement>('.domain-chip').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!inputEmail) return;
+        const domain = btn.dataset.domain;
+        if (domain) {
+          inputEmail.value = completeEmailWithDomain(inputEmail.value, domain);
+          handleEmailInput();
+          inputEmail.focus();
+        }
+      });
+    });
+
+    // Form submit listener (caso usuário aperte Enter)
+    modal.querySelector('#lead-capture-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
+      if (!stepPhone?.classList.contains('hidden')) {
+        if (inputPhone && validatePhone(inputPhone.value)) advanceToCpfStep();
+        return;
+      }
+      if (!stepCpf?.classList.contains('hidden')) {
+        if (inputCpf && validateCPF(inputCpf.value)) advanceToEmailStep();
+        return;
+      }
+      if (!stepEmail?.classList.contains('hidden')) {
+        if (inputEmail && isEmailFormatValid(inputEmail.value.trim())) {
+          submitLeadCapture();
+        }
+        return;
+      }
+    });
+
+    // ── SUBMISSÃO E HANDOFF ──────────────────────────────────────────────────
+    async function submitLeadCapture() {
+      if (isSubmitting) return;
+
       const phoneDigits = inputPhone?.value.replace(/\D/g, '') ?? '';
       const cpfDigits = inputCpf?.value.replace(/\D/g, '') ?? '';
+      const emailValue = inputEmail?.value.trim() ?? '';
 
       if (!validatePhone(phoneDigits)) {
-        inputPhone?.focus();
+        chipPhone?.click();
+        return;
+      }
+      if (!validateCPF(cpfDigits)) {
+        chipCpf?.click();
+        return;
+      }
+      if (!isEmailFormatValid(emailValue)) {
+        inputEmail?.focus();
         return;
       }
 
-      const attr = initAttribution();
-      const spinner = modal.querySelector('#lead-spinner');
-      const btnText = modal.querySelector('.btn-text');
+      isSubmitting = true;
+      leadSpinner?.classList.remove('hidden');
+      emailCheckSvg?.classList.add('hidden');
 
-      spinner?.classList.remove('hidden');
-      if (btnText) btnText.textContent = 'Processando...';
+      const attr = initAttribution();
 
       try {
-        // Redundância First-Party: Gravação de Cookie de Domínio .supletivo.net.br
+        // Redundância First-Party: Gravação de Cookie de Domínio dinâmico
         const sessionPayload = JSON.stringify({
           phone: phoneDigits,
-          cpf: cpfDigits || undefined,
+          cpf: cpfDigits,
+          email: emailValue,
           ref: attr?.ref,
           ts: Date.now(),
         });
-        document.cookie = `supletivo.session=${encodeURIComponent(sessionPayload)}; path=/; domain=.supletivo.net.br; max-age=1800; SameSite=Lax`;
+        const domainStr = cookieDomain();
+        document.cookie = `supletivo.session=${encodeURIComponent(sessionPayload)}; path=/; max-age=1800; SameSite=Lax${domainStr}`;
 
         // Disparo de tracking analítico
         track('lead_capture_submitted', {
           has_cpf: Boolean(cpfDigits),
+          has_email: Boolean(emailValue),
           ref: attr?.ref ?? 'direct',
         });
 
         const backendUrl = modal.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
 
-        // Disparo real ou simulado ao endpoint de check/captura do backend
+        // Disparo real ao backend com timeout defensivo
         let externalId: string | undefined;
         try {
           const apiRes = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+              contato: phoneDigits,
               phone: phoneDigits,
-              cpf: cpfDigits || undefined,
+              cpf: cpfDigits,
+              email: emailValue,
+              promotor: attr?.ref || undefined,
               ref: attr?.ref || undefined,
               send_otp: true,
               attribution: attr
@@ -970,12 +1154,12 @@ import { APP_URL, BACKEND_URL } from '../config';
             if (data?.found && data?.masked_phone && data?.masked_phone !== phoneDigits) {
               const existingCard = modal.querySelector<HTMLElement>('#step-existing');
               const existingPhoneMasked = modal.querySelector<HTMLElement>('#existing-phone-masked');
-              const stepCpf = modal.querySelector<HTMLElement>('#step-cpf');
               if (existingPhoneMasked) existingPhoneMasked.textContent = data.masked_phone;
+              stepPhone?.classList.add('hidden');
               stepCpf?.classList.add('hidden');
+              stepEmail?.classList.add('hidden');
               existingCard?.classList.remove('hidden');
-              spinner?.classList.add('hidden');
-              if (btnText) btnText.textContent = 'Garantir Minha Vaga Oficial';
+              leadSpinner?.classList.add('hidden');
               return;
             }
           }
@@ -987,18 +1171,19 @@ import { APP_URL, BACKEND_URL } from '../config';
         const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
         if (externalId) targetUrl.searchParams.set('id', externalId);
         targetUrl.searchParams.set('tel', phoneDigits);
-        if (cpfDigits) targetUrl.searchParams.set('cpf', cpfDigits);
+        targetUrl.searchParams.set('cpf', cpfDigits);
+        targetUrl.searchParams.set('email', emailValue);
         if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
 
         // Aguarda transição visual e redireciona
         setTimeout(() => {
           window.location.href = targetUrl.toString();
-        }, 350);
+        }, 250);
       } catch (err) {
         console.error('[lead-capture] Falha ao processar captura:', err);
         // Fallback garantido: redireciona mesmo em caso de erro no script
-        window.location.href = `${appUrl}/autenticacao/otp?tel=${phoneDigits}`;
+        window.location.href = `${appUrl}/autenticacao/otp?tel=${phoneDigits}&cpf=${cpfDigits}&email=${encodeURIComponent(emailValue)}`;
       }
-    });
+    }
   }
 </script>

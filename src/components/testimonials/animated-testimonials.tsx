@@ -17,6 +17,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
   className = '',
 }) => {
   const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % testimonials.length);
@@ -29,11 +30,15 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
   const isActive = (index: number) => index === active;
 
   useEffect(() => {
-    if (autoplay) {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (autoplay && !isPaused && !prefersReducedMotion) {
       const interval = setInterval(handleNext, 6000);
       return () => clearInterval(interval);
     }
-  }, [autoplay, testimonials.length]);
+  }, [autoplay, isPaused, testimonials.length]);
 
   const getRotateY = (index: number) => {
     const angles = [-6, 4, -3, 5, -5, 3];
@@ -43,7 +48,13 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
   const current = testimonials[active];
 
   return (
-    <div className={`mx-auto max-w-5xl px-4 py-6 md:px-8 font-sans ${className}`}>
+    <div
+      className={`mx-auto max-w-5xl px-4 py-6 md:px-8 font-sans ${className}`}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center">
         {/* Coluna 1: Imagem com efeito 3D em leque */}
         <div className="w-full flex justify-center">
@@ -153,7 +164,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
               onClick={handlePrev}
               type="button"
               aria-label="Depoimento anterior"
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-all hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-all hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
@@ -161,7 +172,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
               onClick={handleNext}
               type="button"
               aria-label="Próximo depoimento"
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-all hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-all hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer"
             >
               <ArrowRight className="h-5 w-5" />
             </button>

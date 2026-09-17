@@ -4,7 +4,7 @@
  * Regra de copy: instituição parceira credenciada ao MEC, sem citar nome.
  */
 const seals = [
-  'Certificação por instituição parceira credenciada ao MEC',
+  'Certificação emitida por escola autorizada pelo CEE',
   'Válido em todo o território nacional',
   'Amparado pela Lei nº 9.394/96 (LDB)',
 ];
@@ -14,7 +14,7 @@ import Marquee from './Marquee.astro';
 const objections = [
   {
     q: 'É reconhecido?',
-    a: 'Sim. A certificação é emitida por instituição parceira credenciada ao MEC e vale em todo o território nacional.',
+    a: 'Sim. A certificação é emitida por escola parceira autorizada pelo CEE e publicada no Diário Oficial, com validade em todo o Brasil.',
   },
   {
     q: 'Serve para faculdade e concurso?',
@@ -30,7 +30,7 @@ const objections = [
 <section id="confianca" class="trust section on-dark grain" aria-labelledby="trust-title" data-section="confianca">
   <div class="trust-band">
     <Marquee
-      items={['Reconhecido por lei', 'Instituição parceira credenciada ao MEC', 'Válido em todo o território nacional', 'Amparado pela LDB — Lei nº 9.394/96', 'Prova final presencial e oficial']}
+      items={['Reconhecido por lei', 'Instituição parceira autorizada pelo CEE', 'Válido em todo o território nacional', 'Amparado pela LDB — Lei nº 9.394/96', 'Prova final presencial e oficial']}
       variant="green"
       speed={34}
       tilt={-2.5}

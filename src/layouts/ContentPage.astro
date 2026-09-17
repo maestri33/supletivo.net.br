@@ -27,7 +27,7 @@ const { title, description, noindex = false, kicker, h1, ogImage } = Astro.props
     </div>
   </header>
 
-  <main id="conteudo" class="content-main">
+  <main id="conteudo" class="content-main" tabindex="-1">
     <div class="container narrow">
       {kicker && <p class="kicker content-kicker">{kicker}</p>}
       <h1>{h1}</h1>

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validateCPF, formatCPF } from '../../src/scripts/cpf-validator';
 import { validatePhone, formatPhone } from '../../src/scripts/phone-validator';
+import { isEmailFormatValid, completeEmailWithDomain } from '../../src/lib/email';
 
 describe('CPF Validator & Formatter (Modulo 11)', () => {
   it('validates well-known valid CPFs', () => {
@@ -70,3 +71,28 @@ describe('Phone Validator & Formatter (Brazilian Mobile)', () => {
     expect(formatPhone('')).toBe('');
   });
 });
+
+describe('Email Validator & Auto-Completion (Lead Capture)', () => {
+  it('validates correct email syntax', () => {
+    expect(isEmailFormatValid('aluno@gmail.com')).toBe(true);
+    expect(isEmailFormatValid('contato.supletivo@outlook.com')).toBe(true);
+    expect(isEmailFormatValid('teste@dominio.com.br')).toBe(true);
+    expect(isEmailFormatValid('   espacos@email.com   ')).toBe(true);
+  });
+
+  it('rejects invalid or incomplete email syntax', () => {
+    expect(isEmailFormatValid('')).toBe(false);
+    expect(isEmailFormatValid('aluno')).toBe(false);
+    expect(isEmailFormatValid('aluno@')).toBe(false);
+    expect(isEmailFormatValid('aluno@dominio')).toBe(false);
+    expect(isEmailFormatValid('@dominio.com')).toBe(false);
+    expect(isEmailFormatValid('aluno@.com')).toBe(false);
+  });
+
+  it('completes email with domain chips', () => {
+    expect(completeEmailWithDomain('marcelo', 'gmail.com')).toBe('marcelo@gmail.com');
+    expect(completeEmailWithDomain('marcelo@', 'hotmail.com')).toBe('marcelo@hotmail.com');
+    expect(completeEmailWithDomain('marcelo@velho.com', 'outlook.com')).toBe('marcelo@outlook.com');
+  });
+});
+

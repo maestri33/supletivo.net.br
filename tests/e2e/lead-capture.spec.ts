@@ -40,7 +40,7 @@ test.describe('Captura Inteligente de Alunos (LeadCaptureModal)', () => {
     await expect(page.locator('#lead-input-phone')).toBeVisible();
   });
 
-  test('validação de CPF Módulo 11 atualiza a Credencial 3D', async ({ page }) => {
+  test('validação de CPF Módulo 11 atualiza a Credencial 3D e avança para e-mail', async ({ page }) => {
     await page.goto('/');
     await page.locator('a[data-cta="hero"]').click();
 
@@ -55,9 +55,53 @@ test.describe('Captura Inteligente de Alunos (LeadCaptureModal)', () => {
 
     // Valida credencial autorizada
     await expect(page.locator('#credential-status-text')).toContainText('PRÉ-MATRÍCULA AUTORIZADA');
+
+    // Auto-avanço para o campo de e-mail (Zero-Button)
+    const emailInput = page.locator('#lead-input-email');
+    await expect(emailInput).toBeVisible({ timeout: 2000 });
   });
 
-  test('detecção de CPF inválido mantém estado pendente', async ({ page }) => {
+  test('fluxo completo zero-button: telefone -> cpf -> chip de email -> redirecionamento com cookie', async ({ page }) => {
+    await page.goto('/?ref=PROMO123&utm_source=meta');
+    await page.locator('a[data-cta="hero"]').click();
+
+    // 1. Telefone
+    await page.locator('#lead-input-phone').fill('11987654321');
+
+    // 2. CPF (auto-avançado)
+    const cpfInput = page.locator('#lead-input-cpf');
+    await expect(cpfInput).toBeVisible({ timeout: 2000 });
+    await cpfInput.fill('52998224725');
+
+    // 3. E-mail (auto-avançado)
+    const emailInput = page.locator('#lead-input-email');
+    await expect(emailInput).toBeVisible({ timeout: 2000 });
+
+    // Breadcrumbs vivos visíveis (Telefone e CPF)
+    await expect(page.locator('#chip-phone')).toBeVisible();
+    await expect(page.locator('#chip-cpf')).toBeVisible();
+
+    // Clica no chip @gmail.com para autocompletar e disparar
+    await emailInput.fill('aluno.supletivo');
+    const gmailChip = page.locator('.domain-chip[data-domain="gmail.com"]');
+    await expect(gmailChip).toBeVisible();
+    await gmailChip.click();
+    await expect(emailInput).toHaveValue('aluno.supletivo@gmail.com');
+
+    // Verifica que cookie foi gravado e que o redirecionamento ocorre
+    await page.waitForURL(/autenticacao\/otp/, { timeout: 4000 });
+    const currentUrl = page.url();
+    expect(currentUrl).toContain('tel=11987654321');
+    expect(currentUrl).toContain('cpf=52998224725');
+    expect(currentUrl).toContain('ref=PROMO123');
+
+    // Verifica persistência do cookie supletivo.session
+    const cookies = await page.context().cookies();
+    const sessionCookie = cookies.find((c) => c.name === 'supletivo.session');
+    expect(sessionCookie).toBeDefined();
+  });
+
+  test('detecção de CPF inválido mantém estado pendente sem avançar', async ({ page }) => {
     await page.goto('/');
     await page.locator('a[data-cta="hero"]').click();
 
@@ -69,6 +113,7 @@ test.describe('Captura Inteligente de Alunos (LeadCaptureModal)', () => {
     // CPF inválido (todos dígitos iguais)
     await cpfInput.fill('00000000000');
     await expect(page.locator('#credential-status-text')).toContainText('AGUARDANDO VALIDAÇÃO');
+    await expect(page.locator('#step-email')).toBeHidden();
   });
 
   test('acessibilidade do modal de captação (Axe-core WCAG 2A/AA)', async ({ page }) => {

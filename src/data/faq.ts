@@ -13,11 +13,11 @@ export interface FaqItem {
 export const faq: FaqItem[] = [
   {
     q: 'O certificado é reconhecido? Vale em todo o Brasil?',
-    a: 'Sim. A certificação é emitida por instituição parceira credenciada ao MEC e tem validade em todo o território nacional, com amparo na Lei nº 9.394/96 (LDB).',
+    a: 'Sim. A certificação é emitida por escola parceira autorizada pelo Conselho Estadual de Educação (CEE), amparada pela Lei Federal nº 9.394/96 (LDB), com publicação oficial no Diário Oficial e validade jurídica em todo o território nacional.',
   },
   {
     q: 'Quais são as formas de pagamento?',
-    a: `Você pode pagar em ${cardLine} no cartão de crédito ou ${pixBRL} à vista no Pix. A escolha é feita na matrícula, dentro do app. O valor é promocional e pode mudar sem aviso.`,
+    a: `Você pode pagar em ${cardLine} no cartão de crédito ou ${pixBRL} à vista no Pix. A escolha é feita na matrícula, dentro do app.`,
   },
   {
     q: 'O certificado serve para faculdade, concurso e CNH?',
@@ -32,12 +32,16 @@ export const faq: FaqItem[] = [
     a: 'Depende do seu ritmo. Você estuda 100% online, nos horários que tiver, e marca a prova final presencial quando se sentir preparado. Quanto mais constância nos estudos, mais cedo você chega ao certificado.',
   },
   {
-    q: 'Como são as provas?',
-    a: 'A prova final é presencial: você escolhe um dos nossos polos e o dia que quiser. É nesse encontro que você assina a documentação que é enviada à Secretaria de Educação do estado — esse passo oficial é o que dá validade ao seu certificado. Todo o estudo até lá é online, no seu ritmo.',
+    q: 'Como são as provas presenciais?',
+    a: 'A prova final é presencial: você escolhe o polo parceiro mais próximo e o dia mais conveniente. Todo o estudo até lá é online, no seu celular, com simulados preparatórios.',
+  },
+  {
+    q: 'E se eu tiver dificuldade ou não passar de primeira?',
+    a: 'Você tem suporte total: treina com simulados ilimitados no celular antes de agendar a prova. Caso não atinja a pontuação em alguma disciplina, você tem direito a nova oportunidade de avaliação sem custo de mensalidade e sem burocracia.',
   },
   {
     q: 'Preciso de computador para estudar?',
-    a: 'Para estudar, não: a matrícula e todo o conteúdo funcionam pelo celular (também dá para usar computador ou tablet). Só a prova final é presencial, em um dos nossos polos.',
+    a: 'Para estudar, não: a matrícula e todo o conteúdo funcionam pelo celular (também dá para usar computador ou tablet). Só a prova final é presencial, em um polo parceiro.',
   },
   {
     q: 'Posso fazer o Ensino Fundamental e o Médio no mesmo lugar?',

@@ -30,7 +30,7 @@ const ATTR_COOKIE_NAME = 'supletivo.attr';
 const COOKIE_MAX_AGE = 90 * 24 * 60 * 60;
 const LS_MAX_AGE_MS = COOKIE_MAX_AGE * 1000;
 
-function cookieDomain(): string {
+export function cookieDomain(): string {
   try {
     const host = window.location.hostname;
     if (host === 'supletivo.net.br' || host.endsWith('.supletivo.net.br')) {

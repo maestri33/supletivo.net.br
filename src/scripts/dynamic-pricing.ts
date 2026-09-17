@@ -10,6 +10,7 @@
  */
 import { initAttribution, type Attribution } from './attribution';
 import { track } from './track';
+import { BACKEND_URL } from '../config';
 
 interface PricingResponse {
   pix: string;
@@ -28,10 +29,6 @@ interface PricingResponse {
   promoter_name?: string | null;
   anchor_full?: string | null;
 }
-
-const BACKEND_URL =
-  import.meta.env.PUBLIC_BACKEND_URL ??
-  (import.meta.env.DEV ? 'http://localhost:8001' : 'https://api.supletivo.net.br');
 
 // Preços padrão oficiais
 const REGULAR_PRICE = {

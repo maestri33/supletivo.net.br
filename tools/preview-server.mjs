@@ -34,11 +34,12 @@ async function pickPort() {
   // Se PORT foi passado explicitamente, usa exatamente essa porta — sem fallback.
   // Assim o Playwright (que seta PORT) sempre bate com o `webServer.url`.
   if (process.env.PORT) {
-    const got = await tryListen(PREFERRED);
-    if (got !== PREFERRED) {
-      throw new Error(`Port ${PREFERRED} is occupied — refusing to use a different one (PORT was set explicitly). Kill the stale server first.`);
+    for (let retry = 0; retry < 5; retry++) {
+      const got = await tryListen(PREFERRED);
+      if (got === PREFERRED) return PREFERRED;
+      await new Promise((r) => setTimeout(r, 600));
     }
-    return PREFERRED;
+    throw new Error(`Port ${PREFERRED} is occupied — refusing to use a different one (PORT was set explicitly). Kill the stale server first.`);
   }
   for (let p = PREFERRED; p < PREFERRED + 50; p++) {
     const got = await tryListen(p);
@@ -51,12 +52,14 @@ const port = await pickPort();
 const portFile = resolve(process.cwd(), '.preview-port');
 writeFileSync(portFile, String(port) + '\n');
 
+const astroBin = resolve(process.cwd(), 'node_modules', 'astro', 'bin', 'astro.mjs');
 const child = spawn(
-  process.platform === 'win32' ? 'cmd' : 'npx',
-  process.platform === 'win32'
-    ? ['/c', 'npx', 'astro', 'preview', '--port', String(port), '--host', HOST]
-    : ['astro', 'preview', '--port', String(port), '--host', HOST],
-  { stdio: 'inherit' }
+  process.execPath,
+  [astroBin, 'preview', '--port', String(port), '--host', HOST],
+  {
+    stdio: 'inherit',
+    env: { ...process.env, ASTRO_PREVIEW_BACKGROUND: 'true' },
+  }
 );
 
 const cleanup = () => {
