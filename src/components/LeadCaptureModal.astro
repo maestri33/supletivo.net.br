@@ -1150,11 +1150,36 @@ import { APP_URL, BACKEND_URL } from '../config';
             const data = await apiRes.json();
             externalId = data?.external_id;
 
+            const cleanMasked = (data?.masked_phone || '').replace(/\D/g, '');
+            const isDifferentPhone = Boolean(
+              cleanMasked &&
+              cleanMasked.length >= 4 &&
+              phoneDigits.length >= 4 &&
+              !phoneDigits.endsWith(cleanMasked.slice(-4)) &&
+              !cleanMasked.endsWith(phoneDigits.slice(-4))
+            );
+
             // Se for cadastro existente em outro telefone, exibe tela de acolhimento
-            if (data?.found && data?.masked_phone && data?.masked_phone !== phoneDigits) {
+            if (data?.found && isDifferentPhone) {
               const existingCard = modal.querySelector<HTMLElement>('#step-existing');
               const existingPhoneMasked = modal.querySelector<HTMLElement>('#existing-phone-masked');
-              if (existingPhoneMasked) existingPhoneMasked.textContent = data.masked_phone;
+              const existingBtn = modal.querySelector<HTMLAnchorElement>('#btn-existing-redirect');
+
+              if (existingPhoneMasked && data.masked_phone) {
+                existingPhoneMasked.textContent = data.masked_phone;
+              }
+
+              const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
+              if (externalId) targetUrl.searchParams.set('id', externalId);
+              targetUrl.searchParams.set('tel', phoneDigits);
+              targetUrl.searchParams.set('cpf', cpfDigits);
+              targetUrl.searchParams.set('email', emailValue);
+              if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
+
+              if (existingBtn) {
+                existingBtn.href = targetUrl.toString();
+              }
+
               stepPhone?.classList.add('hidden');
               stepCpf?.classList.add('hidden');
               stepEmail?.classList.add('hidden');
