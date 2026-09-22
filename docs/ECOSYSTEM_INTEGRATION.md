@@ -217,13 +217,12 @@ A auditoria exaustiva realizada pelos agentes especialistas verificou os contrat
 | **`app-portal-auditor`** | `app.supletivo.net.br` (rotas `/autenticacao/otp.astro`, `OtpVerification.svelte`, guards de sessão) | **Aprovado** | Resiliência exemplar; self-healing implementado; zero-button OTP funcional; tipagem TypeScript estrita sem erros. |
 | **`backend-contract-auditor`** | `backend.supletivo.net.br` (`api/clients/routers/auth.py`, `pricing.py`, schemas Pydantic) | **Aprovado** | Schemas `CheckIn` e `CheckOut` 100% simétricos com o payload da landing; rotas de login por OTP e pricing em total conformidade. |
 | **`notify-service-auditor`** | `notify.supletivo.net.br` (filas Celery/Q2, rotas WhatsApp, Evolution API) | **Aprovado** | Fila de disparo de OTP operacional e desacoplada; templates de mensagens em português claro e objetivo. |
-| **`ui-ux-design-auditor`** | `supletivo.net.br` (LeadCaptureModal, Hero, Pricing, ProgressBar, StickyCTA) | **Aprovado** | Design System canônico (`DESIGN.md`) estritamente respeitado; paleta nacional refinada; ergonomia touch mobile de 48px. |
-| **`engineering-qa-auditor`** | `supletivo.net.br` (testes unitários Vitest, testes E2E Playwright, build estático) | **Aprovado** | 40/40 testes unitários passando; 31/31 testes E2E passando; build estático em 2.3s sem erros; zero brand leaks. |
+| **`ui-ux-design-auditor`** | `supletivo.net.br` (LeadCaptureModal, SofiaPresence, CredentialCard, Hero, Pricing, ProgressBar, StickyCTA) | **Aprovado** | Design System canônico (`DESIGN.md`) estritamente respeitado; paleta nacional refinada; componentes desacoplados e ergonomia touch mobile de 48px. |
+| **`engineering-qa-auditor`** | `supletivo.net.br` (testes unitários Vitest, testes E2E Playwright, build estático) | **Aprovado** | 40/40 testes unitários passando; 33/33 testes E2E passando; build estático sem erros; zero brand leaks. |
 
-### Conclusão sobre Abertura de Issues
-> [!NOTE]
-> **Nenhuma issue bloqueante precisa ser criada em repositórios vizinhos.**  
-> Todos os contratos de endpoints, rotas de handoff, chaves de cookies e parâmetros de URL estão rigorosamente simétricos e em perfeita coesão operacional.
+### Issues de Evolução Criadas nos Repositórios Irmãos
+- **`maestri33/app.supletivo.net.br#12`**: `feat(auth): fluxo de recuperação de conta e troca de número de WhatsApp por CPF`
+- **`maestri33/backend.supletivo.net.br#12`**: `feat(auth): endpoint e regra de domínio para recuperação de conta e atualização de telefone por CPF`
 
 ---
 
