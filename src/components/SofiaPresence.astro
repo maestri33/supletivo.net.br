@@ -1,0 +1,93 @@
+---
+/**
+ * SofiaPresence.astro - Orientadora Educacional Sofia
+ * Identidade visual e balão de fala da assistente conversacional.
+ */
+interface Props {
+  initialSpeech?: string;
+  badge?: string;
+}
+
+const {
+  initialSpeech = 'Olá! Para onde te envio seu plano acelerado e a confirmação da sua pré-matrícula?',
+  badge = 'Sofia · Orientadora Educacional',
+} = Astro.props;
+---
+
+<div class="sofia-presence">
+  <div class="sofia-orb" aria-hidden="true">
+    <span class="orb-core"></span>
+    <span class="orb-wave"></span>
+    <span class="orb-icon">🎓</span>
+  </div>
+  <div class="sofia-meta">
+    <div class="sofia-badge">
+      <span class="status-pulse" aria-hidden="true"></span>
+      {badge}
+    </div>
+    <h2 id="lead-modal-title" class="sofia-speech">
+      {initialSpeech}
+    </h2>
+  </div>
+</div>
+
+<style>
+  .sofia-presence {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .sofia-orb {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--green), var(--green-deep));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px color-mix(in srgb, var(--green) 50%, transparent);
+  }
+  .orb-icon {
+    font-size: 1.4rem;
+    z-index: 2;
+  }
+  .orb-wave {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid color-mix(in srgb, var(--green) 40%, transparent);
+    animation: orb-pulse 2.8s infinite ease-in-out;
+  }
+  @keyframes orb-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.18); opacity: 0.9; }
+  }
+  .sofia-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--yellow);
+    margin-bottom: 0.35rem;
+  }
+  .status-pulse {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+  }
+  .sofia-speech {
+    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.35;
+    margin: 0;
+  }
+</style>

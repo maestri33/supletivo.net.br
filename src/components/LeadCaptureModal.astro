@@ -1,11 +1,13 @@
 ---
 /**
- * Componente de Captura Inteligente de Alunos (Zero-Friction Lead Capture).
- * Integração com Sofia Smart Omnibar, validação Módulo 11 e The Credential Forger (3D).
- * Em conformidade com AGENTS.md: acessibilidade WCAG 2A/AA, Safe Area Inset mobile,
- * e handoff de dupla redundância (URL query + cookie .supletivo.net.br).
+ * LeadCaptureModal.astro
+ * Captura Inteligente de Alunos (Zero-Friction Lead Capture).
+ * Sofia Smart Omnibar, validação matemática e Credencial 3D.
+ * Componentizado e enxuto via Ponytail.
  */
 import { APP_URL, BACKEND_URL } from '../config';
+import SofiaPresence from './SofiaPresence.astro';
+import CredentialCard from './CredentialCard.astro';
 ---
 
 <div
@@ -45,32 +47,16 @@ import { APP_URL, BACKEND_URL } from '../config';
     <div class="lead-modal-layout">
       <!-- Coluna Principal: Sofia + Omnibar + Etapas -->
       <div class="interaction-col">
-        <!-- Sofia Assistant Presence -->
-        <div class="sofia-presence">
-          <div class="sofia-orb" aria-hidden="true">
-            <span class="orb-core"></span>
-            <span class="orb-wave"></span>
-            <span class="orb-icon">🎓</span>
-          </div>
-          <div class="sofia-meta">
-            <div class="sofia-badge">
-              <span class="status-pulse" aria-hidden="true"></span>
-              Sofia · Orientadora Educacional
-            </div>
-            <h2 id="lead-modal-title" class="sofia-speech">
-              Olá! Para onde te envio seu plano acelerado e a confirmação da sua pré-matrícula?
-            </h2>
-          </div>
-        </div>
+        <SofiaPresence />
 
-        <!-- Breadcrumbs Vivos ("Desfazer sem resetar") -->
+        <!-- Breadcrumbs Vivos -->
         <div id="lead-breadcrumbs" class="lead-breadcrumbs hidden" aria-label="Progresso do formulário">
-          <button type="button" class="breadcrumb-chip" id="chip-phone" title="Clique para editar o telefone" aria-label="Voltar para editar WhatsApp">
+          <button type="button" class="pill-chip" id="chip-phone" title="Clique para editar o telefone" aria-label="Voltar para editar WhatsApp">
             <span class="chip-icon">💬</span>
             <span class="chip-label" id="chip-phone-text">(11) 98765-4321</span>
             <span class="chip-edit">✏️</span>
           </button>
-          <button type="button" class="breadcrumb-chip hidden" id="chip-cpf" title="Clique para editar o CPF" aria-label="Voltar para editar CPF">
+          <button type="button" class="pill-chip hidden" id="chip-cpf" title="Clique para editar o CPF" aria-label="Voltar para editar CPF">
             <span class="chip-icon">🪪</span>
             <span class="chip-label" id="chip-cpf-text">000.000.000-00</span>
             <span class="chip-edit">✏️</span>
@@ -167,7 +153,7 @@ import { APP_URL, BACKEND_URL } from '../config';
             </div>
           </div>
 
-          <!-- ESTADO: CPF COM OUTRO TELEFONE LOCALIZADO (SEM BOTÕES, AUTO-REDIRECT) -->
+          <!-- ESTADO: CPF COM OUTRO TELEFONE LOCALIZADO -->
           <div id="step-existing" class="step-pane hidden">
             <div class="existing-user-card">
               <div class="existing-badge">
@@ -203,42 +189,7 @@ import { APP_URL, BACKEND_URL } from '../config';
 
       <!-- Coluna Visual: The Credential Forger (3D Holographic Card) -->
       <div class="visual-col hidden md:flex">
-        <div class="credential-forger-wrapper">
-          <div class="credential-card-3d spatial-card-3d" id="credential-card-visual" data-tilt-3d data-tilt-max="12">
-            <div class="card-foil-overlay" aria-hidden="true"></div>
-            <div class="card-top">
-              <div class="card-header-badge">
-                <svg width="18" height="13" viewBox="0 0 20 14" fill="none" class="flag-svg" aria-hidden="true">
-                  <rect width="20" height="14" rx="2" fill="var(--green)" />
-                  <polygon points="10,2 18,7 10,12 2,7" fill="var(--yellow)" />
-                  <circle cx="10" cy="7" r="3" fill="var(--blue)" />
-                </svg>
-                <span class="card-title">SUPLETIVO BRASIL · CEE / LDB</span>
-              </div>
-              <div class="chip-hologram">
-                <div class="chip-lines"></div>
-                <span class="chip-led" id="credential-led"></span>
-              </div>
-            </div>
-
-            <div class="card-center">
-              <div class="card-label">NOME DO ESTUDANTE</div>
-              <div class="card-student-name" id="credential-student-name">CANDIDATO OFICIAL</div>
-              <div class="card-doc" id="credential-student-doc">DOCUMENTAÇÃO PENDENTE</div>
-            </div>
-
-            <div class="card-bottom">
-              <div class="card-status-badge" id="credential-status-badge">
-                <span class="status-dot"></span>
-                <span id="credential-status-text">AGUARDANDO CONTATO</span>
-              </div>
-              <div class="card-seal">LOTE 01</div>
-            </div>
-
-            <!-- Faixa Tricolor Nacional Decorativa -->
-            <div class="card-tricolor-strip" aria-hidden="true"></div>
-          </div>
-        </div>
+        <CredentialCard />
       </div>
     </div>
   </div>
@@ -247,14 +198,9 @@ import { APP_URL, BACKEND_URL } from '../config';
 <style>
   #lead-breadcrumbs.hidden,
   .spinner.hidden,
-  .step-pane.hidden {
+  .step-pane.hidden,
+  .pill-chip.hidden {
     display: none;
-  }
-
-  .flag-svg {
-    flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    border-radius: 2px;
   }
 
   .lead-modal-backdrop {
@@ -300,6 +246,10 @@ import { APP_URL, BACKEND_URL } from '../config';
     overflow-y: auto;
   }
 
+  .lead-modal-backdrop.open .lead-modal-container {
+    transform: translateY(0);
+  }
+
   @media (min-width: 768px) {
     .lead-modal-backdrop {
       align-items: center;
@@ -315,10 +265,6 @@ import { APP_URL, BACKEND_URL } from '../config';
     }
   }
 
-  .lead-modal-backdrop.open .lead-modal-container {
-    transform: translateY(0);
-  }
-
   /* Drag handle mobile */
   .drag-handle-bar {
     display: flex;
@@ -332,7 +278,7 @@ import { APP_URL, BACKEND_URL } from '../config';
     border-radius: 999px;
   }
 
-  /* Fechar (Touch target 48x48px WCAG AA) */
+  /* Fechar */
   .close-btn {
     position: absolute;
     top: 1rem;
@@ -371,123 +317,37 @@ import { APP_URL, BACKEND_URL } from '../config';
     }
   }
 
-  /* Sofia Presence */
-  .sofia-presence {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .sofia-orb {
-    position: relative;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, var(--green), var(--green-deep));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 0 20px color-mix(in srgb, var(--green) 50%, transparent);
-  }
-
-  .orb-icon {
-    font-size: 1.4rem;
-    z-index: 2;
-  }
-
-  .orb-wave {
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    border: 2px solid color-mix(in srgb, var(--green) 40%, transparent);
-    animation: orb-pulse 2.8s infinite ease-in-out;
-  }
-
-  @keyframes orb-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.4; }
-    50% { transform: scale(1.18); opacity: 0.9; }
-  }
-
-  .sofia-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--yellow);
-    margin-bottom: 0.35rem;
-  }
-
-  .status-pulse {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--success);
-    box-shadow: 0 0 8px var(--success);
-  }
-
-  .sofia-speech {
-    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1.35;
-    margin: 0;
-  }
-
-  /* Breadcrumb chips (Touch Target 48px) */
-  .lead-breadcrumbs {
+  /* Chips genéricos (Breadcrumbs & Domain Chips) */
+  .lead-breadcrumbs,
+  .email-domain-chips {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1rem;
   }
-  .breadcrumb-chip {
+  .email-domain-chips {
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+  }
+
+  .pill-chip,
+  .domain-chip {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.45rem;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 999px;
-    padding: 0.5rem 0.9rem;
-    min-height: 48px;
+    padding: 0.45rem 0.9rem;
+    min-height: var(--input-height, 48px);
     color: var(--muted-on-dark);
     font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
   }
-  .breadcrumb-chip:hover {
-    background: color-mix(in srgb, var(--yellow) 15%, transparent);
-    border-color: var(--yellow);
-    color: #ffffff;
-  }
-
-  /* Domain chips para e-mail rápido */
-  .email-domain-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-  }
-  .domain-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 999px;
-    padding: 0.4rem 0.85rem;
-    min-height: var(--input-height, 48px);
-    color: var(--muted-on-dark);
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
+  .pill-chip:hover,
   .domain-chip:hover {
     background: color-mix(in srgb, var(--yellow) 15%, transparent);
     border-color: var(--yellow);
@@ -502,9 +362,6 @@ import { APP_URL, BACKEND_URL } from '../config';
 
   .step-pane {
     transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-  .step-pane.hidden {
-    display: none;
   }
 
   .input-wrapper {
@@ -544,7 +401,7 @@ import { APP_URL, BACKEND_URL } from '../config';
     background: transparent;
     border: none;
     color: #ffffff;
-    font-size: 1.125rem; /* 18px previne zoom no iOS Safari */
+    font-size: 1.125rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     min-height: var(--input-height, 48px);
@@ -575,20 +432,18 @@ import { APP_URL, BACKEND_URL } from '../config';
     opacity: 1;
     transform: scale(1);
   }
-  .input-status-icon .check-svg {
-    display: none;
-  }
+  .input-status-icon .check-svg,
   .input-status-icon .spinner {
     display: none;
   }
   .input-wrapper.loading .input-status-icon .spinner {
-    display: inline-block !important;
+    display: inline-block;
   }
   .input-wrapper.loading .input-status-icon .check-svg {
-    display: none !important;
+    display: none;
   }
   .input-wrapper.valid:not(.loading) .input-status-icon .check-svg {
-    display: inline-block !important;
+    display: inline-block;
   }
 
   .input-hint {
@@ -598,7 +453,7 @@ import { APP_URL, BACKEND_URL } from '../config';
     line-height: 1.4;
   }
 
-  /* Cartão de usuário já existente (100% Zero-Button, auto-redirect) */
+  /* Cartão de usuário já existente */
   .existing-user-card {
     background: color-mix(in srgb, var(--green) 12%, transparent);
     border: 1px solid color-mix(in srgb, var(--green) 35%, transparent);
@@ -674,158 +529,7 @@ import { APP_URL, BACKEND_URL } from '../config';
     padding-top: 0.85rem;
   }
 
-  /* 3D The Credential Forger */
-  .credential-forger-wrapper {
-    perspective: 1000px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .credential-card-3d {
-    position: relative;
-    width: 100%;
-    max-width: 22rem;
-    aspect-ratio: 1.586 / 1;
-    background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink) 100%);
-    border: 1px solid color-mix(in srgb, var(--yellow) 30%, transparent);
-    border-radius: 1.15rem;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: var(--shadow-zero-g), inset 0 0 20px color-mix(in srgb, var(--yellow) 5%, transparent);
-    overflow: hidden;
-  }
-
-  .card-foil-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(125deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 60%);
-    pointer-events: none;
-  }
-
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .card-header-badge {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .card-title {
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    color: var(--yellow);
-  }
-
-  .chip-hologram {
-    width: 2.2rem;
-    height: 1.65rem;
-    background: linear-gradient(135deg, #d4af37, #aa820a);
-    border-radius: 0.3rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .chip-lines {
-    width: 75%;
-    height: 60%;
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    border-radius: 2px;
-  }
-  .chip-led {
-    position: absolute;
-    top: 2px;
-    right: 3px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--muted-on-dark);
-    transition: background 0.3s;
-  }
-  .chip-led.verified {
-    background: var(--success);
-    box-shadow: 0 0 6px var(--success);
-  }
-
-  .card-center {
-    margin-block: auto;
-  }
-  .card-label {
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--muted-on-dark);
-  }
-  .card-student-name {
-    font-size: 1.05rem;
-    font-weight: 900;
-    color: #ffffff;
-    letter-spacing: 0.04em;
-    font-family: var(--font-display, 'Archivo Black', sans-serif);
-    text-transform: uppercase;
-    transition: color 0.3s;
-  }
-  .card-doc {
-    font-size: 0.72rem;
-    color: var(--muted-on-dark);
-    font-family: monospace;
-  }
-
-  .card-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .card-status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--muted-on-dark);
-    padding: 0.25rem 0.6rem;
-    border-radius: 999px;
-  }
-  .card-status-badge.authorized {
-    background: color-mix(in srgb, var(--green) 30%, transparent);
-    border: 1px solid var(--green);
-    color: var(--success-bg, #dcfce7);
-  }
-  .card-status-badge.authorized .status-dot {
-    background: var(--success);
-    box-shadow: 0 0 6px var(--success);
-  }
-  .status-dot {
-    width: 0.38rem;
-    height: 0.38rem;
-    border-radius: 50%;
-    background: var(--muted-on-dark);
-  }
-  .card-seal {
-    font-size: 0.65rem;
-    font-weight: 800;
-    color: var(--yellow);
-    letter-spacing: 0.1em;
-  }
-
-  .card-tricolor-strip {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--green) 0%, var(--green) 40%, var(--yellow) 40%, var(--yellow) 70%, var(--blue) 70%, var(--blue) 100%);
-  }
-
-  /* Spinner Micro-Interaction */
+  /* Spinner */
   .spinner {
     width: 1.1rem;
     height: 1.1rem;
@@ -871,12 +575,10 @@ import { APP_URL, BACKEND_URL } from '../config';
     const cpfWrapper = inputCpf?.closest('.input-wrapper');
     const emailWrapper = inputEmail?.closest('.input-wrapper');
 
-    const leadSpinner = modal.querySelector<HTMLElement>('#lead-spinner');
-    const emailCheckSvg = modal.querySelector<HTMLElement>('.check-svg');
-
     // Elementos da Credencial 3D
     const credentialLed = modal.querySelector<HTMLElement>('#credential-led');
     const credentialDoc = modal.querySelector<HTMLElement>('#credential-student-doc');
+    const credentialStudentName = modal.querySelector<HTMLElement>('#credential-student-name');
     const credentialStatusBadge = modal.querySelector<HTMLElement>('#credential-status-badge');
     const credentialStatusText = modal.querySelector<HTMLElement>('#credential-status-text');
 
@@ -890,21 +592,70 @@ import { APP_URL, BACKEND_URL } from '../config';
     let existingInterval: ReturnType<typeof setInterval> | null = null;
 
     function clearTimers() {
-      if (emailDebounceTimer) {
-        clearTimeout(emailDebounceTimer);
-        emailDebounceTimer = null;
-      }
-      if (existingTimer) {
-        clearTimeout(existingTimer);
-        existingTimer = null;
-      }
-      if (existingInterval) {
-        clearInterval(existingInterval);
-        existingInterval = null;
+      if (emailDebounceTimer) { clearTimeout(emailDebounceTimer); emailDebounceTimer = null; }
+      if (existingTimer) { clearTimeout(existingTimer); existingTimer = null; }
+      if (existingInterval) { clearInterval(existingInterval); existingInterval = null; }
+    }
+
+    // ── DRY HELPERS (PONYTAIL) ────────────────────────────────────────────────
+    async function checkAuth(payload: Record<string, unknown>) {
+      const backendUrl = modal?.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
+      const attr = initAttribution();
+      try {
+        const res = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            send_otp: true,
+            promotor: attr?.ref || undefined,
+            ref: attr?.ref || undefined,
+            attribution: attr ? {
+              ref: attr.ref,
+              utm_source: attr.utm_source,
+              utm_medium: attr.utm_medium,
+              utm_campaign: attr.utm_campaign,
+              gclid: attr.gclid,
+              fbclid: attr.fbclid,
+            } : undefined,
+            ...payload,
+          }),
+          signal: AbortSignal.timeout(3500),
+        });
+        return res.ok ? await res.json() : null;
+      } catch (err) {
+        console.warn('[lead-capture] Falha ou timeout no checkAuth:', err);
+        return null;
       }
     }
 
-    // Funções de Abertura / Fechamento
+    function saveSession(data: Record<string, unknown>) {
+      const attr = initAttribution();
+      const sessionPayload = JSON.stringify({
+        ...data,
+        ref: attr?.ref,
+        ts: Date.now(),
+      });
+      document.cookie = `supletivo.session=${encodeURIComponent(sessionPayload)}; path=/; max-age=1800; SameSite=Lax${cookieDomain()}`;
+    }
+
+    function redirectToOtp(params: { id?: string; tel?: string; cpf?: string; email?: string; ref?: string }, delayMs = 0) {
+      const attr = initAttribution();
+      const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
+      if (params.id) targetUrl.searchParams.set('id', params.id);
+      if (params.tel) targetUrl.searchParams.set('tel', params.tel);
+      if (params.cpf) targetUrl.searchParams.set('cpf', params.cpf);
+      if (params.email) targetUrl.searchParams.set('email', params.email);
+      const effectiveRef = params.ref || attr?.ref;
+      if (effectiveRef) targetUrl.searchParams.set('ref', effectiveRef);
+
+      if (delayMs > 0) {
+        setTimeout(() => { window.location.href = targetUrl.toString(); }, delayMs);
+      } else {
+        window.location.href = targetUrl.toString();
+      }
+    }
+
+    // ── ABERTURA E FECHAMENTO ─────────────────────────────────────────────────
     function openModal(triggerSource = 'desconhecido') {
       modal?.removeAttribute('hidden');
       modal?.removeAttribute('inert');
@@ -913,11 +664,7 @@ import { APP_URL, BACKEND_URL } from '../config';
       document.body.style.overflow = 'hidden';
 
       track('lead_capture_opened', { source: triggerSource });
-
-      // Foco inicial suave
-      setTimeout(() => {
-        inputPhone?.focus();
-      }, 150);
+      setTimeout(() => { inputPhone?.focus(); }, 150);
     }
 
     function closeModal() {
@@ -931,18 +678,15 @@ import { APP_URL, BACKEND_URL } from '../config';
 
     closeTriggers.forEach((btn) => btn.addEventListener('click', closeModal));
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal?.classList.contains('open')) {
-        closeModal();
-      }
+      if (e.key === 'Escape' && modal?.classList.contains('open')) closeModal();
     });
 
-    // Escuta evento customizado de disparo
     window.addEventListener('sb:open-lead-capture', (e: Event) => {
       const detail = (e as CustomEvent).detail;
       openModal(detail?.position ?? 'cta');
     });
 
-    // ── GESTÃO DA ETAPA 1: WHATSAPP (SUBMISSÃO IMEDIATA NO 11º DÍGITO) ─────────
+    // ── ETAPA 1: WHATSAPP ────────────────────────────────────────────────────
     async function checkAndSubmitPhone(digits: string) {
       if (isCheckingPhone || digits === lastCheckedPhone) return;
       lastCheckedPhone = digits;
@@ -951,77 +695,24 @@ import { APP_URL, BACKEND_URL } from '../config';
       phoneWrapper?.classList.add('loading');
       phoneWrapper?.classList.remove('valid');
 
-      const backendUrl = modal?.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
-      const attr = initAttribution();
+      const data = await checkAuth({ phone: digits, contato: digits });
+      phoneWrapper?.classList.remove('loading');
+      isCheckingPhone = false;
 
-      let data: any = null;
-      try {
-        const res = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            phone: digits,
-            contato: digits,
-            send_otp: true,
-            promotor: attr?.ref || undefined,
-            ref: attr?.ref || undefined,
-            attribution: attr
-              ? {
-                  ref: attr.ref,
-                  utm_source: attr.utm_source,
-                  utm_medium: attr.utm_medium,
-                  utm_campaign: attr.utm_campaign,
-                  gclid: attr.gclid,
-                  fbclid: attr.fbclid,
-                }
-              : undefined,
-          }),
-          signal: AbortSignal.timeout(3500),
-        });
-
-        if (res.ok) {
-          data = await res.json();
-        }
-      } catch (err) {
-        console.warn('[lead-capture] Falha ou timeout no check do telefone:', err);
-      } finally {
-        phoneWrapper?.classList.remove('loading');
-        isCheckingPhone = false;
-      }
-
-      // 1. CENÁRIO: Telefone JÁ EXISTE no banco de dados
-      // O backend já disparou o OTP para o WhatsApp do aluno. Redireciona direto pro app!
+      // Se telefone já existe no banco: OTP enviado -> direto pro app!
       if (data?.found) {
         phoneWrapper?.classList.add('valid');
         credentialLed?.classList.add('verified');
-
         if (speech) {
           speech.textContent = 'Que bom ter você de volta! Localizamos seu cadastro e enviamos seu código no WhatsApp. Redirecionando...';
         }
-
-        const sessionPayload = JSON.stringify({
-          phone: digits,
-          ref: attr?.ref,
-          ts: Date.now(),
-        });
-        const domainStr = cookieDomain();
-        document.cookie = `supletivo.session=${encodeURIComponent(sessionPayload)}; path=/; max-age=1800; SameSite=Lax${domainStr}`;
-
-        track('lead_phone_existing', { phone: digits, ref: attr?.ref ?? 'direct' });
-
-        const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
-        if (data.external_id) targetUrl.searchParams.set('id', data.external_id);
-        targetUrl.searchParams.set('tel', digits);
-        if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
-
-        setTimeout(() => {
-          window.location.href = targetUrl.toString();
-        }, 500);
+        saveSession({ phone: digits });
+        track('lead_phone_existing', { phone: digits });
+        redirectToOtp({ id: data.external_id, tel: digits }, 500);
         return;
       }
 
-      // 2. CENÁRIO: Telefone NOVO (ou fallback seguro)
-      // Auto-avança instantaneamente para a Etapa 2 (CPF)
+      // Telefone novo: auto-avança para CPF
       phoneWrapper?.classList.add('valid');
       credentialLed?.classList.add('verified');
       advanceToCpfStep();
@@ -1029,8 +720,7 @@ import { APP_URL, BACKEND_URL } from '../config';
 
     function handlePhoneInput() {
       if (!inputPhone) return;
-      const raw = inputPhone.value;
-      const digits = raw.replace(/\D/g, '');
+      const digits = inputPhone.value.replace(/\D/g, '');
       inputPhone.value = formatPhone(digits);
 
       const isValid = validatePhone(digits);
@@ -1063,14 +753,12 @@ import { APP_URL, BACKEND_URL } from '../config';
         speech.textContent = 'Agora digite seu CPF para validação cadastral e elegibilidade legal pela LDB.';
       }
 
-      setTimeout(() => {
-        inputCpf?.focus();
-      }, 50);
+      setTimeout(() => { inputCpf?.focus(); }, 50);
     }
 
     inputPhone?.addEventListener('input', handlePhoneInput);
 
-    // Breadcrumbs: navegação reversa segura
+    // Navegação reversa via chips
     chipPhone?.addEventListener('click', () => {
       clearTimers();
       stepCpf?.classList.add('hidden');
@@ -1097,7 +785,7 @@ import { APP_URL, BACKEND_URL } from '../config';
       inputCpf?.focus();
     });
 
-    // ── GESTÃO DA ETAPA 2: CPF (MÓDULO 11 + SUBMISSÃO IMEDIATA) ─────────────
+    // ── ETAPA 2: CPF ──────────────────────────────────────────────────────────
     async function checkAndSubmitCpf(digits: string) {
       if (isCheckingCpf || digits === lastCheckedCpf) return;
       lastCheckedCpf = digits;
@@ -1106,46 +794,11 @@ import { APP_URL, BACKEND_URL } from '../config';
       cpfWrapper?.classList.add('loading');
       cpfWrapper?.classList.remove('valid');
 
-      const backendUrl = modal?.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
-      const attr = initAttribution();
       const phoneDigits = inputPhone?.value.replace(/\D/g, '') ?? '';
+      const data = await checkAuth({ cpf: digits, phone: phoneDigits });
+      cpfWrapper?.classList.remove('loading');
+      isCheckingCpf = false;
 
-      let data: any = null;
-      try {
-        const res = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cpf: digits,
-            phone: phoneDigits,
-            send_otp: true,
-            promotor: attr?.ref || undefined,
-            ref: attr?.ref || undefined,
-            attribution: attr
-              ? {
-                  ref: attr.ref,
-                  utm_source: attr.utm_source,
-                  utm_medium: attr.utm_medium,
-                  utm_campaign: attr.utm_campaign,
-                  gclid: attr.gclid,
-                  fbclid: attr.fbclid,
-                }
-              : undefined,
-          }),
-          signal: AbortSignal.timeout(3500),
-        });
-
-        if (res.ok) {
-          data = await res.json();
-        }
-      } catch (err) {
-        console.warn('[lead-capture] Falha ou timeout no check do CPF:', err);
-      } finally {
-        cpfWrapper?.classList.remove('loading');
-        isCheckingCpf = false;
-      }
-
-      // 1. CENÁRIO: CPF JÁ CADASTRADO NO BANCO DE DADOS
       if (data?.found) {
         const cleanMasked = (data?.masked_phone || '').replace(/\D/g, '');
         const isDifferentPhone = Boolean(
@@ -1157,22 +810,15 @@ import { APP_URL, BACKEND_URL } from '../config';
         );
 
         if (isDifferentPhone) {
-          // Usuário trocou de número ou CPF pertence a outra conta
-          showExistingCard(data, digits, phoneDigits, attr?.ref);
+          showExistingCard(data, digits, phoneDigits);
           return;
         }
 
-        // Mesmo número: código OTP enviado, redireciona direto
-        const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
-        if (data.external_id) targetUrl.searchParams.set('id', data.external_id);
-        targetUrl.searchParams.set('tel', phoneDigits);
-        targetUrl.searchParams.set('cpf', digits);
-        if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
-        window.location.href = targetUrl.toString();
+        redirectToOtp({ id: data.external_id, tel: phoneDigits, cpf: digits });
         return;
       }
 
-      // 2. CENÁRIO: CPF NOVO (OU FALLBACK SEGURO)
+      // CPF novo: autorização na credencial e avança para e-mail
       cpfWrapper?.classList.add('valid');
       if (data?.name && credentialStudentName) {
         credentialStudentName.textContent = data.name.toUpperCase();
@@ -1184,9 +830,8 @@ import { APP_URL, BACKEND_URL } from '../config';
       advanceToEmailStep();
     }
 
-    function showExistingCard(data: any, cpfDigits: string, phoneDigits: string, ref?: string) {
+    function showExistingCard(data: any, cpfDigits: string, phoneDigits: string) {
       clearTimers();
-
       stepPhone?.classList.add('hidden');
       stepCpf?.classList.add('hidden');
       stepEmail?.classList.add('hidden');
@@ -1196,23 +841,22 @@ import { APP_URL, BACKEND_URL } from '../config';
       if (existingPhoneMasked && data.masked_phone) {
         existingPhoneMasked.textContent = data.masked_phone;
       }
-
       if (speech) {
         speech.textContent = 'Identificamos que seu CPF já possui matrícula vinculada.';
       }
 
+      const attr = initAttribution();
       const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
       if (data.external_id) targetUrl.searchParams.set('id', data.external_id);
       targetUrl.searchParams.set('tel', phoneDigits);
       targetUrl.searchParams.set('cpf', cpfDigits);
-      if (ref) targetUrl.searchParams.set('ref', ref);
+      if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
 
       const existingLink = modal?.querySelector<HTMLAnchorElement>('#btn-existing-redirect');
       if (existingLink) {
         existingLink.href = targetUrl.toString();
       }
 
-      // Contagem regressiva suave (3s) e auto-redirect 100% Zero-Button
       const progressBar = modal?.querySelector<HTMLElement>('#existing-progress-bar');
       if (progressBar) {
         progressBar.style.transition = 'none';
@@ -1238,8 +882,7 @@ import { APP_URL, BACKEND_URL } from '../config';
 
     function handleCpfInput() {
       if (!inputCpf) return;
-      const raw = inputCpf.value;
-      const digits = raw.replace(/\D/g, '');
+      const digits = inputCpf.value.replace(/\D/g, '');
       inputCpf.value = formatCPF(digits);
 
       const isValid = validateCPF(digits);
@@ -1273,31 +916,23 @@ import { APP_URL, BACKEND_URL } from '../config';
         speech.textContent = 'E para qual e-mail enviamos a cópia do seu plano de estudos?';
       }
 
-      setTimeout(() => {
-        inputEmail?.focus();
-      }, 50);
+      setTimeout(() => { inputEmail?.focus(); }, 50);
     }
 
     inputCpf?.addEventListener('input', handleCpfInput);
 
-    // ── GESTÃO DA ETAPA 3: E-MAIL (AUTO-DISPATCH SEM BOTÕES) ────────────────
+    // ── ETAPA 3: E-MAIL ──────────────────────────────────────────────────────
     function handleEmailInput() {
       if (!inputEmail) return;
       const val = inputEmail.value.trim();
       const isValid = isEmailFormatValid(val);
       emailWrapper?.classList.toggle('valid', isValid);
 
-      if (emailDebounceTimer) {
-        clearTimeout(emailDebounceTimer);
-        emailDebounceTimer = null;
-      }
+      if (emailDebounceTimer) { clearTimeout(emailDebounceTimer); emailDebounceTimer = null; }
 
       if (isValid && !isSubmitting) {
-        // Auto-dispatch com debounce de 350ms
         emailDebounceTimer = setTimeout(() => {
-          if (isEmailFormatValid(inputEmail.value.trim())) {
-            submitLeadCapture();
-          }
+          if (isEmailFormatValid(inputEmail.value.trim())) submitLeadCapture();
         }, 350);
       }
     }
@@ -1309,7 +944,6 @@ import { APP_URL, BACKEND_URL } from '../config';
       }
     });
 
-    // Single-tap domain chips
     modal.querySelectorAll<HTMLButtonElement>('.domain-chip').forEach((btn) => {
       btn.addEventListener('click', () => {
         if (!inputEmail) return;
@@ -1317,14 +951,11 @@ import { APP_URL, BACKEND_URL } from '../config';
         if (domain) {
           inputEmail.value = completeEmailWithDomain(inputEmail.value, domain);
           handleEmailInput();
-          if (isEmailFormatValid(inputEmail.value.trim())) {
-            submitLeadCapture();
-          }
+          if (isEmailFormatValid(inputEmail.value.trim())) submitLeadCapture();
         }
       });
     });
 
-    // Form submit listener (caso usuário aperte Enter no teclado)
     modal.querySelector('#lead-capture-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!stepPhone?.classList.contains('hidden')) {
@@ -1338,14 +969,11 @@ import { APP_URL, BACKEND_URL } from '../config';
         return;
       }
       if (!stepEmail?.classList.contains('hidden')) {
-        if (inputEmail && isEmailFormatValid(inputEmail.value.trim())) {
-          submitLeadCapture();
-        }
-        return;
+        if (inputEmail && isEmailFormatValid(inputEmail.value.trim())) submitLeadCapture();
       }
     });
 
-    // ── SUBMISSÃO FINAL E HANDOFF (AS 3 VALIDAÇÕES CONFIRMADAS) ───────────────
+    // ── SUBMISSÃO FINAL (AS 3 VALIDAÇÕES) ─────────────────────────────────────
     async function submitLeadCapture() {
       if (isSubmitting) return;
 
@@ -1353,19 +981,9 @@ import { APP_URL, BACKEND_URL } from '../config';
       const cpfDigits = inputCpf?.value.replace(/\D/g, '') ?? '';
       const emailValue = inputEmail?.value.trim() ?? '';
 
-      // Assegura rigorosamente as 3 validações antes do handoff
-      if (!validatePhone(phoneDigits)) {
-        chipPhone?.click();
-        return;
-      }
-      if (!validateCPF(cpfDigits)) {
-        chipCpf?.click();
-        return;
-      }
-      if (!isEmailFormatValid(emailValue)) {
-        inputEmail?.focus();
-        return;
-      }
+      if (!validatePhone(phoneDigits)) { chipPhone?.click(); return; }
+      if (!validateCPF(cpfDigits)) { chipCpf?.click(); return; }
+      if (!isEmailFormatValid(emailValue)) { inputEmail?.focus(); return; }
 
       isSubmitting = true;
       emailWrapper?.classList.add('loading');
@@ -1375,83 +993,25 @@ import { APP_URL, BACKEND_URL } from '../config';
         speech.textContent = 'Tudo pronto! Sua pré-matrícula foi autorizada. Redirecionando para seu ambiente de estudos...';
       }
 
-      const attr = initAttribution();
+      saveSession({ phone: phoneDigits, cpf: cpfDigits, email: emailValue });
+      track('lead_capture_submitted', { has_cpf: true, has_email: true });
 
-      try {
-        // Redundância First-Party: Gravação de Cookie de Domínio
-        const sessionPayload = JSON.stringify({
-          phone: phoneDigits,
-          cpf: cpfDigits,
-          email: emailValue,
-          ref: attr?.ref,
-          ts: Date.now(),
-        });
-        const domainStr = cookieDomain();
-        document.cookie = `supletivo.session=${encodeURIComponent(sessionPayload)}; path=/; max-age=1800; SameSite=Lax${domainStr}`;
+      const data = await checkAuth({
+        contato: phoneDigits,
+        phone: phoneDigits,
+        cpf: cpfDigits,
+        email: emailValue,
+      });
 
-        // Disparo de tracking analítico
-        track('lead_capture_submitted', {
-          has_cpf: true,
-          has_email: true,
-          ref: attr?.ref ?? 'direct',
-        });
+      emailWrapper?.classList.remove('loading');
+      emailWrapper?.classList.add('valid');
 
-        const backendUrl = modal?.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
-
-        // Disparo final ao backend
-        let externalId: string | undefined;
-        try {
-          const apiRes = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contato: phoneDigits,
-              phone: phoneDigits,
-              cpf: cpfDigits,
-              email: emailValue,
-              promotor: attr?.ref || undefined,
-              ref: attr?.ref || undefined,
-              send_otp: true,
-              attribution: attr
-                ? {
-                    ref: attr.ref,
-                    utm_source: attr.utm_source,
-                    utm_medium: attr.utm_medium,
-                    utm_campaign: attr.utm_campaign,
-                    gclid: attr.gclid,
-                    fbclid: attr.fbclid,
-                  }
-                : undefined,
-            }),
-            signal: AbortSignal.timeout(3500),
-          });
-
-          if (apiRes.ok) {
-            const data = await apiRes.json();
-            externalId = data?.external_id;
-          }
-        } catch (fetchErr) {
-          console.warn('[lead-capture] Backend timeout ou erro, seguindo com fallback resiliente:', fetchErr);
-        }
-
-        emailWrapper?.classList.remove('loading');
-        emailWrapper?.classList.add('valid');
-
-        // Construção da URL de Redirecionamento oficial para /autenticacao/otp
-        const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
-        if (externalId) targetUrl.searchParams.set('id', externalId);
-        targetUrl.searchParams.set('tel', phoneDigits);
-        targetUrl.searchParams.set('cpf', cpfDigits);
-        targetUrl.searchParams.set('email', emailValue);
-        if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
-
-        setTimeout(() => {
-          window.location.href = targetUrl.toString();
-        }, 300);
-      } catch (err) {
-        console.error('[lead-capture] Falha ao processar captura final:', err);
-        window.location.href = `${appUrl}/autenticacao/otp?tel=${phoneDigits}&cpf=${cpfDigits}&email=${encodeURIComponent(emailValue)}`;
-      }
+      redirectToOtp({
+        id: data?.external_id,
+        tel: phoneDigits,
+        cpf: cpfDigits,
+        email: emailValue,
+      }, 300);
     }
   }
 </script>
