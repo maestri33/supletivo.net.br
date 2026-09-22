@@ -116,6 +116,97 @@ test.describe('Captura Inteligente de Alunos (LeadCaptureModal)', () => {
     await expect(page.locator('#step-email')).toBeHidden();
   });
 
+  test('telefone existente no banco redireciona diretamente para OTP sem pedir CPF ou email', async ({ page }) => {
+    // Intercepta rota de check para simular número já cadastrado
+    await page.route('**/api/v1/clients/auth/check', async (route) => {
+      const request = route.request();
+      const postData = request.postDataJSON();
+      if (postData?.phone === '11999990001' && !postData?.cpf) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            found: true,
+            registered: true,
+            otp_sent: true,
+            external_id: 'usr_phone_existing_999',
+            roles: ['lead'],
+          }),
+        });
+      } else {
+        await route.continue();
+      }
+    });
+
+    await page.goto('/');
+    await page.locator('a[data-cta="hero"]').click();
+
+    const phoneInput = page.locator('#lead-input-phone');
+    await expect(phoneInput).toBeVisible();
+
+    // Insere telefone existente
+    await phoneInput.fill('11999990001');
+
+    // Deve redirecionar direto para /autenticacao/otp sem exibir CPF nem e-mail
+    await page.waitForURL(/autenticacao\/otp/, { timeout: 4000 });
+    const currentUrl = page.url();
+    expect(currentUrl).toContain('id=usr_phone_existing_999');
+    expect(currentUrl).toContain('tel=11999990001');
+
+    // Certifica que campos de CPF e e-mail permaneceram ocultos
+    await expect(page.locator('#step-cpf')).toBeHidden();
+    await expect(page.locator('#step-email')).toBeHidden();
+  });
+
+  test('CPF existente com telefone diferente exibe aviso com auto-redirect sem botões', async ({ page }) => {
+    // Intercepta rota de check: telefone novo, mas CPF já existe em outro número
+    await page.route('**/api/v1/clients/auth/check', async (route) => {
+      const request = route.request();
+      const postData = request.postDataJSON();
+      if (postData?.phone === '11987654321' && !postData?.cpf) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ found: false, created: false }),
+        });
+      } else if (postData?.cpf === '52998224725') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            found: true,
+            registered: true,
+            otp_sent: true,
+            masked_phone: '(11) •••••-9999',
+            external_id: 'usr_cpf_other_phone',
+          }),
+        });
+      } else {
+        await route.continue();
+      }
+    });
+
+    await page.goto('/');
+    await page.locator('a[data-cta="hero"]').click();
+
+    // Telefone novo avança para CPF
+    await page.locator('#lead-input-phone').fill('11987654321');
+    const cpfInput = page.locator('#lead-input-cpf');
+    await expect(cpfInput).toBeVisible({ timeout: 2000 });
+
+    // CPF existente em outro telefone
+    await cpfInput.fill('52998224725');
+
+    // Deve exibir o card de acolhimento existente sem botão de submit manual
+    const stepExisting = page.locator('#step-existing');
+    await expect(stepExisting).toBeVisible({ timeout: 3000 });
+    await expect(page.locator('#existing-phone-masked')).toContainText('•••••-9999');
+
+    // Auto-redirecionamento disparado
+    await page.waitForURL(/autenticacao\/otp/, { timeout: 5000 });
+    expect(page.url()).toContain('id=usr_cpf_other_phone');
+  });
+
   test('acessibilidade do modal de captação (Axe-core WCAG 2A/AA)', async ({ page }) => {
     await page.goto('/');
     await page.locator('a[data-cta="hero"]').click();

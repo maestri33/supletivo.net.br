@@ -98,14 +98,15 @@ import { APP_URL, BACKEND_URL } from '../config';
                 required
                 aria-label="Número do seu celular WhatsApp"
               />
-              <span class="input-status-icon" id="phone-check-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+              <span class="input-status-icon" id="phone-status-icon" aria-hidden="true">
+                <svg class="check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
+                <span class="spinner" id="phone-spinner" aria-hidden="true"></span>
               </span>
             </div>
             <p class="input-hint" id="phone-hint">
-              Digite seu WhatsApp com DDD. Avanço automático ao completar os 11 dígitos.
+              Digite seu WhatsApp com DDD. Validação e avanço imediatos ao digitar.
             </p>
           </div>
 
@@ -123,10 +124,11 @@ import { APP_URL, BACKEND_URL } from '../config';
                 maxlength="14"
                 aria-label="Número do seu CPF"
               />
-              <span class="input-status-icon" id="cpf-check-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+              <span class="input-status-icon" id="cpf-status-icon" aria-hidden="true">
+                <svg class="check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
+                <span class="spinner" id="cpf-spinner" aria-hidden="true"></span>
               </span>
             </div>
             <p class="input-hint" id="cpf-hint">
@@ -147,11 +149,11 @@ import { APP_URL, BACKEND_URL } from '../config';
                 autocomplete="email"
                 aria-label="Seu melhor endereço de e-mail"
               />
-              <span class="input-status-icon" id="email-check-icon" aria-hidden="true">
+              <span class="input-status-icon" id="email-status-icon" aria-hidden="true">
                 <svg class="check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
-                <span class="spinner hidden" id="lead-spinner" aria-hidden="true"></span>
+                <span class="spinner" id="lead-spinner" aria-hidden="true"></span>
               </span>
             </div>
             <p class="input-hint" id="email-hint">
@@ -165,7 +167,7 @@ import { APP_URL, BACKEND_URL } from '../config';
             </div>
           </div>
 
-          <!-- ESTADO: CPF JÁ CADASTRADO (ACOLHIMENTO AMIGÁVEL) -->
+          <!-- ESTADO: CPF COM OUTRO TELEFONE LOCALIZADO (SEM BOTÕES, AUTO-REDIRECT) -->
           <div id="step-existing" class="step-pane hidden">
             <div class="existing-user-card">
               <div class="existing-badge">
@@ -177,14 +179,15 @@ import { APP_URL, BACKEND_URL } from '../config';
                 <strong id="existing-phone-masked">(XX) •••••-XXXX</strong>.
               </p>
               <p class="existing-sub">
-                Enviamos seu código OTP de 6 dígitos no seu WhatsApp para você acessar diretamente.
+                Enviamos o código de segurança para o seu número cadastrado. Redirecionando para autenticação...
               </p>
-              <a href={APP_URL} class="action-btn submit-btn mt-3 text-center" id="btn-existing-redirect">
-                Acessar com Código Seguro
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </a>
+              <div class="existing-progress-wrap" aria-hidden="true">
+                <div class="existing-progress-bar" id="existing-progress-bar"></div>
+              </div>
+              <p class="existing-redirect-info">
+                Redirecionamento automático em <span id="existing-countdown">3</span>s
+                · <a href="#" id="btn-existing-redirect" class="existing-inline-link">Acessar agora &rarr;</a>
+              </p>
             </div>
           </div>
         </form>
@@ -557,13 +560,35 @@ import { APP_URL, BACKEND_URL } from '../config';
   }
 
   .input-status-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
     transform: scale(0.7);
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  .input-wrapper.valid .input-status-icon {
+  .input-wrapper.valid .input-status-icon,
+  .input-wrapper.loading .input-status-icon {
     opacity: 1;
     transform: scale(1);
+  }
+  .input-status-icon .check-svg {
+    display: none;
+  }
+  .input-status-icon .spinner {
+    display: none;
+  }
+  .input-wrapper.loading .input-status-icon .spinner {
+    display: inline-block !important;
+  }
+  .input-wrapper.loading .input-status-icon .check-svg {
+    display: none !important;
+  }
+  .input-wrapper.valid:not(.loading) .input-status-icon .check-svg {
+    display: inline-block !important;
   }
 
   .input-hint {
@@ -573,36 +598,12 @@ import { APP_URL, BACKEND_URL } from '../config';
     line-height: 1.4;
   }
 
-  /* Botões de Ação */
-  .action-btn {
-    width: 100%;
-    min-height: var(--input-height, 48px);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-soft) 100%);
-    color: var(--ink);
-    font-weight: 800;
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--input-radius, 10px);
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 10px 25px -5px color-mix(in srgb, var(--yellow) 40%, transparent);
-    transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out);
-  }
-  .action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px -5px color-mix(in srgb, var(--yellow) 50%, transparent);
-  }
-
-  /* Cartão de usuário já existente */
+  /* Cartão de usuário já existente (100% Zero-Button, auto-redirect) */
   .existing-user-card {
     background: color-mix(in srgb, var(--green) 12%, transparent);
     border: 1px solid color-mix(in srgb, var(--green) 35%, transparent);
     border-radius: var(--input-radius, 10px);
-    padding: 1.25rem;
+    padding: 1.5rem 1.25rem;
     text-align: center;
   }
   .existing-badge {
@@ -621,12 +622,46 @@ import { APP_URL, BACKEND_URL } from '../config';
   }
   .existing-text {
     color: #f1f5f9;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
+    font-weight: 600;
     margin-bottom: 0.4rem;
   }
   .existing-sub {
     color: var(--muted-on-dark);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
+    margin-bottom: 1rem;
+    line-height: 1.45;
+  }
+  .existing-progress-wrap {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 0.75rem 0;
+  }
+  .existing-progress-bar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 100%);
+    transform-origin: left;
+    transform: scaleX(1);
+    transition: transform 2.8s linear;
+  }
+  .existing-redirect-info {
+    font-size: 0.78rem;
+    color: var(--muted-on-dark);
+    margin-top: 0.6rem;
+    margin-bottom: 0;
+  }
+  .existing-inline-link {
+    color: var(--yellow);
+    text-decoration: underline;
+    font-weight: 700;
+    transition: color 0.15s;
+  }
+  .existing-inline-link:hover {
+    color: #ffffff;
   }
 
   .security-footer {
@@ -790,15 +825,16 @@ import { APP_URL, BACKEND_URL } from '../config';
     background: linear-gradient(90deg, var(--green) 0%, var(--green) 40%, var(--yellow) 40%, var(--yellow) 70%, var(--blue) 70%, var(--blue) 100%);
   }
 
-  /* Spinner */
+  /* Spinner Micro-Interaction */
   .spinner {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-top-color: #000000;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2px solid rgba(255, 255, 255, 0.22);
+    border-top-color: var(--yellow);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
     display: inline-block;
+    box-sizing: border-box;
   }
   @keyframes spin {
     to { transform: rotate(360deg); }
@@ -844,8 +880,29 @@ import { APP_URL, BACKEND_URL } from '../config';
     const credentialStatusBadge = modal.querySelector<HTMLElement>('#credential-status-badge');
     const credentialStatusText = modal.querySelector<HTMLElement>('#credential-status-text');
 
+    let isCheckingPhone = false;
+    let isCheckingCpf = false;
     let isSubmitting = false;
+    let lastCheckedPhone = '';
+    let lastCheckedCpf = '';
     let emailDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+    let existingTimer: ReturnType<typeof setTimeout> | null = null;
+    let existingInterval: ReturnType<typeof setInterval> | null = null;
+
+    function clearTimers() {
+      if (emailDebounceTimer) {
+        clearTimeout(emailDebounceTimer);
+        emailDebounceTimer = null;
+      }
+      if (existingTimer) {
+        clearTimeout(existingTimer);
+        existingTimer = null;
+      }
+      if (existingInterval) {
+        clearInterval(existingInterval);
+        existingInterval = null;
+      }
+    }
 
     // Funções de Abertura / Fechamento
     function openModal(triggerSource = 'desconhecido') {
@@ -864,6 +921,7 @@ import { APP_URL, BACKEND_URL } from '../config';
     }
 
     function closeModal() {
+      clearTimers();
       modal?.classList.remove('open');
       modal?.setAttribute('aria-hidden', 'true');
       modal?.setAttribute('hidden', '');
@@ -884,7 +942,91 @@ import { APP_URL, BACKEND_URL } from '../config';
       openModal(detail?.position ?? 'cta');
     });
 
-    // ── GESTÃO DA ETAPA 1: WHATSAPP ──────────────────────────────────────────
+    // ── GESTÃO DA ETAPA 1: WHATSAPP (SUBMISSÃO IMEDIATA NO 11º DÍGITO) ─────────
+    async function checkAndSubmitPhone(digits: string) {
+      if (isCheckingPhone || digits === lastCheckedPhone) return;
+      lastCheckedPhone = digits;
+      isCheckingPhone = true;
+
+      phoneWrapper?.classList.add('loading');
+      phoneWrapper?.classList.remove('valid');
+
+      const backendUrl = modal?.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
+      const attr = initAttribution();
+
+      let data: any = null;
+      try {
+        const res = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: digits,
+            contato: digits,
+            send_otp: true,
+            promotor: attr?.ref || undefined,
+            ref: attr?.ref || undefined,
+            attribution: attr
+              ? {
+                  ref: attr.ref,
+                  utm_source: attr.utm_source,
+                  utm_medium: attr.utm_medium,
+                  utm_campaign: attr.utm_campaign,
+                  gclid: attr.gclid,
+                  fbclid: attr.fbclid,
+                }
+              : undefined,
+          }),
+          signal: AbortSignal.timeout(3500),
+        });
+
+        if (res.ok) {
+          data = await res.json();
+        }
+      } catch (err) {
+        console.warn('[lead-capture] Falha ou timeout no check do telefone:', err);
+      } finally {
+        phoneWrapper?.classList.remove('loading');
+        isCheckingPhone = false;
+      }
+
+      // 1. CENÁRIO: Telefone JÁ EXISTE no banco de dados
+      // O backend já disparou o OTP para o WhatsApp do aluno. Redireciona direto pro app!
+      if (data?.found) {
+        phoneWrapper?.classList.add('valid');
+        credentialLed?.classList.add('verified');
+
+        if (speech) {
+          speech.textContent = 'Que bom ter você de volta! Localizamos seu cadastro e enviamos seu código no WhatsApp. Redirecionando...';
+        }
+
+        const sessionPayload = JSON.stringify({
+          phone: digits,
+          ref: attr?.ref,
+          ts: Date.now(),
+        });
+        const domainStr = cookieDomain();
+        document.cookie = `supletivo.session=${encodeURIComponent(sessionPayload)}; path=/; max-age=1800; SameSite=Lax${domainStr}`;
+
+        track('lead_phone_existing', { phone: digits, ref: attr?.ref ?? 'direct' });
+
+        const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
+        if (data.external_id) targetUrl.searchParams.set('id', data.external_id);
+        targetUrl.searchParams.set('tel', digits);
+        if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
+
+        setTimeout(() => {
+          window.location.href = targetUrl.toString();
+        }, 500);
+        return;
+      }
+
+      // 2. CENÁRIO: Telefone NOVO (ou fallback seguro)
+      // Auto-avança instantaneamente para a Etapa 2 (CPF)
+      phoneWrapper?.classList.add('valid');
+      credentialLed?.classList.add('verified');
+      advanceToCpfStep();
+    }
+
     function handlePhoneInput() {
       if (!inputPhone) return;
       const raw = inputPhone.value;
@@ -894,15 +1036,10 @@ import { APP_URL, BACKEND_URL } from '../config';
       const isValid = validatePhone(digits);
       phoneWrapper?.classList.toggle('valid', isValid);
 
-      if (isValid) {
-        credentialLed?.classList.add('verified');
-        // Auto-avanço em ~200ms (Zero-Button)
-        setTimeout(() => {
-          if (validatePhone(inputPhone.value)) {
-            advanceToCpfStep();
-          }
-        }, 200);
+      if (isValid && digits.length === 11) {
+        checkAndSubmitPhone(digits);
       } else {
+        lastCheckedPhone = '';
         credentialLed?.classList.remove('verified');
       }
     }
@@ -913,6 +1050,7 @@ import { APP_URL, BACKEND_URL } from '../config';
       stepPhone?.classList.add('hidden');
       stepCpf?.classList.remove('hidden');
       stepEmail?.classList.add('hidden');
+      stepExisting?.classList.add('hidden');
 
       if (breadcrumbs && chipPhoneText) {
         breadcrumbs.classList.remove('hidden');
@@ -934,6 +1072,7 @@ import { APP_URL, BACKEND_URL } from '../config';
 
     // Breadcrumbs: navegação reversa segura
     chipPhone?.addEventListener('click', () => {
+      clearTimers();
       stepCpf?.classList.add('hidden');
       stepEmail?.classList.add('hidden');
       stepExisting?.classList.add('hidden');
@@ -946,6 +1085,7 @@ import { APP_URL, BACKEND_URL } from '../config';
     });
 
     chipCpf?.addEventListener('click', () => {
+      clearTimers();
       stepEmail?.classList.add('hidden');
       stepPhone?.classList.add('hidden');
       stepExisting?.classList.add('hidden');
@@ -957,7 +1097,145 @@ import { APP_URL, BACKEND_URL } from '../config';
       inputCpf?.focus();
     });
 
-    // ── GESTÃO DA ETAPA 2: CPF ──────────────────────────────────────────────
+    // ── GESTÃO DA ETAPA 2: CPF (MÓDULO 11 + SUBMISSÃO IMEDIATA) ─────────────
+    async function checkAndSubmitCpf(digits: string) {
+      if (isCheckingCpf || digits === lastCheckedCpf) return;
+      lastCheckedCpf = digits;
+      isCheckingCpf = true;
+
+      cpfWrapper?.classList.add('loading');
+      cpfWrapper?.classList.remove('valid');
+
+      const backendUrl = modal?.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
+      const attr = initAttribution();
+      const phoneDigits = inputPhone?.value.replace(/\D/g, '') ?? '';
+
+      let data: any = null;
+      try {
+        const res = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cpf: digits,
+            phone: phoneDigits,
+            send_otp: true,
+            promotor: attr?.ref || undefined,
+            ref: attr?.ref || undefined,
+            attribution: attr
+              ? {
+                  ref: attr.ref,
+                  utm_source: attr.utm_source,
+                  utm_medium: attr.utm_medium,
+                  utm_campaign: attr.utm_campaign,
+                  gclid: attr.gclid,
+                  fbclid: attr.fbclid,
+                }
+              : undefined,
+          }),
+          signal: AbortSignal.timeout(3500),
+        });
+
+        if (res.ok) {
+          data = await res.json();
+        }
+      } catch (err) {
+        console.warn('[lead-capture] Falha ou timeout no check do CPF:', err);
+      } finally {
+        cpfWrapper?.classList.remove('loading');
+        isCheckingCpf = false;
+      }
+
+      // 1. CENÁRIO: CPF JÁ CADASTRADO NO BANCO DE DADOS
+      if (data?.found) {
+        const cleanMasked = (data?.masked_phone || '').replace(/\D/g, '');
+        const isDifferentPhone = Boolean(
+          cleanMasked &&
+          cleanMasked.length >= 4 &&
+          phoneDigits.length >= 4 &&
+          !phoneDigits.endsWith(cleanMasked.slice(-4)) &&
+          !cleanMasked.endsWith(phoneDigits.slice(-4))
+        );
+
+        if (isDifferentPhone) {
+          // Usuário trocou de número ou CPF pertence a outra conta
+          showExistingCard(data, digits, phoneDigits, attr?.ref);
+          return;
+        }
+
+        // Mesmo número: código OTP enviado, redireciona direto
+        const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
+        if (data.external_id) targetUrl.searchParams.set('id', data.external_id);
+        targetUrl.searchParams.set('tel', phoneDigits);
+        targetUrl.searchParams.set('cpf', digits);
+        if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
+        window.location.href = targetUrl.toString();
+        return;
+      }
+
+      // 2. CENÁRIO: CPF NOVO (OU FALLBACK SEGURO)
+      cpfWrapper?.classList.add('valid');
+      if (data?.name && credentialStudentName) {
+        credentialStudentName.textContent = data.name.toUpperCase();
+      }
+      if (credentialDoc) credentialDoc.textContent = `CPF: ${formatCPF(digits)}`;
+      credentialStatusBadge?.classList.add('authorized');
+      if (credentialStatusText) credentialStatusText.textContent = 'PRÉ-MATRÍCULA AUTORIZADA';
+
+      advanceToEmailStep();
+    }
+
+    function showExistingCard(data: any, cpfDigits: string, phoneDigits: string, ref?: string) {
+      clearTimers();
+
+      stepPhone?.classList.add('hidden');
+      stepCpf?.classList.add('hidden');
+      stepEmail?.classList.add('hidden');
+      stepExisting?.classList.remove('hidden');
+
+      const existingPhoneMasked = modal?.querySelector<HTMLElement>('#existing-phone-masked');
+      if (existingPhoneMasked && data.masked_phone) {
+        existingPhoneMasked.textContent = data.masked_phone;
+      }
+
+      if (speech) {
+        speech.textContent = 'Identificamos que seu CPF já possui matrícula vinculada.';
+      }
+
+      const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
+      if (data.external_id) targetUrl.searchParams.set('id', data.external_id);
+      targetUrl.searchParams.set('tel', phoneDigits);
+      targetUrl.searchParams.set('cpf', cpfDigits);
+      if (ref) targetUrl.searchParams.set('ref', ref);
+
+      const existingLink = modal?.querySelector<HTMLAnchorElement>('#btn-existing-redirect');
+      if (existingLink) {
+        existingLink.href = targetUrl.toString();
+      }
+
+      // Contagem regressiva suave (3s) e auto-redirect 100% Zero-Button
+      const progressBar = modal?.querySelector<HTMLElement>('#existing-progress-bar');
+      if (progressBar) {
+        progressBar.style.transition = 'none';
+        progressBar.style.transform = 'scaleX(1)';
+        void progressBar.offsetWidth;
+        progressBar.style.transition = 'transform 2.8s linear';
+        progressBar.style.transform = 'scaleX(0)';
+      }
+
+      let seconds = 3;
+      const countdownEl = modal?.querySelector<HTMLElement>('#existing-countdown');
+      if (countdownEl) countdownEl.textContent = String(seconds);
+
+      existingInterval = setInterval(() => {
+        seconds -= 1;
+        if (countdownEl && seconds >= 0) countdownEl.textContent = String(seconds);
+      }, 1000);
+
+      existingTimer = setTimeout(() => {
+        window.location.href = targetUrl.toString();
+      }, 2900);
+    }
+
     function handleCpfInput() {
       if (!inputCpf) return;
       const raw = inputCpf.value;
@@ -967,18 +1245,10 @@ import { APP_URL, BACKEND_URL } from '../config';
       const isValid = validateCPF(digits);
       cpfWrapper?.classList.toggle('valid', isValid);
 
-      if (isValid) {
-        if (credentialDoc) credentialDoc.textContent = `CPF: ${formatCPF(digits)}`;
-        credentialStatusBadge?.classList.add('authorized');
-        if (credentialStatusText) credentialStatusText.textContent = 'PRÉ-MATRÍCULA AUTORIZADA';
-
-        // Auto-avanço em ~200ms para E-mail (Zero-Button)
-        setTimeout(() => {
-          if (validateCPF(inputCpf.value)) {
-            advanceToEmailStep();
-          }
-        }, 200);
+      if (isValid && digits.length === 11) {
+        checkAndSubmitCpf(digits);
       } else {
+        lastCheckedCpf = '';
         if (credentialDoc) credentialDoc.textContent = 'DOCUMENTAÇÃO PENDENTE';
         credentialStatusBadge?.classList.remove('authorized');
         if (credentialStatusText) credentialStatusText.textContent = 'AGUARDANDO VALIDAÇÃO';
@@ -991,6 +1261,7 @@ import { APP_URL, BACKEND_URL } from '../config';
       stepPhone?.classList.add('hidden');
       stepCpf?.classList.add('hidden');
       stepEmail?.classList.remove('hidden');
+      stepExisting?.classList.add('hidden');
 
       if (breadcrumbs && chipCpf && chipCpfText) {
         breadcrumbs.classList.remove('hidden');
@@ -1009,7 +1280,7 @@ import { APP_URL, BACKEND_URL } from '../config';
 
     inputCpf?.addEventListener('input', handleCpfInput);
 
-    // ── GESTÃO DA ETAPA 3: E-MAIL ───────────────────────────────────────────
+    // ── GESTÃO DA ETAPA 3: E-MAIL (AUTO-DISPATCH SEM BOTÕES) ────────────────
     function handleEmailInput() {
       if (!inputEmail) return;
       const val = inputEmail.value.trim();
@@ -1046,20 +1317,24 @@ import { APP_URL, BACKEND_URL } from '../config';
         if (domain) {
           inputEmail.value = completeEmailWithDomain(inputEmail.value, domain);
           handleEmailInput();
-          inputEmail.focus();
+          if (isEmailFormatValid(inputEmail.value.trim())) {
+            submitLeadCapture();
+          }
         }
       });
     });
 
-    // Form submit listener (caso usuário aperte Enter)
+    // Form submit listener (caso usuário aperte Enter no teclado)
     modal.querySelector('#lead-capture-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!stepPhone?.classList.contains('hidden')) {
-        if (inputPhone && validatePhone(inputPhone.value)) advanceToCpfStep();
+        const digits = inputPhone?.value.replace(/\D/g, '') ?? '';
+        if (validatePhone(digits)) checkAndSubmitPhone(digits);
         return;
       }
       if (!stepCpf?.classList.contains('hidden')) {
-        if (inputCpf && validateCPF(inputCpf.value)) advanceToEmailStep();
+        const digits = inputCpf?.value.replace(/\D/g, '') ?? '';
+        if (validateCPF(digits)) checkAndSubmitCpf(digits);
         return;
       }
       if (!stepEmail?.classList.contains('hidden')) {
@@ -1070,7 +1345,7 @@ import { APP_URL, BACKEND_URL } from '../config';
       }
     });
 
-    // ── SUBMISSÃO E HANDOFF ──────────────────────────────────────────────────
+    // ── SUBMISSÃO FINAL E HANDOFF (AS 3 VALIDAÇÕES CONFIRMADAS) ───────────────
     async function submitLeadCapture() {
       if (isSubmitting) return;
 
@@ -1078,6 +1353,7 @@ import { APP_URL, BACKEND_URL } from '../config';
       const cpfDigits = inputCpf?.value.replace(/\D/g, '') ?? '';
       const emailValue = inputEmail?.value.trim() ?? '';
 
+      // Assegura rigorosamente as 3 validações antes do handoff
       if (!validatePhone(phoneDigits)) {
         chipPhone?.click();
         return;
@@ -1092,13 +1368,17 @@ import { APP_URL, BACKEND_URL } from '../config';
       }
 
       isSubmitting = true;
-      leadSpinner?.classList.remove('hidden');
-      emailCheckSvg?.classList.add('hidden');
+      emailWrapper?.classList.add('loading');
+      emailWrapper?.classList.remove('valid');
+
+      if (speech) {
+        speech.textContent = 'Tudo pronto! Sua pré-matrícula foi autorizada. Redirecionando para seu ambiente de estudos...';
+      }
 
       const attr = initAttribution();
 
       try {
-        // Redundância First-Party: Gravação de Cookie de Domínio dinâmico
+        // Redundância First-Party: Gravação de Cookie de Domínio
         const sessionPayload = JSON.stringify({
           phone: phoneDigits,
           cpf: cpfDigits,
@@ -1111,14 +1391,14 @@ import { APP_URL, BACKEND_URL } from '../config';
 
         // Disparo de tracking analítico
         track('lead_capture_submitted', {
-          has_cpf: Boolean(cpfDigits),
-          has_email: Boolean(emailValue),
+          has_cpf: true,
+          has_email: true,
           ref: attr?.ref ?? 'direct',
         });
 
-        const backendUrl = modal.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
+        const backendUrl = modal?.dataset.backendUrl?.replace(/\/+$/, '') ?? 'https://backend.supletivo.net.br';
 
-        // Disparo real ao backend com timeout defensivo
+        // Disparo final ao backend
         let externalId: string | undefined;
         try {
           const apiRes = await fetch(`${backendUrl}/api/v1/clients/auth/check`, {
@@ -1149,48 +1429,13 @@ import { APP_URL, BACKEND_URL } from '../config';
           if (apiRes.ok) {
             const data = await apiRes.json();
             externalId = data?.external_id;
-
-            const cleanMasked = (data?.masked_phone || '').replace(/\D/g, '');
-            const isDifferentPhone = Boolean(
-              cleanMasked &&
-              cleanMasked.length >= 4 &&
-              phoneDigits.length >= 4 &&
-              !phoneDigits.endsWith(cleanMasked.slice(-4)) &&
-              !cleanMasked.endsWith(phoneDigits.slice(-4))
-            );
-
-            // Se for cadastro existente em outro telefone, exibe tela de acolhimento
-            if (data?.found && isDifferentPhone) {
-              const existingCard = modal.querySelector<HTMLElement>('#step-existing');
-              const existingPhoneMasked = modal.querySelector<HTMLElement>('#existing-phone-masked');
-              const existingBtn = modal.querySelector<HTMLAnchorElement>('#btn-existing-redirect');
-
-              if (existingPhoneMasked && data.masked_phone) {
-                existingPhoneMasked.textContent = data.masked_phone;
-              }
-
-              const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
-              if (externalId) targetUrl.searchParams.set('id', externalId);
-              targetUrl.searchParams.set('tel', phoneDigits);
-              targetUrl.searchParams.set('cpf', cpfDigits);
-              targetUrl.searchParams.set('email', emailValue);
-              if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
-
-              if (existingBtn) {
-                existingBtn.href = targetUrl.toString();
-              }
-
-              stepPhone?.classList.add('hidden');
-              stepCpf?.classList.add('hidden');
-              stepEmail?.classList.add('hidden');
-              existingCard?.classList.remove('hidden');
-              leadSpinner?.classList.add('hidden');
-              return;
-            }
           }
         } catch (fetchErr) {
-          console.warn('[lead-capture] Backend indisponível ou timeout, seguindo com fallback:', fetchErr);
+          console.warn('[lead-capture] Backend timeout ou erro, seguindo com fallback resiliente:', fetchErr);
         }
+
+        emailWrapper?.classList.remove('loading');
+        emailWrapper?.classList.add('valid');
 
         // Construção da URL de Redirecionamento oficial para /autenticacao/otp
         const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
@@ -1200,13 +1445,11 @@ import { APP_URL, BACKEND_URL } from '../config';
         targetUrl.searchParams.set('email', emailValue);
         if (attr?.ref) targetUrl.searchParams.set('ref', attr.ref);
 
-        // Aguarda transição visual e redireciona
         setTimeout(() => {
           window.location.href = targetUrl.toString();
-        }, 250);
+        }, 300);
       } catch (err) {
-        console.error('[lead-capture] Falha ao processar captura:', err);
-        // Fallback garantido: redireciona mesmo em caso de erro no script
+        console.error('[lead-capture] Falha ao processar captura final:', err);
         window.location.href = `${appUrl}/autenticacao/otp?tel=${phoneDigits}&cpf=${cpfDigits}&email=${encodeURIComponent(emailValue)}`;
       }
     }
