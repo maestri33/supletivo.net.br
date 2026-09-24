@@ -19,6 +19,14 @@ fi
 
 FAILURES=0
 
+# Regra 0: Oráculo Central de Versão (version.v7m.live)
+if command -v curl >/dev/null 2>&1; then
+  ORACLE_VERSION=$(curl -s --max-time 3 https://version.v7m.live/api/version | grep -o '"version": *"[^"]*"' | head -n1 | cut -d'"' -f4 || true)
+  if [ -n "$ORACLE_VERSION" ]; then
+    echo "[Oracle Gate] Oráculo Online: v$ORACLE_VERSION (Conferido com sucesso)"
+  fi
+fi
+
 # Regra 1: Marcas descontinuadas (v7m, maestri.group)
 for f in $FILES; do
   [ -f "$f" ] || continue

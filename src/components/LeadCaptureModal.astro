@@ -1013,5 +1013,20 @@ import CredentialCard from './CredentialCard.astro';
         email: emailValue,
       }, 300);
     }
+
+    // Auto-abertura inteligente se o usuário chega direcionado com tel ou modal=cadastro
+    const urlParams = new URLSearchParams(window.location.search);
+    const telParam = urlParams.get('tel');
+    const modalParam = urlParams.get('modal');
+    if (telParam || modalParam === 'cadastro') {
+      openModal('app_redirect');
+      if (telParam && inputPhone) {
+        const cleanDigits = telParam.replace(/\D/g, '');
+        if (cleanDigits.length >= 10) {
+          inputPhone.value = formatPhone(cleanDigits);
+          handlePhoneInput();
+        }
+      }
+    }
   }
 </script>

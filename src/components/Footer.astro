@@ -4,8 +4,10 @@
  */
 import Logo from './Logo.astro';
 import { CAREERS_URL } from '../config';
+import pkg from '../../package.json';
 
 const year = new Date().getFullYear();
+const version = pkg.version;
 ---
 
 <footer class="footer on-dark">
@@ -66,7 +68,10 @@ const year = new Date().getFullYear();
         usados apenas para a sua inscrição e comunicação sobre o curso,
         conforme a LGPD (Lei nº 13.709/2018).
       </p>
-      <p class="footer-copy">© {year} Supletivo Brasil. Todos os direitos reservados.</p>
+      <p class="footer-copy">
+        © {year} Supletivo Brasil. Todos os direitos reservados.
+        <span class="footer-version" title={`Versão da plataforma v${version}`}>v{version}</span>
+      </p>
     </div>
   </div>
 </footer>
@@ -241,5 +246,14 @@ const year = new Date().getFullYear();
 
   .footer-copy {
     margin-top: 0.6rem;
+  }
+
+  .footer-version {
+    margin-left: 0.5rem;
+    font-family: monospace;
+    font-size: 0.72rem;
+    color: var(--muted-on-dark);
+    letter-spacing: -0.02em;
+    user-select: none;
   }
 </style>
