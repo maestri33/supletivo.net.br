@@ -19,8 +19,9 @@
   - Foco: quebra de objeções, autoridade de diploma válido MEC, cálculo de elegibilidade e captura rápida de lead (Sofia Omnibar + WhatsApp + CPF) direcionando para matrícula.
 - **`promotor.supletivo.net.br`**:
   - Landing page B2B/B2P para captação de afiliados, consultores educacionais e polos.
-- **`app.supletivo.net.br` (Svelte 5 / SvelteKit)**:
+- **`app.supletivo.net.br` (Svelte 5 / SvelteKit / React Islands)**:
   - Plataforma única multi-role orientada a estado (um usuário pode alternar papéis: Aluno, Promotor, Coordenador de Polo).
+  - **Navegação Canônica Adaptativa**: Utiliza obrigatoriamente a arquitetura de Tabs de Status Superiores (`Tabs` / `RoleStatusTabs`) + Dock Adaptativo Inferior (`RoleAdaptiveNavDock` / `FloatingDock`), mapeando dinamicamente papéis e status operacionais com zero colisão de rodapé (especificado em `app.supletivo.net.br/docs/skills/role-status-dock.md`).
   - **IMPORTANTE — O aluno NÃO estuda na nossa plataforma**: Nossa plataforma é o motor de captação, pagamento, conferência de documentos e matrícula. Ao matricular e aprovar os documentos, o aluno é **oficialmente redirecionado para o ambiente virtual do parceiro educacional credenciado**.
 - **`*.v7m.live` (Infraestrutura, Ferramentas Públicas e Oráculo de Versão)**:
   - Todo micro-serviço, utilitário de desenvolvedor, dashboard técnico ou serviço de infraestrutura que precisar ser público **DEVE obrigatoriamente utilizar o domínio `*.v7m.live`** (tendo `version.v7m.live` como serviço pioneiro).
