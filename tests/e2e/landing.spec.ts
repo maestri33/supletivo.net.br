@@ -135,9 +135,12 @@ test.describe('alerta flutuante de indicação (FloatingPromoAlert)', () => {
     await page.goto('/?ref=consultor01');
     const alert = page.locator('[data-floating-promo]');
     await expect(alert).toHaveClass(/is-visible/);
-    await page.evaluate(() => window.scrollTo(0, 150));
-    await page.waitForTimeout(200);
-    await page.locator('[data-close-promo-alert]').click();
+    await page.evaluate(() => {
+      window.scrollTo(0, 500);
+      window.dispatchEvent(new Event('scroll'));
+    });
+    const closeBtn = page.locator('[data-close-promo-alert]');
+    await closeBtn.dispatchEvent('click');
     await expect(alert).toHaveClass(/hidden/);
     const dismissed = await page.evaluate(() => sessionStorage.getItem('sb_promo_dismissed'));
     expect(dismissed).toBe('1');

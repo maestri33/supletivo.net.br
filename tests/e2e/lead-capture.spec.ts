@@ -2,6 +2,20 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 test.describe('Captura Inteligente de Alunos (LeadCaptureModal)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route('**/api/v1/clients/auth/check', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          found: false,
+          registered: false,
+          is_valid: true,
+        }),
+      });
+    });
+  });
+
   test('abre o modal de captação ao clicar no CTA do Hero com campo de WhatsApp', async ({ page }) => {
     await page.goto('/');
     const heroCta = page.locator('a[data-cta="hero"]');
