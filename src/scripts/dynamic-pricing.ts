@@ -246,8 +246,17 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
   const attr = resolvedAttr !== undefined ? resolvedAttr : initAttribution();
   const hasRef = Boolean(attr?.ref && attr.ref.trim().length > 0);
 
-  // Sem ?ref=: renderiza imediatamente o preço padrão cheio e finaliza
-  if (!hasRef) {
+  // 1. Aplica fallback imediato (zero CLS)
+  if (hasRef) {
+    applyPricingToDom({
+      installment: PROMO_PRICE.installment,
+      installments: PROMO_PRICE.installments,
+      pix: PROMO_PRICE.pix,
+      anchor: PROMO_PRICE.anchor,
+      isPromo: true,
+      promoterName: null,
+    });
+  } else {
     applyPricingToDom({
       installment: REGULAR_PRICE.installment,
       installments: REGULAR_PRICE.installments,
@@ -255,46 +264,42 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
       anchor: REGULAR_PRICE.anchor,
       isPromo: false,
     });
-    return;
   }
 
-  // Com ?ref=: aplica de pronto o Lote Promocional (fallback garantido sem CLS)
-  applyPricingToDom({
-    installment: PROMO_PRICE.installment,
-    installments: PROMO_PRICE.installments,
-    pix: PROMO_PRICE.pix,
-    anchor: PROMO_PRICE.anchor,
-    isPromo: true,
-    promoterName: null,
-  });
-
-  // Tenta refinar com a API do backend caso esteja online
+  // 2. Sincroniza em tempo real com o backend (valores atualizados no Admin)
   try {
-    const url = `${BACKEND_URL}/api/v1/clients/pricing?ref=${encodeURIComponent(attr.ref!)}`;
+    const url = hasRef
+      ? `${BACKEND_URL}/api/v1/clients/pricing?ref=${encodeURIComponent(attr.ref!)}`
+      : `${BACKEND_URL}/api/v1/clients/pricing`;
     const res = await fetch(url, { signal: AbortSignal.timeout(2500) });
     if (!res.ok) return;
 
     const data = (await res.json()) as PricingResponse;
-    const usePromo = Boolean(data.has_discount || data.promo_card);
+    const usePromo = hasRef && Boolean(data.has_discount || data.promo_card);
     const activeCard = usePromo && data.promo_card ? data.promo_card : data.card;
     const rawPix = usePromo && data.promo_pix ? Number(data.promo_pix) : Number(data.pix);
     const rawInstallment = activeCard ? Number(activeCard.installment) : NaN;
     const isCommercialPrice = Number.isFinite(rawPix) && rawPix >= 100 && Number.isFinite(rawInstallment) && rawInstallment >= 10;
+    const rawAnchor = Number(data.anchor_full);
 
-    applyPricingToDom({
-      installment: isCommercialPrice ? rawInstallment : PROMO_PRICE.installment,
-      installments: isCommercialPrice ? (Number(activeCard.installments) || 12) : PROMO_PRICE.installments,
-      pix: isCommercialPrice ? rawPix : PROMO_PRICE.pix,
-      anchor: Number(data.anchor_full) >= 500 ? Number(data.anchor_full) : PROMO_PRICE.anchor,
-      isPromo: true,
-      promoterName: data.promoter_name || null,
-    });
+    if (isCommercialPrice) {
+      applyPricingToDom({
+        installment: rawInstallment,
+        installments: Number(activeCard.installments) || 12,
+        pix: rawPix,
+        anchor: Number.isFinite(rawAnchor) && rawAnchor >= 500 ? rawAnchor : (hasRef ? PROMO_PRICE.anchor : REGULAR_PRICE.anchor),
+        isPromo: usePromo,
+        promoterName: data.promoter_name || null,
+      });
 
-    track('promoter_discount_applied', {
-      ref: attr.ref,
-      promoter: data.promoter_name,
-    });
+      if (usePromo && attr.ref) {
+        track('promoter_discount_applied', {
+          ref: attr.ref,
+          promoter: data.promoter_name,
+        });
+      }
+    }
   } catch {
-    // API offline/dev: mantém os valores de fallback promocionais já aplicados
+    // API offline/dev: mantém os valores de fallback
   }
 }

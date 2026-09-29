@@ -73,7 +73,10 @@ async function loadPrice(): Promise<Price> {
     );
     return { full: ANCHOR_FULL, installments, perMonth, cardTotal, pixTotal };
   } catch (err) {
-    console.warn(`[price] falha ao buscar pricing — usando fallback: ${String(err)}`);
+    const isTestEnv = typeof process !== 'undefined' && (process.env.NODE_ENV === 'test' || Boolean(process.env.VITEST));
+    if (!isTestEnv) {
+      console.warn(`[price] falha ao buscar pricing — usando fallback: ${String(err)}`);
+    }
     return FALLBACK;
   }
 }

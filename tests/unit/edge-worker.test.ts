@@ -56,4 +56,35 @@ describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation
     expect(setCookie).toBeTruthy();
     expect(setCookie).toContain('sb_ref=afiliado-curitiba');
   });
+
+  it('enforces immutable Cache-Control on /_astro/ and /fonts/ assets', async () => {
+    const mockAssetFetch = vi.fn().mockResolvedValue(
+      new Response('console.log("asset")', {
+        status: 200,
+        headers: { 'Content-Type': 'application/javascript' },
+      })
+    );
+
+    const request = new Request('https://supletivo.net.br/_astro/client.bundle.js');
+    const response = await worker.fetch(request, { ASSETS: { fetch: mockAssetFetch } });
+
+    expect(response.headers.get('cache-control')).toBe('public, max-age=31536000, immutable');
+    expect(response.headers.get('strict-transport-security')).toBeTruthy();
+    expect(response.headers.get('x-content-type-options')).toBe('nosniff');
+    expect(response.headers.get('x-frame-options')).toBe('DENY');
+  });
+
+  it('enforces s-maxage edge caching on HTML responses', async () => {
+    const mockAssetFetch = vi.fn().mockResolvedValue(
+      new Response('<!DOCTYPE html><html><body>Supletivo</body></html>', {
+        status: 200,
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      })
+    );
+
+    const request = new Request('https://supletivo.net.br/');
+    const response = await worker.fetch(request, { ASSETS: { fetch: mockAssetFetch } });
+
+    expect(response.headers.get('cache-control')).toBe('public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+  });
 });

@@ -36,21 +36,46 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const response = await env.ASSETS.fetch(request);
+    const headers = new Headers(response.headers);
 
-    // If query string has ref, set first-party HTTP Set-Cookie headers to defeat Safari ITP
+    // 1. Edge Caching & Browser Cache-Control
+    const pathname = url.pathname;
+    const contentType = response.headers.get('content-type') || '';
+
+    if (pathname.startsWith('/_astro/') || pathname.startsWith('/fonts/')) {
+      headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (pathname.startsWith('/images/') || pathname.match(/\.(png|jpg|jpeg|webp|svg|ico)$/i)) {
+      headers.set('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=86400');
+    } else if (contentType.includes('text/html')) {
+      headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    }
+
+    // 2. HTTP Security Headers Hardening
+    if (!headers.has('Strict-Transport-Security')) {
+      headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    }
+    if (!headers.has('X-Content-Type-Options')) {
+      headers.set('X-Content-Type-Options', 'nosniff');
+    }
+    if (!headers.has('X-Frame-Options')) {
+      headers.set('X-Frame-Options', 'DENY');
+    }
+    if (!headers.has('Referrer-Policy')) {
+      headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    }
+
+    // 3. Safari ITP Mitigation First-Party Cookies (?ref=)
     const cookies = buildAttributionCookies(url);
     if (cookies.length > 0 && response.ok) {
-      const headers = new Headers(response.headers);
       for (const cookie of cookies) {
         headers.append('Set-Cookie', cookie);
       }
-      return new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers,
-      });
     }
 
-    return response;
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
   },
 };
