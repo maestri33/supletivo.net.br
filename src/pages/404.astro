@@ -70,14 +70,18 @@ const description = 'A página que você procura não foi encontrada ou foi movi
 
   p {
     max-width: 32rem;
-    color: var(--muted);
+    color: var(--muted-on-light);
     line-height: 1.6;
     margin-bottom: 0.8rem;
   }
 
   .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
     background: var(--blue);
-    color: #ffffff;
+    color: var(--paper);
     padding: 0.9rem 2rem;
     border-radius: 999px;
     font-weight: 700;

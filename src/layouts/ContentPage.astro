@@ -11,16 +11,17 @@ import StickyCta from '../components/StickyCta.astro';
 interface Props {
   title: string;
   description: string;
+  schema?: Record<string, unknown>;
   noindex?: boolean;
   /** rótulo pequeno acima do h1 */
   kicker?: string;
   h1: string;
   ogImage?: string;
 }
-const { title, description, noindex = false, kicker, h1, ogImage } = Astro.props;
+const { title, description, schema, noindex = false, kicker, h1, ogImage } = Astro.props;
 ---
 
-<Base {title} {description} {noindex} {ogImage}>
+<Base {title} {description} {noindex} {ogImage} {schema}>
   <header id="hero" class="content-header">
     <div class="container">
       <Logo variant="dark" />
@@ -124,5 +125,8 @@ const { title, description, noindex = false, kicker, h1, ogImage } = Astro.props
   .back-home a {
     color: var(--green);
     font-weight: 700;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
   }
 </style>

@@ -277,23 +277,23 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
     const data = (await res.json()) as PricingResponse;
     const usePromo = Boolean(data.has_discount || data.promo_card);
     const activeCard = usePromo && data.promo_card ? data.promo_card : data.card;
-    const activePix = usePromo && data.promo_pix ? Number(data.promo_pix) : Number(data.pix);
+    const rawPix = usePromo && data.promo_pix ? Number(data.promo_pix) : Number(data.pix);
+    const rawInstallment = activeCard ? Number(activeCard.installment) : NaN;
+    const isCommercialPrice = Number.isFinite(rawPix) && rawPix >= 100 && Number.isFinite(rawInstallment) && rawInstallment >= 10;
 
-    if (activeCard && Number.isFinite(Number(activeCard.installment)) && Number.isFinite(activePix)) {
-      applyPricingToDom({
-        installment: Number(activeCard.installment),
-        installments: Number(activeCard.installments) || 12,
-        pix: activePix,
-        anchor: Number(data.anchor_full) || PROMO_PRICE.anchor,
-        isPromo: true,
-        promoterName: data.promoter_name || null,
-      });
+    applyPricingToDom({
+      installment: isCommercialPrice ? rawInstallment : PROMO_PRICE.installment,
+      installments: isCommercialPrice ? (Number(activeCard.installments) || 12) : PROMO_PRICE.installments,
+      pix: isCommercialPrice ? rawPix : PROMO_PRICE.pix,
+      anchor: Number(data.anchor_full) >= 500 ? Number(data.anchor_full) : PROMO_PRICE.anchor,
+      isPromo: true,
+      promoterName: data.promoter_name || null,
+    });
 
-      track('promoter_discount_applied', {
-        ref: attr.ref,
-        promoter: data.promoter_name,
-      });
-    }
+    track('promoter_discount_applied', {
+      ref: attr.ref,
+      promoter: data.promoter_name,
+    });
   } catch {
     // API offline/dev: mantém os valores de fallback promocionais já aplicados
   }

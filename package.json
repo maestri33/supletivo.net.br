@@ -9,7 +9,7 @@
     "preview": "astro preview --port 3011",
     "assets": "node tools/generate-assets.mjs",
     "test": "vitest run",
-    "check-types": "tsc --noEmit",
+    "check-types": "astro check",
     "test:e2e": "playwright test",
     "checkpoint": "sh scripts/checkpoint/checkpoint.sh",
     "checkpoint:fast": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier fast",

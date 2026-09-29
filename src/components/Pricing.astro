@@ -157,13 +157,18 @@ const priceChars = perMonthBRL.split('');
     align-items: center;
     gap: 0.65rem;
     padding: 0.6rem 1.4rem;
-    background: linear-gradient(90deg, #7f1d1d 0%, var(--danger) 50%, #7f1d1d 100%);
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--danger) 70%, var(--ink)) 0%,
+      var(--danger) 50%,
+      color-mix(in srgb, var(--danger) 70%, var(--ink)) 100%
+    );
     border: 1.8px solid var(--yellow);
     border-radius: 9999px;
     box-shadow:
       0 4px 24px color-mix(in srgb, var(--danger) 55%, transparent),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    color: #ffffff;
+    color: var(--paper);
     font-size: clamp(0.75rem, 2.3vw, 0.86rem);
     font-weight: 900;
     letter-spacing: 0.07em;
@@ -263,7 +268,7 @@ const priceChars = perMonthBRL.split('');
     font-weight: 900;
     letter-spacing: 0.08em;
     line-height: 1;
-    color: #ffffff;
+    color: var(--paper);
     text-shadow:
       0 0 14px var(--danger),
       0 0 28px color-mix(in srgb, var(--danger) 80%, transparent),
@@ -308,7 +313,7 @@ const priceChars = perMonthBRL.split('');
   }
 
   .trust-triad li strong {
-    color: #ffffff;
+    color: var(--paper);
   }
 
   @keyframes stampSlam {
@@ -341,8 +346,8 @@ const priceChars = perMonthBRL.split('');
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(90deg, #f59e0b, #eab308);
-    color: #1e1b4b;
+    background: linear-gradient(90deg, var(--yellow), var(--yellow-soft));
+    color: var(--ink);
     font-weight: 800;
     font-size: 0.8rem;
     padding: 0.35rem 0.85rem;

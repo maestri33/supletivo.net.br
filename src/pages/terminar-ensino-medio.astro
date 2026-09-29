@@ -9,9 +9,48 @@ import { cardLine, pixBRL, fullBRL } from '../data/price';
 const title = 'Como Terminar o Ensino Médio Sendo Adulto | Supletivo Brasil';
 const description =
   `Parou de estudar? Veja como terminar o ensino médio sendo adulto: EJA online, certificado válido no Brasil inteiro e matrícula pelo celular em ${cardLine}.`;
+const site = Astro.site!;
+const pageUrl = new URL(Astro.url.pathname, site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Início',
+          item: site.href,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Como Terminar o Ensino Médio',
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: 'Como terminar o ensino médio sendo adulto (sem voltar pra escola)',
+      description,
+      inLanguage: 'pt-BR',
+      mainEntityOfPage: pageUrl,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Supletivo Brasil',
+        url: site.href,
+      },
+    },
+  ],
+};
 ---
 
-<ContentPage {title} {description} ogImage="/og-terminar-ensino-medio.png" kicker="Guia rápido" h1="Como terminar o ensino médio sendo adulto (sem voltar pra escola)">
+<ContentPage {title} {description} {schema} ogImage="/og-terminar-ensino-medio.png" kicker="Guia rápido" h1="Como terminar o ensino médio sendo adulto (sem voltar pra escola)">
   <p>
     Trabalho, filhos, contas: a vida passa na frente e os estudos ficam para
     depois. Se você quer <strong>terminar o ensino médio</strong> mas não tem
@@ -39,15 +78,14 @@ const description =
   <ul>
     <li><strong>1. Matricule-se pelo celular</strong> — cadastro 100% online, sem papelada;</li>
     <li><strong>2. Estude no seu ritmo</strong> — conteúdo disponível a qualquer hora, feito para quem trabalha;</li>
-    <li><strong>3. Faça a avaliação final presencial</strong> — em um dos nossos polos, no dia que você escolher;</li>
+    <li><strong>3. Faça a avaliação final presencial</strong> — em um polo parceiro credenciado, no dia que você escolher;</li>
     <li><strong>4. Receba o certificado</strong> — emitido por escola parceira autorizada pelo CEE e publicado no Diário Oficial, com validade nacional.</li>
   </ul>
 
   <h2>Quanto custa terminar o ensino médio online</h2>
   <p>
-    No Supletivo Brasil, o valor promocional é de <strong>{cardLine} no
-    cartão</strong> ou <strong>{pixBRL} à vista no Pix</strong> — o valor cheio
-    é {fullBRL}. Promoção por tempo limitado.
+    No Supletivo Brasil, o investimento é de <strong>{cardLine} no
+    cartão</strong> (total de {fullBRL}) ou <strong>{pixBRL} à vista no Pix com desconto</strong>.
   </p>
 
   <h2>"Faz muito tempo que parei. Consigo acompanhar?"</h2>

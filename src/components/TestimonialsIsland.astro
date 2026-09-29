@@ -32,8 +32,8 @@ import { testimonialsSupletivo } from '../data/testimonials';
     position: relative;
     background:
       radial-gradient(50rem 30rem at 50% 0%, rgb(0 71 171 / 0.28), transparent 70%),
-      linear-gradient(180deg, #0b1120 0%, #030712 100%);
-    color: #f8fafc;
+      linear-gradient(180deg, var(--ink-soft) 0%, var(--ink) 100%);
+    color: var(--paper-soft);
     overflow: clip;
     padding-block: clamp(4rem, 7vw, 7rem);
     border-block: 1px solid rgb(255 255 255 / 0.08);
@@ -57,7 +57,7 @@ import { testimonialsSupletivo } from '../data/testimonials';
     height: 28rem;
     left: -8rem;
     top: 20%;
-    background: #ffc400;
+    background: var(--yellow);
   }
 
   .blob-2 {
@@ -65,7 +65,7 @@ import { testimonialsSupletivo } from '../data/testimonials';
     height: 32rem;
     right: -10rem;
     bottom: 10%;
-    background: #00734d;
+    background: var(--green);
   }
 
   .testimonials-eyebrow {
@@ -76,7 +76,7 @@ import { testimonialsSupletivo } from '../data/testimonials';
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #ffc400;
+    color: var(--yellow);
     border: 1px solid rgb(255 196 0 / 0.35);
     border-radius: 999px;
     padding: 0.45em 1.2em;
@@ -88,25 +88,25 @@ import { testimonialsSupletivo } from '../data/testimonials';
     width: 0.5em;
     height: 0.5em;
     border-radius: 50%;
-    background: #ffc400;
+    background: var(--yellow);
   }
 
   .testimonials-title {
     font-family: var(--font-display, 'Archivo Black', sans-serif);
     font-size: clamp(2rem, 4vw, 3.2rem);
-    color: #ffffff;
+    color: var(--paper);
     line-height: 1.12;
     margin-bottom: 1rem;
     letter-spacing: -0.015em;
   }
 
   .text-accent {
-    color: #ffc400;
+    color: var(--yellow);
   }
 
   .testimonials-sub {
     font-size: var(--text-lg, 1.125rem);
-    color: #94a3b8;
+    color: var(--muted-on-dark);
     max-width: 48ch;
     margin-inline: auto;
     line-height: 1.6;

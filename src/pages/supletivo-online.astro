@@ -8,16 +8,56 @@ import { cardLine, pixBRL, fullBRL } from '../data/price';
 
 const title = 'Supletivo Online: como funciona, preço e validade | Supletivo Brasil';
 const description =
-  `Entenda como funciona o supletivo online: quem pode fazer, validade do certificado, preço promocional de ${cardLine} e matrícula 100% pelo celular.`;
+  `Entenda como funciona o supletivo online: quem pode fazer, validade do certificado, investimento de ${cardLine} e matrícula 100% pelo celular.`;
+
+const site = Astro.site!;
+const pageUrl = new URL(Astro.url.pathname, site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Início',
+          item: site.href,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Supletivo Online',
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: 'Supletivo online: como funciona, quanto custa e se vale a pena',
+      description,
+      inLanguage: 'pt-BR',
+      mainEntityOfPage: pageUrl,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Supletivo Brasil',
+        url: site.href,
+      },
+    },
+  ],
+};
 ---
 
-<ContentPage {title} {description} ogImage="/og-supletivo-online.png" kicker="Guia rápido" h1="Supletivo online: como funciona, quanto custa e se vale a pena">
+<ContentPage {title} {description} {schema} ogImage="/og-supletivo-online.png" kicker="Guia rápido" h1="Supletivo online: como funciona, quanto custa e se vale a pena">
   <p>
     O <strong>supletivo online</strong> é o caminho mais prático para quem
     parou de estudar e quer concluir o Ensino Fundamental ou o Ensino Médio
     sem voltar para a sala de aula tradicional. A matrícula e os estudos
     acontecem pelo celular, no horário que couber na sua rotina; só a avaliação
-    final é presencial, em um dos nossos polos.
+    final é presencial, em um polo parceiro credenciado.
   </p>
 
   <h2>Quem pode fazer supletivo?</h2>
@@ -41,15 +81,14 @@ const description =
   <ul>
     <li><strong>Matrícula 100% online:</strong> cadastro rápido pelo celular, sem papelada;</li>
     <li><strong>Estudo no seu ritmo:</strong> conteúdo disponível a qualquer hora — madrugada, intervalo do trabalho, fim de semana;</li>
-    <li><strong>Avaliação final presencial:</strong> em um dos nossos polos, no dia que você escolher — é nela que você assina a documentação oficial;</li>
+    <li><strong>Avaliação final presencial:</strong> em um polo parceiro credenciado, no dia que você escolher — é nela que você assina a documentação oficial;</li>
     <li><strong>Certificado:</strong> após a aprovação na avaliação final, com validade nacional.</li>
   </ul>
 
   <h2>Quanto custa o supletivo online?</h2>
   <p>
-    O valor promocional atual é de <strong>{cardLine} no cartão</strong> ou
-    <strong>{pixBRL} à vista no Pix</strong> (valor cheio: {fullBRL}). O preço é
-    por tempo limitado e pode mudar sem aviso. A escolha da forma de pagamento
+    O investimento atual é de <strong>{cardLine} no cartão</strong> (total de {fullBRL}) ou
+    <strong>{pixBRL} à vista no Pix com desconto</strong>. A escolha da forma de pagamento
     acontece na matrícula, dentro do app.
   </p>
 

@@ -513,6 +513,9 @@ import CredentialCard from './CredentialCard.astro';
     color: var(--yellow);
     text-decoration: underline;
     font-weight: 700;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
     transition: color 0.15s;
   }
   .existing-inline-link:hover {
@@ -706,7 +709,7 @@ import CredentialCard from './CredentialCard.astro';
         if (speech) {
           speech.textContent = 'Que bom ter você de volta! Localizamos seu cadastro e enviamos seu código no WhatsApp. Redirecionando...';
         }
-        saveSession({ phone: digits });
+        saveSession({ phone: digits, externalId: data.external_id });
         track('lead_phone_existing', { phone: digits });
         redirectToOtp({ id: data.external_id, tel: digits }, 500);
         return;
@@ -913,7 +916,7 @@ import CredentialCard from './CredentialCard.astro';
       }
 
       if (speech) {
-        speech.textContent = 'E para qual e-mail enviamos a cópia do seu plano de estudos?';
+        speech.textContent = 'E para qual e-mail enviamos a cópia do seu plano acelerado?';
       }
 
       setTimeout(() => { inputEmail?.focus(); }, 50);
@@ -990,7 +993,7 @@ import CredentialCard from './CredentialCard.astro';
       emailWrapper?.classList.remove('valid');
 
       if (speech) {
-        speech.textContent = 'Tudo pronto! Sua pré-matrícula foi autorizada. Redirecionando para seu ambiente de estudos...';
+        speech.textContent = 'Tudo pronto! Sua pré-matrícula foi autorizada. Redirecionando para concluir sua matrícula...';
       }
 
       saveSession({ phone: phoneDigits, cpf: cpfDigits, email: emailValue });
@@ -1005,6 +1008,9 @@ import CredentialCard from './CredentialCard.astro';
 
       emailWrapper?.classList.remove('loading');
       emailWrapper?.classList.add('valid');
+      if (data?.external_id) {
+        saveSession({ phone: phoneDigits, cpf: cpfDigits, email: emailValue, externalId: data.external_id });
+      }
 
       redirectToOtp({
         id: data?.external_id,

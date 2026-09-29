@@ -89,11 +89,25 @@ export function initAntigravityTilt(): void {
       state.targetY = 0;
     });
 
-    window.addEventListener('resize', updateRect, { passive: true });
-    window.addEventListener('scroll', updateRect, { passive: true });
-
     states.push(state);
   });
+
+  const updateAllRects = () => {
+    for (const s of states) {
+      s.rect = s.el.getBoundingClientRect();
+    }
+  };
+
+  window.addEventListener('resize', updateAllRects, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      for (const s of states) {
+        if (s.isHovered) s.rect = s.el.getBoundingClientRect();
+      }
+    },
+    { passive: true }
+  );
 
   function startLoop() {
     if (isRunning) return;

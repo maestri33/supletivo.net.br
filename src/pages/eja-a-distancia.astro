@@ -9,9 +9,48 @@ import { cardLine, pixBRL, fullBRL } from '../data/price';
 const title = 'EJA a Distância: conclua o Fundamental e o Médio online | Supletivo Brasil';
 const description =
   `EJA a distância com certificado válido em todo o Brasil: idade mínima, amparo legal (LDB), estudo e matrícula pelo celular em ${cardLine} e prova final presencial.`;
+const site = Astro.site!;
+const pageUrl = new URL(Astro.url.pathname, site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Início',
+          item: site.href,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'EJA a Distância',
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: 'EJA a distância: o que é, quem pode fazer e como começar',
+      description,
+      inLanguage: 'pt-BR',
+      mainEntityOfPage: pageUrl,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Supletivo Brasil',
+        url: site.href,
+      },
+    },
+  ],
+};
 ---
 
-<ContentPage {title} {description} ogImage="/og-eja-a-distancia.png" kicker="Guia rápido" h1="EJA a distância: o que é, quem pode fazer e como começar">
+<ContentPage {title} {description} {schema} ogImage="/og-eja-a-distancia.png" kicker="Guia rápido" h1="EJA a distância: o que é, quem pode fazer e como começar">
   <p>
     A <strong>EJA — Educação de Jovens e Adultos</strong> — é a modalidade de
     ensino criada por lei para quem não concluiu os estudos na idade
@@ -48,15 +87,15 @@ const description =
   <p>
     O conteúdo fica disponível 24 horas por dia. Quem trabalha de dia estuda à
     noite; quem trabalha em escala estuda nas folgas. A avaliação final é
-    presencial, em um dos nossos polos e na data que você escolher, e o ritmo é
+    presencial, em um polo parceiro credenciado e na data que você escolher, e o ritmo é
     seu: quanto mais constância, mais cedo o certificado chega.
   </p>
 
   <h2>Quanto custa</h2>
   <p>
-    Valor promocional de <strong>{cardLine} no cartão</strong> ou
-    <strong>{pixBRL} no Pix</strong> (de {fullBRL}), cobrindo a jornada até a
-    certificação. O preço pode subir a qualquer momento.
+    O investimento é de <strong>{cardLine} no cartão</strong> (total de {fullBRL}) ou
+    <strong>{pixBRL} à vista no Pix com desconto</strong>, cobrindo a jornada até a
+    certificação.
   </p>
 
   <div class="cta-box">
