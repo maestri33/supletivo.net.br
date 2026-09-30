@@ -35,11 +35,40 @@ export function buildAttributionCookies(url: URL): string[] {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    const response = await env.ASSETS.fetch(request);
-    const headers = new Headers(response.headers);
-
-    // 1. Edge Caching & Browser Cache-Control
     const pathname = url.pathname;
+    const response = await env.ASSETS.fetch(request);
+
+    // 0. Suporte a Links Amigáveis de Afiliados via Path (/REF ou /ref/REF)
+    if (response.status === 404) {
+      const cleanPath = pathname.replace(/^\/+|\/+$/g, '');
+      if (cleanPath.length > 0 && !cleanPath.includes('.')) {
+        let refCandidate = cleanPath;
+        if (cleanPath.toLowerCase().startsWith('ref/')) {
+          refCandidate = cleanPath.slice(4);
+        }
+        if (/^[a-zA-Z0-9_\-\:\@]+$/.test(refCandidate)) {
+          const redirectUrl = new URL('/', url.origin);
+          redirectUrl.searchParams.set('ref', refCandidate);
+          for (const [key, val] of url.searchParams.entries()) {
+            if (key !== 'ref') redirectUrl.searchParams.set(key, val);
+          }
+          const redirectCookies = buildAttributionCookies(redirectUrl);
+          const redirectHeaders = new Headers({
+            Location: redirectUrl.toString(),
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+          });
+          for (const c of redirectCookies) {
+            redirectHeaders.append('Set-Cookie', c);
+          }
+          return new Response(null, {
+            status: 302,
+            headers: redirectHeaders,
+          });
+        }
+      }
+    }
+
+    const headers = new Headers(response.headers);
     const contentType = response.headers.get('content-type') || '';
 
     if (pathname.startsWith('/_astro/') || pathname.startsWith('/fonts/')) {
