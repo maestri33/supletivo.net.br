@@ -9,6 +9,7 @@ tools/fonts/
 # test artifacts
 test-results/
 playwright-report/
+screenshots/
 .preview-port
 
 # agent runtime (worktrees + skills + settings locais)
