@@ -21,8 +21,8 @@ const ENDPOINT = `${BACKEND_URL}/api/v1/clients/pricing`;
 // âncora de marketing (preço cheio riscado). Backend de pricing não modela isto.
 const ANCHOR_FULL = 1932;
 
-const MIN_PER_MONTH = 10;
-const MIN_PIX = 100;
+const MIN_PER_MONTH = 0.01;
+const MIN_PIX = 0.01;
 
 export interface Price {
   /** preço cheio, riscado ("de R$ X") — âncora de marketing */

@@ -68,7 +68,7 @@ function applyPricingToDom(config: {
   const perMonthStr = brl(installment);
   const pixStr = brl(pix);
   const cardLine = `${installments}x de ${perMonthStr}`;
-  const underPerMonth = brl(Math.ceil(installment / 100) * 100);
+  const underPerMonth = installment < 10 ? brl(Math.max(1, Math.ceil(installment))) : brl(Math.ceil(installment / 100) * 100);
   const savings = Math.max(0, anchor - pix);
 
   // 1. Título da seção de preços
@@ -287,7 +287,7 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
     const activeCard = usePromo && data.promo_card ? data.promo_card : data.card;
     const rawPix = usePromo && data.promo_pix ? Number(data.promo_pix) : Number(data.pix);
     const rawInstallment = activeCard ? Number(activeCard.installment) : NaN;
-    const isCommercialPrice = Number.isFinite(rawPix) && rawPix >= 100 && Number.isFinite(rawInstallment) && rawInstallment >= 10;
+    const isCommercialPrice = Number.isFinite(rawPix) && rawPix > 0 && Number.isFinite(rawInstallment) && rawInstallment > 0;
     const rawAnchor = Number(data.anchor_full);
 
     if (isCommercialPrice) {
@@ -295,7 +295,7 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
         installment: rawInstallment,
         installments: Number(activeCard.installments) || 12,
         pix: rawPix,
-        anchor: Number.isFinite(rawAnchor) && rawAnchor >= 500 ? rawAnchor : (hasRef ? PROMO_PRICE.anchor : REGULAR_PRICE.anchor),
+        anchor: Number.isFinite(rawAnchor) && rawAnchor > 0 ? rawAnchor : (hasRef ? PROMO_PRICE.anchor : REGULAR_PRICE.anchor),
         isPromo: usePromo,
         promoterName: data.promoter_name || null,
       });
