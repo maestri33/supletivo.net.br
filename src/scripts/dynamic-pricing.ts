@@ -266,13 +266,21 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
     });
   }
 
-  // 2. Sincroniza em tempo real com o backend (valores atualizados no Admin)
+  // 2. Sincroniza em tempo real com a borda Hyperdrive (com fallback transparente para o backend)
   try {
-    const url = hasRef
-      ? `${BACKEND_URL}/api/v1/clients/pricing?ref=${encodeURIComponent(attr.ref!)}`
-      : `${BACKEND_URL}/api/v1/clients/pricing`;
-    const res = await fetch(url, { signal: AbortSignal.timeout(2500) });
-    if (!res.ok) return;
+    const edgeUrl = hasRef
+      ? `https://db-edge.v7m.live/api/v1/clients/pricing?ref=${encodeURIComponent(attr.ref!)}`
+      : `https://db-edge.v7m.live/api/v1/clients/pricing`;
+
+    let res = await fetch(edgeUrl, { signal: AbortSignal.timeout(1500) }).catch(() => null);
+
+    if (!res || !res.ok) {
+      const fallbackUrl = hasRef
+        ? `${BACKEND_URL}/api/v1/clients/pricing?ref=${encodeURIComponent(attr.ref!)}`
+        : `${BACKEND_URL}/api/v1/clients/pricing`;
+      res = await fetch(fallbackUrl, { signal: AbortSignal.timeout(2500) });
+    }
+    if (!res || !res.ok) return;
 
     const data = (await res.json()) as PricingResponse;
     const usePromo = hasRef && Boolean(data.has_discount || data.promo_card);

@@ -622,7 +622,7 @@ import CredentialCard from './CredentialCard.astro';
             } : undefined,
             ...payload,
           }),
-          signal: AbortSignal.timeout(3500),
+          signal: AbortSignal.timeout(30000),
         });
         return res.ok ? await res.json() : null;
       } catch (err) {
@@ -816,12 +816,9 @@ import CredentialCard from './CredentialCard.astro';
           showExistingCard(data, digits, phoneDigits);
           return;
         }
-
-        redirectToOtp({ id: data.external_id, tel: phoneDigits, cpf: digits });
-        return;
       }
 
-      // CPF novo: autorização na credencial e avança para e-mail
+      // CPF validado/enriquecido: autorização na credencial e avança para e-mail
       cpfWrapper?.classList.add('valid');
       if (data?.name && credentialStudentName) {
         credentialStudentName.textContent = data.name.toUpperCase();
@@ -829,6 +826,11 @@ import CredentialCard from './CredentialCard.astro';
       if (credentialDoc) credentialDoc.textContent = `CPF: ${formatCPF(digits)}`;
       credentialStatusBadge?.classList.add('authorized');
       if (credentialStatusText) credentialStatusText.textContent = 'PRÉ-MATRÍCULA AUTORIZADA';
+
+      if (data?.email && inputEmail && !inputEmail.value) {
+        inputEmail.value = data.email;
+        emailWrapper?.classList.add('valid');
+      }
 
       advanceToEmailStep();
     }

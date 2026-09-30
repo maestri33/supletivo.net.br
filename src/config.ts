@@ -13,7 +13,7 @@ export const APP_URL: string = rawAppUrl.replace(/\/+$/, '');
 
 const rawBackendUrl =
   import.meta.env.PUBLIC_BACKEND_URL ??
-  (import.meta.env.DEV ? 'http://localhost:8000' : 'https://app.supletivo.net.br');
+  (import.meta.env.DEV ? 'http://localhost:8000' : 'https://backend.supletivo.net.br');
 
 export const BACKEND_URL: string = rawBackendUrl.replace(/\/+$/, '');
 
