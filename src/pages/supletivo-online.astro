@@ -4,7 +4,7 @@
  */
 import ContentPage from '../layouts/ContentPage.astro';
 import CtaButton from '../components/CtaButton.astro';
-import { cardLine, pixBRL, fullBRL } from '../data/price';
+import { cardLine, pixBRL, cardTotalBRL } from '../data/price';
 
 const title = 'Supletivo Online: como funciona, preço e validade | Supletivo Brasil';
 const description =
@@ -87,8 +87,8 @@ const schema = {
 
   <h2>Quanto custa o supletivo online?</h2>
   <p>
-    O investimento atual é de <strong>{cardLine} no cartão</strong> (total de {fullBRL}) ou
-    <strong>{pixBRL} à vista no Pix com desconto</strong>. A escolha da forma de pagamento
+    O investimento atual é de <strong><span data-price-card-line>{cardLine}</span> no cartão</strong> (total de <span data-price-card-total>{cardTotalBRL}</span>) ou
+    <strong><span data-price-pix-val>{pixBRL}</span> à vista no Pix com desconto</strong>. A escolha da forma de pagamento
     acontece na matrícula, dentro do app.
   </p>
 

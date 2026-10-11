@@ -2,6 +2,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import worker, { buildAttributionCookies, parseAttributionParams } from '../../src/worker';
 
+// These unit cases cover headers/redirects only. The real HTMLRewriter is exercised by the Worker smoke.
+vi.mock('../../src/lib/edge-pricing', () => ({
+  referralFromRequest: (request: Request) => new URL(request.url).searchParams.get('ref'),
+  fetchBackendPricing: async () => ({}),
+  rewritePricing: (response: Response) => response,
+}));
+
 describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation', () => {
   it('parses ref and tracking query parameters from URL', () => {
     const url = new URL('https://supletivo.net.br/?ref=top-afiliado&utm_source=instagram&utm_campaign=blackfriday&gclid=xyz');
@@ -74,7 +81,7 @@ describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation
     expect(response.headers.get('x-frame-options')).toBe('DENY');
   });
 
-  it('enforces s-maxage edge caching on HTML responses', async () => {
+  it('prevents shared caching of referral-dependent HTML quotes', async () => {
     const mockAssetFetch = vi.fn().mockResolvedValue(
       new Response('<!DOCTYPE html><html><body>Supletivo</body></html>', {
         status: 200,
@@ -85,7 +92,7 @@ describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation
     const request = new Request('https://supletivo.net.br/');
     const response = await worker.fetch(request, { ASSETS: { fetch: mockAssetFetch } });
 
-    expect(response.headers.get('cache-control')).toBe('public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    expect(response.headers.get('cache-control')).toBe('no-store');
   });
 
   it('redirects path-based affiliate links (e.g. /REF or /ref/REF) to /?ref=REF with cookies', async () => {

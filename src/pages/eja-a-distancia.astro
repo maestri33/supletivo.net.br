@@ -4,7 +4,7 @@
  */
 import ContentPage from '../layouts/ContentPage.astro';
 import CtaButton from '../components/CtaButton.astro';
-import { cardLine, pixBRL, fullBRL } from '../data/price';
+import { cardLine, pixBRL, cardTotalBRL } from '../data/price';
 
 const title = 'EJA a Distância: conclua o Fundamental e o Médio online | Supletivo Brasil';
 const description =
@@ -93,8 +93,8 @@ const schema = {
 
   <h2>Quanto custa</h2>
   <p>
-    O investimento é de <strong>{cardLine} no cartão</strong> (total de {fullBRL}) ou
-    <strong>{pixBRL} à vista no Pix com desconto</strong>, cobrindo a jornada até a
+    O investimento é de <strong><span data-price-card-line>{cardLine}</span> no cartão</strong> (total de <span data-price-card-total>{cardTotalBRL}</span>) ou
+    <strong><span data-price-pix-val>{pixBRL}</span> à vista no Pix com desconto</strong>, cobrindo a jornada até a
     certificação.
   </p>
 

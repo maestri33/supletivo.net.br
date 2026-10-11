@@ -1,3 +1,5 @@
+import { fetchBackendPricing, referralFromRequest, rewritePricing } from './lib/edge-pricing';
+
 export interface Env {
   ASSETS: {
     fetch: (request: Request) => Promise<Response>;
@@ -36,6 +38,15 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const pathname = url.pathname;
+    const ref = referralFromRequest(request);
+    if (pathname === '/api/pricing') {
+      if (request.method !== 'GET') return new Response(null, { status: 405, headers: { Allow: 'GET' } });
+      try {
+        return Response.json(await fetchBackendPricing(ref), { headers: { 'Cache-Control': 'no-store' } });
+      } catch {
+        return Response.json({ error: 'Condições temporariamente indisponíveis. Tente novamente.' }, { status: 503, headers: { 'Cache-Control': 'no-store' } });
+      }
+    }
     const response = await env.ASSETS.fetch(request);
 
     // 0. Suporte a Links Amigáveis de Afiliados via Path (/REF ou /ref/REF)
@@ -76,7 +87,9 @@ export default {
     } else if (pathname.startsWith('/images/') || pathname.match(/\.(png|jpg|jpeg|webp|svg|ico)$/i)) {
       headers.set('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=86400');
     } else if (contentType.includes('text/html')) {
-      headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+      headers.set('Cache-Control', 'no-store');
+      headers.delete('ETag');
+      headers.delete('Content-Length');
     }
 
     // 2. HTTP Security Headers Hardening
@@ -101,10 +114,18 @@ export default {
       }
     }
 
-    return new Response(response.body, {
+    const result = new Response(response.body, {
       status: response.status,
       statusText: response.statusText,
       headers,
     });
+    if (response.ok && contentType.includes('text/html')) {
+      const pricing = await fetchBackendPricing(ref).catch((error: unknown) => {
+        console.warn('Canonical pricing unavailable:', error instanceof Error ? error.message : 'unknown transport error');
+        return null;
+      });
+      return rewritePricing(result, pricing, ref);
+    }
+    return result;
   },
 };

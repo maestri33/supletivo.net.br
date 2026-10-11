@@ -1,6 +1,6 @@
 {
   "name": "supletivo.net.br",
-  "version": "0.0.0-sandbox.56",
+  "version": "0.0.0-sandbox.72",
   "private": true,
   "type": "module",
   "scripts": {
@@ -28,6 +28,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@axe-core/playwright": "^4.11.3",
     "@fontsource/archivo-black": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
@@ -38,6 +39,7 @@
     "happy-dom": "^20.10.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "wrangler": "^4.149.0"
   }
 }

@@ -4,7 +4,7 @@
  */
 import ContentPage from '../layouts/ContentPage.astro';
 import CtaButton from '../components/CtaButton.astro';
-import { PRICE, cardLine, pixBRL, fullBRL } from '../data/price';
+import { PRICE, cardLine, pixBRL, cardTotalBRL } from '../data/price';
 
 const title = 'Supletivo Ensino Fundamental: termine a partir dos 15 anos | Supletivo Brasil';
 const description =
@@ -166,8 +166,8 @@ const schema = {
 
   <h2>Quanto custa o supletivo do Ensino Fundamental?</h2>
   <p>
-    O investimento atual é de <strong>{cardLine} no cartão de crédito</strong> (total de {fullBRL}) ou
-    <strong>{pixBRL} à vista no Pix com desconto</strong>.
+    O investimento atual é de <strong><span data-price-card-line>{cardLine}</span> no cartão de crédito</strong> (total de <span data-price-card-total>{cardTotalBRL}</span>) ou
+    <strong><span data-price-pix-val>{pixBRL}</span> à vista no Pix com desconto</strong>.
     Além disso, você conta com <strong>garantia incondicional de 7 dias</strong>: se não se adaptar à metodologia,
     devolvemos 100% do seu dinheiro, conforme o art. 49 do CDC.
   </p>

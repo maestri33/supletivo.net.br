@@ -4,7 +4,7 @@
  */
 import ContentPage from '../layouts/ContentPage.astro';
 import CtaButton from '../components/CtaButton.astro';
-import { cardLine, pixBRL, fullBRL } from '../data/price';
+import { cardLine, pixBRL, cardTotalBRL } from '../data/price';
 
 const title = 'Como Terminar o Ensino Médio Sendo Adulto | Supletivo Brasil';
 const description =
@@ -84,8 +84,8 @@ const schema = {
 
   <h2>Quanto custa terminar o ensino médio online</h2>
   <p>
-    No Supletivo Brasil, o investimento é de <strong>{cardLine} no
-    cartão</strong> (total de {fullBRL}) ou <strong>{pixBRL} à vista no Pix com desconto</strong>.
+    No Supletivo Brasil, o investimento é de <strong><span data-price-card-line>{cardLine}</span> no
+    cartão</strong> (total de <span data-price-card-total>{cardTotalBRL}</span>) ou <strong><span data-price-pix-val>{pixBRL}</span> à vista no Pix com desconto</strong>.
   </p>
 
   <h2>"Faz muito tempo que parei. Consigo acompanhar?"</h2>
