@@ -15,6 +15,7 @@ import Validity from '../components/Validity.astro';
 import Pricing from '../components/Pricing.astro';
 import Virada from '../components/Virada.astro';
 import Faq from '../components/Faq.astro';
+import WorkWithUs from '../components/WorkWithUs.astro';
 import FinalCta from '../components/FinalCta.astro';
 import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/Footer.astro';
@@ -49,6 +50,21 @@ const schema = {
         'Educação de Jovens e Adultos (EJA) com estudo 100% online e prova final presencial, para concluir o Ensino Fundamental ou o Ensino Médio, com certificação emitida por escola parceira autorizada pelo Conselho Estadual de Educação (CEE), amparada pela LDB e com publicação no Diário Oficial.',
       url: siteUrl,
       provider: { '@id': `${siteUrl}#org` },
+      educationalCredentialAwarded: {
+        '@type': 'EducationalOccupationalCredential',
+        '@id': `${siteUrl}#credential`,
+        name: 'Certificado de Conclusão do Ensino Fundamental e Médio',
+        credentialCategory: 'certificate',
+        educationalLevel: 'Ensino Fundamental e Médio',
+        recognizedBy: {
+          '@type': 'Organization',
+          name: 'Conselho Estadual de Educação (CEE)',
+        },
+        validIn: {
+          '@type': 'AdministrativeArea',
+          name: 'Brasil',
+        },
+      },
       offers: {
         '@type': 'AggregateOffer',
         priceCurrency: 'BRL',
@@ -101,6 +117,7 @@ const schema = {
     </div>
     <Pricing />
     <Faq />
+    <WorkWithUs />
     <FinalCta />
   </main>
   <Footer />
