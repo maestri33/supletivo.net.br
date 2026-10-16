@@ -26,23 +26,9 @@ export default function seoFiles() {
         const base = site.endsWith('/') ? site : `${site}/`;
         const lastmod = new Date().toISOString().slice(0, 10);
 
-        // changefreq/priority por tipo de página: home > guias de SEO > legais
-        const LEGAL = new Set(['termos/', 'privacidade/']);
-        const meta = (pathname) => {
-          if (pathname === '') return { freq: 'monthly', prio: '1.0' };
-          if (LEGAL.has(pathname)) return { freq: 'yearly', prio: '0.3' };
-          return { freq: 'monthly', prio: '0.8' };
-        };
-
         const urls = pages
           .filter((p) => !EXCLUDE.has(p.pathname))
-          .map((p) => {
-            const { freq, prio } = meta(p.pathname);
-            return (
-              `  <url>\n    <loc>${base}${p.pathname}</loc>\n    <lastmod>${lastmod}</lastmod>` +
-              `\n    <changefreq>${freq}</changefreq>\n    <priority>${prio}</priority>\n  </url>`
-            );
-          })
+          .map((p) => `  <url>\n    <loc>${base}${p.pathname}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`)
           .join('\n');
 
         const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;

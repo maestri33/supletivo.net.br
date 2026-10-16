@@ -15,7 +15,8 @@
     "test:cli:show": "playwright-cli show",
     "checkpoint": "sh scripts/checkpoint/checkpoint.sh",
     "checkpoint:fast": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier fast",
-    "checkpoint:agent": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier agent"
+    "checkpoint:agent": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier agent",
+    "test:seo": "pwsh scripts/seo-loop.ps1"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",

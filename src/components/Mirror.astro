@@ -22,7 +22,7 @@ const TICKS = Array.from({ length: 12 }, (_, i) => i * 30);
     <circle cx="100" cy="100" r="5" fill="currentColor"></circle>
   </svg>
   <div class="container narrow">
-    <h2 id="mirror-title" data-reveal>
+    <h2 id="mirror-title" class="mirror-title" data-reveal>
       A vida passou na frente. <span class="hl">A gente entende.</span>
     </h2>
 
@@ -48,6 +48,14 @@ const TICKS = Array.from({ length: 12 }, (_, i) => i * 30);
     background: var(--ink);
     color: var(--paper);
     overflow: clip;
+    scroll-margin-top: 5rem;
+  }
+
+  .mirror-title {
+    font-size: clamp(1.65rem, 1rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+    max-width: 24ch;
+    scroll-margin-top: 5rem;
   }
 
   .mirror .sec-num {

@@ -125,4 +125,28 @@ describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation
 
     expect(res3.status).toBe(404);
   });
+
+  it('returns genuine 404 for arbitrary non-affiliate routes without redirection', async () => {
+    const mockAssetFetch = vi.fn().mockResolvedValue(
+      new Response('Not Found', {
+        status: 404,
+        headers: { 'Content-Type': 'text/plain' },
+      })
+    );
+
+    // Test 1: Random slug without ref/ prefix is NOT treated as affiliate
+    const req1 = new Request('https://supletivo.net.br/contato');
+    const res1 = await worker.fetch(req1, { ASSETS: { fetch: mockAssetFetch } });
+    expect(res1.status).toBe(404);
+
+    // Test 2: Unprefixed name slug like /victor is NOT treated as affiliate
+    const req2 = new Request('https://supletivo.net.br/victor');
+    const res2 = await worker.fetch(req2, { ASSETS: { fetch: mockAssetFetch } });
+    expect(res2.status).toBe(404);
+
+    // Test 3: Empty /ref or /ref/ does NOT redirect
+    const req3 = new Request('https://supletivo.net.br/ref/');
+    const res3 = await worker.fetch(req3, { ASSETS: { fetch: mockAssetFetch } });
+    expect(res3.status).toBe(404);
+  });
 });

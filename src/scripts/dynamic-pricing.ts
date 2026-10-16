@@ -238,9 +238,7 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
         });
       }
   } catch {
-    document.querySelectorAll<HTMLElement>('[data-price-card-line], [data-price-card-line-short], [data-price-pix-val], [data-price-per-month], [data-price-digits], [data-price-sr], [data-price-card-total], .sticky-price strong').forEach(el => {
-      el.textContent = 'Condições temporariamente indisponíveis';
-    });
+    // Se o backend dinâmico falhar ou estiver em preview estático, mantém os valores canônicos do build SSG
     document.querySelectorAll<HTMLElement>('[data-promo-scarcity], [data-price-old], [data-price-save-line], [data-card-stamp], [data-floating-promo]').forEach(el => el.classList.add('hidden'));
   }
 }

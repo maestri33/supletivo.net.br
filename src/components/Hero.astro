@@ -54,12 +54,12 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
       <span class="eyebrow-full">Supletivo online · Educação de Jovens e Adultos (EJA)</span>
     </p>
 
-    <h1 id="hero-title" class="hero-title">
+    <h1 id="hero-title" class="hero-title" aria-label="Você parou. Mas não acabou.">
       <span class="hero-line hero-line--ghost">
-        {words1.map((w, i) => <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>)}
-      </span>
+        {words1.map((w, i) => <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>)}{' '}
+      </span>{' '}
       <span class="hero-line">
-        {words2.map((w, i) => <span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>)}
+        {words2.map((w, i) => <span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>)}{' '}
         <span class="w w-accent" style={`--i: ${words1.length + words2.length + 1}`}>
           {LINE_2_B}
           <svg class="swoosh" aria-hidden="true" viewBox="0 0 220 24" fill="none" preserveAspectRatio="none">
@@ -254,12 +254,13 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
 
     /* abre espaço pro texto não disputar com a peça */
     .hero-inner {
-      padding-right: min(42vw, 540px);
+      padding-right: min(34vw, 440px);
       max-width: var(--container);
     }
 
     .hero .hero-title {
-      font-size: clamp(3.4rem, 5.4vw, 4.8rem);
+      font-size: clamp(3.1rem, 4.8vw, 4.5rem);
+      max-width: 20ch;
     }
   }
 
@@ -272,9 +273,9 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    font-size: 0.78rem;
+    font-size: 0.84rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--yellow);
     border: 1px solid rgb(255 196 0 / 0.4);
@@ -316,13 +317,14 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   }
 
   .hero-title {
-    font-size: var(--text-hero);
-    max-width: 12ch;
+    font-size: clamp(2.35rem, 1.2rem + 4.2vw, 4.4rem);
+    max-width: 20ch;
     letter-spacing: -0.015em;
   }
 
   .hero-line {
     display: block;
+    white-space: nowrap;
   }
 
   .hero-line--ghost {

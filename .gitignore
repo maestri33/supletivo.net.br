@@ -10,7 +10,11 @@ tools/fonts/
 test-results/
 playwright-report/
 screenshots/
+.playwright-cli/
+.sessions/
 .preview-port
 
 # agent runtime (worktrees + skills + settings locais)
 .claude/worktrees/
+.taste-skill/
+.wrangler/

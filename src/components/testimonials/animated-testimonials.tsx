@@ -101,7 +101,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
                       className="h-full w-full object-cover object-center"
                     />
                     {testimonial.badge && (
-                      <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/15 text-xs font-semibold text-yellow-400">
+                      <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/15 text-sm font-semibold text-yellow-400">
                         {testimonial.badge}
                       </div>
                     )}
@@ -125,7 +125,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
               <div className="flex items-center gap-2 mb-3">
                 <Quote className="w-8 h-8 text-yellow-400 opacity-80" aria-hidden="true" />
                 {current.outcome && (
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                  <span className="text-sm font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
                     {current.outcome}
                   </span>
                 )}
@@ -164,7 +164,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
               onClick={handlePrev}
               type="button"
               aria-label="Depoimento anterior"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-all hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-[color,background-color,border-color,transform] duration-200 hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer touch-manipulation"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
@@ -172,11 +172,11 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
               onClick={handleNext}
               type="button"
               aria-label="Próximo depoimento"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-all hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800/90 border border-white/10 text-neutral-300 transition-[color,background-color,border-color,transform] duration-200 hover:bg-neutral-700 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 cursor-pointer touch-manipulation"
             >
               <ArrowRight className="h-5 w-5" />
             </button>
-            <span className="text-xs text-neutral-400 ml-2 font-mono">
+            <span className="text-sm text-neutral-400 ml-2 font-mono tabular-nums">
               {active + 1} / {testimonials.length}
             </span>
           </div>

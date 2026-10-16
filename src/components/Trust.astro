@@ -112,6 +112,7 @@ const objections = [
     color: var(--paper);
     overflow: clip;
     padding-top: calc(var(--space-section) + 2rem);
+    scroll-margin-top: 5rem;
   }
 
   .trust .sec-num {
@@ -126,7 +127,7 @@ const objections = [
     left: -3%;
     width: 106%;
     z-index: 2;
-    box-shadow: 0 14px 30px -16px rgb(0 0 0 / 0.45);
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.2);
   }
 
   /* tela estreita: menos inclinação = sem corte nos cantos */
@@ -138,6 +139,9 @@ const objections = [
 
   #trust-title {
     font-size: var(--text-h2-sm);
+    scroll-margin-top: 5rem;
+    position: relative;
+    z-index: 3;
   }
 
   /* escudo fantasma: respira devagar, check se redesenha em ciclo */

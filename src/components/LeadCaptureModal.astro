@@ -52,14 +52,34 @@ import CredentialCard from './CredentialCard.astro';
         <!-- Breadcrumbs Vivos -->
         <div id="lead-breadcrumbs" class="lead-breadcrumbs hidden" aria-label="Progresso do formulário">
           <button type="button" class="pill-chip" id="chip-phone" title="Clique para editar o telefone" aria-label="Voltar para editar WhatsApp">
-            <span class="chip-icon">💬</span>
+            <span class="chip-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+            </span>
             <span class="chip-label" id="chip-phone-text">(11) 98765-4321</span>
-            <span class="chip-edit">✏️</span>
+            <span class="chip-edit" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+              </svg>
+            </span>
           </button>
           <button type="button" class="pill-chip hidden" id="chip-cpf" title="Clique para editar o CPF" aria-label="Voltar para editar CPF">
-            <span class="chip-icon">🪪</span>
+            <span class="chip-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <circle cx="8" cy="10" r="2"></circle>
+                <path d="M14 10h4M14 14h4M6 16c0-1.5 1.5-2 3-2s3 .5 3 2"></path>
+              </svg>
+            </span>
             <span class="chip-label" id="chip-cpf-text">000.000.000-00</span>
-            <span class="chip-edit">✏️</span>
+            <span class="chip-edit" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+              </svg>
+            </span>
           </button>
         </div>
 
@@ -99,7 +119,13 @@ import CredentialCard from './CredentialCard.astro';
           <!-- ETAPA 2: CPF (MÓDULO 11) -->
           <div id="step-cpf" class="step-pane hidden">
             <div class="input-wrapper" id="cpf-wrapper">
-              <span class="input-icon" aria-hidden="true">🪪</span>
+              <span class="input-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <circle cx="8" cy="10" r="2"></circle>
+                  <path d="M14 10h4M14 14h4M6 16c0-1.5 1.5-2 3-2s3 .5 3 2"></path>
+                </svg>
+              </span>
               <input
                 type="tel"
                 id="lead-input-cpf"
@@ -125,7 +151,12 @@ import CredentialCard from './CredentialCard.astro';
           <!-- ETAPA 3: E-MAIL (AUTO-DISPATCH) -->
           <div id="step-email" class="step-pane hidden">
             <div class="input-wrapper" id="email-wrapper">
-              <span class="input-icon" aria-hidden="true">✉️</span>
+              <span class="input-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+              </span>
               <input
                 type="email"
                 id="lead-input-email"
@@ -165,7 +196,7 @@ import CredentialCard from './CredentialCard.astro';
                 <strong id="existing-phone-masked">(XX) •••••-XXXX</strong>.
               </p>
               <p class="existing-sub">
-                Enviamos o código de segurança para o seu número cadastrado. Redirecionando para autenticação...
+                Enviamos o código de segurança para o seu número cadastrado. Redirecionando para autenticação…
               </p>
               <div class="existing-progress-wrap" aria-hidden="true">
                 <div class="existing-progress-bar" id="existing-progress-bar"></div>
@@ -295,12 +326,16 @@ import CredentialCard from './CredentialCard.astro';
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
   }
   .close-btn:hover {
     background: rgba(255, 255, 255, 0.16);
     color: var(--paper);
     transform: rotate(90deg);
+  }
+  .close-btn:focus-visible {
+    outline: 2px solid var(--yellow);
+    outline-offset: 2px;
   }
 
   /* Layout */
@@ -345,7 +380,7 @@ import CredentialCard from './CredentialCard.astro';
     font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
   }
   .pill-chip:hover,
   .domain-chip:hover {
@@ -385,12 +420,29 @@ import CredentialCard from './CredentialCard.astro';
     box-shadow: 0 0 20px color-mix(in srgb, var(--success) 25%, transparent);
   }
 
+  .chip-icon,
+  .chip-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .chip-edit {
+    opacity: 0.6;
+    margin-left: 0.2rem;
+  }
+  .pill-chip:hover .chip-edit {
+    opacity: 1;
+  }
+
   .input-icon {
     font-size: 1.25rem;
     margin-right: 0.75rem;
     color: var(--muted-on-dark);
     display: flex;
     align-items: center;
+  }
+  .input-icon svg {
+    display: block;
   }
   .whatsapp-icon {
     color: var(--success);
@@ -407,7 +459,8 @@ import CredentialCard from './CredentialCard.astro';
     min-height: var(--input-height, 48px);
     height: var(--input-height, 48px);
     padding: 0;
-    outline: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
     font-family: inherit;
   }
 
@@ -447,7 +500,7 @@ import CredentialCard from './CredentialCard.astro';
   }
 
   .input-hint {
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     color: var(--muted-on-dark);
     margin-top: 0.5rem;
     line-height: 1.4;
@@ -467,7 +520,7 @@ import CredentialCard from './CredentialCard.astro';
     gap: 0.35rem;
     background: var(--green);
     color: var(--paper);
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -504,7 +557,7 @@ import CredentialCard from './CredentialCard.astro';
     transition: transform 2.8s linear;
   }
   .existing-redirect-info {
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     color: var(--muted-on-dark);
     margin-top: 0.6rem;
     margin-bottom: 0;
@@ -526,7 +579,7 @@ import CredentialCard from './CredentialCard.astro';
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     color: var(--muted-on-dark);
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     padding-top: 0.85rem;
@@ -707,7 +760,7 @@ import CredentialCard from './CredentialCard.astro';
         phoneWrapper?.classList.add('valid');
         credentialLed?.classList.add('verified');
         if (speech) {
-          speech.textContent = 'Que bom ter você de volta! Localizamos seu cadastro e enviamos seu código no WhatsApp. Redirecionando...';
+          speech.textContent = 'Que bom ter você de volta! Localizamos seu cadastro e enviamos seu código no WhatsApp. Redirecionando…';
         }
         saveSession({ phone: digits, externalId: data.external_id });
         track('lead_phone_existing', { phone: digits });
@@ -995,7 +1048,7 @@ import CredentialCard from './CredentialCard.astro';
       emailWrapper?.classList.remove('valid');
 
       if (speech) {
-        speech.textContent = 'Tudo pronto! Sua pré-matrícula foi autorizada. Redirecionando para concluir sua matrícula...';
+        speech.textContent = 'Tudo pronto! Sua pré-matrícula foi autorizada. Redirecionando para concluir sua matrícula…';
       }
 
       saveSession({ phone: phoneDigits, cpf: cpfDigits, email: emailValue });

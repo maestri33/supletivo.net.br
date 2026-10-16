@@ -18,7 +18,12 @@ const {
   <div class="sofia-orb" aria-hidden="true">
     <span class="orb-core"></span>
     <span class="orb-wave"></span>
-    <span class="orb-icon">🎓</span>
+    <span class="orb-icon">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+      </svg>
+    </span>
   </div>
   <div class="sofia-meta">
     <div class="sofia-badge">
@@ -69,10 +74,10 @@ const {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     color: var(--yellow);
     margin-bottom: 0.35rem;
   }
