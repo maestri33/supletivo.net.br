@@ -1,6 +1,6 @@
 {
   "name": "supletivo.net.br",
-  "version": "0.0.0-sandbox.72",
+  "version": "0.0.1-beta",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,6 +11,8 @@
     "test": "vitest run",
     "check-types": "astro check",
     "test:e2e": "playwright test",
+    "test:cli": "playwright-cli",
+    "test:cli:show": "playwright-cli show",
     "checkpoint": "sh scripts/checkpoint/checkpoint.sh",
     "checkpoint:fast": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier fast",
     "checkpoint:agent": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier agent"
