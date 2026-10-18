@@ -44,11 +44,24 @@ const version = pkg.version;
           <a href="/termos/">Termos de Uso</a>
           <a href="/privacidade/">Política de Privacidade</a>
         </div>
-        <div class="footer-nav-group">
+        <div class="footer-nav-group footer-careers-group">
           <p class="footer-nav-title">Parceria</p>
-          <a href={CAREERS_URL} target="_blank" rel="noopener noreferrer">
-            Trabalhe conosco<span class="sr-only"> (abre em nova aba)</span>
+          <a
+            href={CAREERS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-careers-btn"
+            aria-label="Trabalhe conosco como promotor ou polo parceiro (abre em nova aba)"
+          >
+            <span class="footer-careers-beacon" aria-hidden="true">
+              <span class="beacon-pulse"></span>
+              <span class="beacon-dot"></span>
+            </span>
+            <span class="footer-careers-text">Trabalhe conosco</span>
+            <span class="footer-careers-badge">Renda Extra</span>
+            <span class="footer-careers-arrow" aria-hidden="true">↗</span>
           </a>
+          <p class="footer-careers-hint">Ganhe por indicação no Pix semanal</p>
         </div>
       </nav>
       <a class="to-top" href="#hero" aria-label="Voltar ao topo">
@@ -255,5 +268,147 @@ const version = pkg.version;
     color: var(--muted-on-dark);
     letter-spacing: -0.02em;
     user-select: none;
+  }
+
+  /* Destaque do botão Trabalhe Conosco no Rodapé */
+  .footer-careers-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .footer-careers-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 1.15rem !important;
+    min-height: 48px;
+    border-radius: 999px;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 115, 77, 0.28) 0%,
+      rgba(11, 18, 32, 0.85) 100%
+    );
+    border: 1px solid rgba(0, 230, 153, 0.45);
+    color: #ffffff !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 16px -4px rgba(0, 115, 77, 0.4);
+    position: relative;
+    overflow: clip;
+    transition: transform 0.2s var(--ease-out), border-color 0.2s ease, box-shadow 0.25s ease, background 0.2s ease !important;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-careers-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 35%,
+        rgba(0, 230, 153, 0.35) 50%,
+        rgba(255, 255, 255, 0.55) 53%,
+        transparent 65%
+      );
+      transform: translateX(-140%) skewX(-12deg);
+      animation: footer-careers-shimmer 5s var(--ease-out) infinite;
+      pointer-events: none;
+    }
+  }
+
+  @keyframes footer-careers-shimmer {
+    0%, 70% {
+      transform: translateX(-140%) skewX(-12deg);
+    }
+    100% {
+      transform: translateX(140%) skewX(-12deg);
+    }
+  }
+
+  .footer-careers-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--yellow);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 115, 77, 0.42) 0%,
+      rgba(18, 29, 51, 0.95) 100%
+    );
+    box-shadow: 0 8px 24px -4px rgba(0, 115, 77, 0.6), 0 0 12px rgba(255, 196, 0, 0.35);
+    text-decoration: none !important;
+  }
+
+  .footer-careers-beacon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  .footer-careers-beacon .beacon-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background-color: #00e699;
+    box-shadow: 0 0 6px #00e699;
+  }
+
+  .footer-careers-beacon .beacon-pulse {
+    position: absolute;
+    inset: -3px;
+    border-radius: 999px;
+    background-color: rgba(0, 230, 153, 0.5);
+    animation: footer-beacon-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes footer-beacon-ping {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.95;
+    }
+    70%, 100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  .footer-careers-badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(255, 196, 0, 0.18);
+    border: 1px solid rgba(255, 196, 0, 0.45);
+    color: var(--yellow-soft);
+    line-height: 1;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .footer-careers-btn:hover .footer-careers-badge {
+    background: var(--yellow);
+    color: var(--ink);
+    border-color: var(--yellow);
+  }
+
+  .footer-careers-arrow {
+    font-size: 0.9rem;
+    color: var(--yellow-soft);
+    transition: transform 0.18s var(--ease-out);
+  }
+
+  .footer-careers-btn:hover .footer-careers-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .footer-careers-hint {
+    font-size: 0.78rem;
+    color: var(--muted-on-dark);
+    margin: 0;
   }
 </style>

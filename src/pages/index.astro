@@ -15,7 +15,6 @@ import Validity from '../components/Validity.astro';
 import Pricing from '../components/Pricing.astro';
 import Virada from '../components/Virada.astro';
 import Faq from '../components/Faq.astro';
-import WorkWithUs from '../components/WorkWithUs.astro';
 import FinalCta from '../components/FinalCta.astro';
 import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/Footer.astro';
@@ -101,7 +100,7 @@ const schema = {
     <Validity />
     <Virada />
     <TestimonialsIsland />
-    <div class="testimonials-band" aria-hidden="true">
+    <div class="testimonials-band" data-ui aria-hidden="true">
       <Marquee
         items={[
           'Casos reais de superação',
@@ -117,7 +116,6 @@ const schema = {
     </div>
     <Pricing />
     <Faq />
-    <WorkWithUs />
     <FinalCta />
   </main>
   <Footer />

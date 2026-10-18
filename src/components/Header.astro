@@ -20,7 +20,13 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
       <a href="#depoimentos">Depoimentos</a>
       <a href="#preco">Preço</a>
       <a href="#faq">Dúvidas</a>
-      <a href="#trabalhe-conosco" class="site-nav-careers-mobile" aria-label="Trabalhe conosco como promotor ou polo parceiro">
+      <a
+        href={CAREERS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="site-nav-careers-mobile"
+        aria-label="Trabalhe conosco como promotor ou polo parceiro (abre em nova aba)"
+      >
         <span class="nav-beacon-dot" aria-hidden="true"></span>
         Trabalhe conosco
       </a>
@@ -28,10 +34,12 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
 
     <div class="header-action">
       <a
-        href="#trabalhe-conosco"
+        href={CAREERS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         class="header-careers-btn"
         data-cta="header_careers"
-        aria-label="Ir para a seção Trabalhe Conosco e programa de parceiros"
+        aria-label="Trabalhe conosco como promotor ou polo parceiro (abre em nova aba)"
       >
         <span class="careers-beacon" aria-hidden="true">
           <span class="beacon-pulse"></span>
@@ -58,8 +66,9 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     background-color: rgba(11, 18, 32, 0.94);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    overflow-x: clip;
     padding-block: 0.75rem;
     padding-top: max(0.75rem, env(safe-area-inset-top));
     transition: background-color 0.25s ease, border-color 0.25s ease;
@@ -149,11 +158,7 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     padding: 0.45rem 0.95rem;
     min-height: 48px;
     border-radius: 999px;
-    background: linear-gradient(
-      135deg,
-      rgba(0, 115, 77, 0.22) 0%,
-      rgba(11, 18, 32, 0.85) 100%
-    );
+    background: rgba(0, 115, 77, 0.4);
     border: 1px solid rgba(0, 230, 153, 0.38);
     color: #ffffff;
     font-size: 0.82rem;
@@ -161,7 +166,7 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     text-decoration: none;
     overflow: clip;
     white-space: nowrap;
-    box-shadow: 0 4px 16px -4px rgba(0, 115, 77, 0.35);
+    box-shadow: none;
     transition: transform 0.2s var(--ease-out), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   }
 
@@ -313,6 +318,10 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     .site-nav {
       margin-left: auto;
       margin-inline: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      max-width: 100%;
     }
     .site-nav-careers-mobile {
       display: inline-flex !important;
