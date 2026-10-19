@@ -8,3 +8,11 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare namespace astroHTML.JSX {
+  interface FormHTMLAttributes {
+    toolname?: string;
+    tooldescription?: string;
+  }
+}
+
