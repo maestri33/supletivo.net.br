@@ -15,19 +15,33 @@ interface Props {
 }
 const { items, variant = 'yellow', speed = 28, tilt = 0, priceIndex } = Astro.props;
 // loop seamless: 2 <ul> idênticas + translateX(-50%). Cada <ul> precisa
-// ser mais larga que a viewport — com listas de mensagens distintas, 2×
-// já basta (antes eram 3×, nós a mais sem ganho visual).
-const copy = [...items, ...items];
+// ser mais larga que a viewport. Duplicatas visuais recebem aria-hidden="true"
+// para manter exatamente 1 cópia semântica indexável por buscadores e leitores.
+const halfItems = [...items, ...items];
 ---
 
 <div
   class={`marquee marquee--${variant}`}
   style={`--speed: ${speed}s; --tilt: ${tilt}deg`}
 >
-  <p class="sr-only">{items.map((item, i) => <><span data-price-card-line={i === priceIndex ? true : undefined}>{item}</span>{i < items.length - 1 ? ' · ' : ''}</>)}</p>
-  <div class="marquee-track" aria-hidden="true">
-    <ul>{copy.map((item, i) => <li data-price-card-line={i % items.length === priceIndex ? true : undefined}>{item}</li>)}</ul>
-    <ul>{copy.map((item, i) => <li data-price-card-line={i % items.length === priceIndex ? true : undefined}>{item}</li>)}</ul>
+  <div class="marquee-track">
+    <ul>
+      {halfItems.map((item, i) => (
+        <li
+          aria-hidden={i >= items.length ? 'true' : undefined}
+          data-price-card-line={i % items.length === priceIndex ? true : undefined}
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+    <ul aria-hidden="true">
+      {halfItems.map((item, i) => (
+        <li data-price-card-line={i % items.length === priceIndex ? true : undefined}>
+          {item}
+        </li>
+      ))}
+    </ul>
   </div>
 </div>
 
@@ -52,7 +66,7 @@ const copy = [...items, ...items];
   .marquee--ink {
     background: var(--ink);
     color: var(--paper);
-    border-block: 1px solid rgb(255 255 255 / 0.14);
+    border-block: none;
   }
 
   .marquee-track {

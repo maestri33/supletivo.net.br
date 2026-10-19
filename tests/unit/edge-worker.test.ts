@@ -81,7 +81,7 @@ describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation
     expect(response.headers.get('x-frame-options')).toBe('DENY');
   });
 
-  it('prevents shared caching of referral-dependent HTML quotes', async () => {
+  it('prevents shared caching of referral-dependent HTML quotes while allowing bfcache', async () => {
     const mockAssetFetch = vi.fn().mockResolvedValue(
       new Response('<!DOCTYPE html><html><body>Supletivo</body></html>', {
         status: 200,
@@ -92,7 +92,23 @@ describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation
     const request = new Request('https://supletivo.net.br/');
     const response = await worker.fetch(request, { ASSETS: { fetch: mockAssetFetch } });
 
-    expect(response.headers.get('cache-control')).toBe('no-store');
+    expect(response.headers.get('cache-control')).toBe('private, no-cache, must-revalidate');
+  });
+
+  it('converts temporary 307 trailing slash redirects from ASSETS into canonical 301 Moved Permanently', async () => {
+    const mockAssetFetch = vi.fn().mockResolvedValue(
+      new Response(null, {
+        status: 307,
+        headers: { Location: '/eja-a-distancia/' },
+      })
+    );
+
+    const request = new Request('https://supletivo.net.br/eja-a-distancia');
+    const response = await worker.fetch(request, { ASSETS: { fetch: mockAssetFetch } });
+
+    expect(response.status).toBe(301);
+    expect(response.headers.get('Location')).toBe('/eja-a-distancia/');
+    expect(response.headers.get('Strict-Transport-Security')).toBeTruthy();
   });
 
   it('redirects path-based affiliate links (e.g. /REF or /ref/REF) to /?ref=REF with cookies', async () => {

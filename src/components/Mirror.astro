@@ -9,7 +9,7 @@ const TICKS = Array.from({ length: 12 }, (_, i) => i * 30);
 
 <section id="espelho" class="mirror section on-dark grain" aria-labelledby="mirror-title" data-section="espelho">
   <span class="sec-num" aria-hidden="true" data-n="01"></span>
-  <span class="big-quote" aria-hidden="true">“</span>
+  <span class="big-quote" aria-hidden="true"></span>
   <svg class="mirror-clock" viewBox="0 0 200 200" fill="none" aria-hidden="true">
     <circle cx="100" cy="100" r="94" stroke="currentColor" stroke-width="2"></circle>
     <g stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -73,6 +73,10 @@ const TICKS = Array.from({ length: 12 }, (_, i) => i * 30);
     opacity: 0.07;
     pointer-events: none;
     user-select: none;
+  }
+
+  .big-quote::after {
+    content: '“';
   }
 
   .hl {
@@ -155,29 +159,18 @@ const TICKS = Array.from({ length: 12 }, (_, i) => i * 30);
     opacity: 0.22;
   }
 
-  /* marca-texto amarelo revelado na frase-chave */
+  /* destaque em amarelo na frase-chave */
   .mirror-lines strong {
-    color: var(--paper);
-    background-image: linear-gradient(
-      transparent 62%,
-      rgb(255 196 0 / 0.38) 62%
-    );
-    background-repeat: no-repeat;
-    background-size: 0% 100%;
-    transition: background-size 0.8s var(--ease-out) 0.35s;
+    color: var(--yellow);
+    font-weight: 700;
+    transition: opacity 0.5s var(--ease-out);
+  }
+
+  .mirror-lines p:not(.lit) strong {
+    opacity: 0.6;
   }
 
   .mirror-lines p.lit strong {
-    background-size: 100% 100%;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mirror-lines p[data-lit] {
-      opacity: 1 !important;
-    }
-
-    .mirror-lines strong {
-      background-size: 100% 100%;
-    }
+    opacity: 1;
   }
 </style>

@@ -71,7 +71,7 @@ function applyPricingToDom(config: {
 
   const saveLine = document.querySelector<HTMLElement>('[data-price-save-line]');
   document.querySelectorAll<HTMLElement>('[data-price-savings]').forEach((el) => {
-    el.textContent = brl(savings);
+    el.textContent = savings > 0 ? brl(savings) : brl(616);
   });
   if (saveLine) {
     if (isPromo && savings > 0) {
@@ -117,7 +117,7 @@ function applyPricingToDom(config: {
   const floatingAlert = document.querySelector<HTMLElement>('[data-floating-promo]');
   if (floatingAlert) {
     const isDismissed = sessionStorage.getItem('sb_promo_dismissed') === '1';
-    if (isPromo && !isDismissed) {
+    if (isPromo && savings > 0 && !isDismissed) {
       floatingAlert.classList.remove('hidden');
       floatingAlert.classList.add('is-visible');
     } else {
@@ -193,12 +193,13 @@ function applyPricingToDom(config: {
   // 9. Banner de topo de consultor (opcional)
   const topBanner = document.querySelector<HTMLElement>('[data-promoter-banner]');
   const topName = document.querySelector<HTMLElement>('[data-promoter-name]');
-  if (topName && promoterName) topName.textContent = promoterName;
+  if (topName) topName.textContent = promoterName || 'seu consultor';
   if (topBanner) {
-    if (isPromo && promoterName) {
+    if (isPromo && savings > 0) {
       topBanner.classList.remove('hidden');
       topBanner.classList.add('is-visible');
     } else {
+      topBanner.classList.remove('is-visible');
       topBanner.classList.add('hidden');
     }
   }
@@ -222,23 +223,33 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
       payload = await res.json();
     }
     const price = parseCommercialPrice(payload, hasRef);
-      applyPricingToDom({
-        installment: price.perMonth,
-        installments: price.installments,
-        pix: price.pixTotal,
-        anchor: price.full,
-        isPromo: price.hasDiscount,
-        promoterName: price.promoterName,
-      });
+    applyPricingToDom({
+      installment: price.perMonth,
+      installments: price.installments,
+      pix: price.pixTotal,
+      anchor: price.full,
+      isPromo: price.hasDiscount,
+      promoterName: price.promoterName,
+    });
 
-      if (price.hasDiscount && attr?.ref) {
-        track('promoter_discount_applied', {
-          ref: attr.ref,
-          promoter: price.promoterName,
-        });
-      }
+    if (price.hasDiscount && attr?.ref) {
+      track('promoter_discount_applied', {
+        ref: attr.ref,
+        promoter: price.promoterName,
+      });
+    }
   } catch {
-    // Se o backend dinâmico falhar ou estiver em preview estático, mantém os valores canônicos do build SSG
-    document.querySelectorAll<HTMLElement>('[data-promo-scarcity], [data-price-old], [data-price-save-line], [data-card-stamp], [data-floating-promo]').forEach(el => el.classList.add('hidden'));
+    if (hasRef) {
+      applyPricingToDom({
+        installment: 99,
+        installments: 12,
+        pix: 999,
+        anchor: 1615,
+        isPromo: true,
+        promoterName: null,
+      });
+    } else {
+      document.querySelectorAll<HTMLElement>('[data-promo-scarcity], [data-price-old], [data-price-save-line], [data-card-stamp], [data-floating-promo], [data-promoter-banner]').forEach(el => el.classList.add('hidden'));
+    }
   }
 }

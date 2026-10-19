@@ -61,9 +61,12 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
       ? description.replace(/\d{1,2}x\s+(?:de\s+)?R\$\s*[\d.,]+/g, card).replace(/R\$\s*[\d.,]+\s*(?=no Pix|via Pix|à vista)/gi, formatBRL(price.pixTotal))
       : 'Conheça o Supletivo Brasil e consulte as condições comerciais assim que estiverem disponíveis.');
   } });
-  rewriter.on('[data-price-old], [data-price-save-line], [data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge]', { element(element) {
+  const isPromoEffective = Boolean(price?.hasDiscount && (price.full - price.pixTotal > 0));
+  const savings = isPromoEffective && price ? price.full - price.pixTotal : 0;
+
+  rewriter.on('[data-price-old], [data-price-save-line], [data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge], [data-floating-promo], [data-promoter-banner]', { element(element) {
     const classes = (element.getAttribute('class') || '').split(/\s+/).filter(Boolean).filter(name => name !== 'hidden');
-    if (!price?.hasDiscount) classes.push('hidden');
+    if (!isPromoEffective) classes.push('hidden');
     element.setAttribute('class', classes.join(' '));
   } });
   const replace = (selector: string, text: string) => rewriter.on(selector, { element: element => element.setInnerContent(text) });
@@ -75,8 +78,11 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
   replace('[data-price-old-val]', price ? formatBRL(price.full) : unavailable);
   replace('[data-price-card-total]', price ? formatBRL(price.cardTotal) : unavailable);
   replace('[data-price-mode-line]', price ? `em ${price.installments}x no cartão de crédito` : 'Tente novamente em instantes.');
-  replace('[data-price-savings]', price ? formatBRL(Math.max(0, price.full - price.pixTotal)) : '');
-  replace('#pricing-title', 'Invista no seu futuro com segurança.');
+  replace('[data-price-savings]', savings > 0 ? formatBRL(savings) : '');
+  if (price?.promoterName) {
+    replace('[data-promoter-name]', price.promoterName);
+  }
+  replace('#pricing-title', isPromoEffective && price ? `Menos de ${formatBRL(Math.ceil(price.perMonth / 100) * 100)} por mês.` : 'Invista no seu futuro com segurança.');
   rewriter.on('body', { element(element) {
     element.setAttribute('data-pricing-state', price ? 'available' : 'unavailable');
     if (payload) element.append(`<script id="sb-pricing" type="application/json">${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>`, { html: true });

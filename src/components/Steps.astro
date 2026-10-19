@@ -32,7 +32,6 @@ import Marquee from './Marquee.astro';
 <section id="como-funciona" class="steps section" aria-labelledby="steps-title" data-section="como-funciona">
   <span class="sec-num" aria-hidden="true" data-n="02"></span>
   <div class="container">
-    <p class="kicker steps-kicker" data-reveal>Como funciona</p>
     <h2 id="steps-title" data-reveal>Três passos até o seu certificado</h2>
 
     <div class="steps-wrap" data-reveal style="--d: 1">
@@ -53,6 +52,7 @@ import Marquee from './Marquee.astro';
             <article class="step-card spatial-card-3d" data-tilt-3d data-tilt-max="6">
               <span class="step-n" aria-hidden="true" data-tilt-sublayer="25"><i>{i + 1}</i></span>
               <span class="step-watermark" aria-hidden="true" data-n={`0${i + 1}`}></span>
+              <h3 data-tilt-sublayer="20">{step.title}</h3>
               <svg
                 class="step-icon"
                 data-tilt-sublayer="30"
@@ -65,7 +65,6 @@ import Marquee from './Marquee.astro';
                 aria-hidden="true"
                 set:html={icons[i]}
               />
-              <h3 data-tilt-sublayer="20">{step.title}</h3>
               <p data-tilt-sublayer="15">{step.text}</p>
             </article>
           </li>
@@ -96,9 +95,7 @@ import Marquee from './Marquee.astro';
 
 <style>
   .steps {
-    background:
-      radial-gradient(rgb(0 115 77 / 0.07) 1px, transparent 1.5px) 0 0 / 26px 26px,
-      var(--paper);
+    background: var(--paper);
     overflow: clip;
   }
 
@@ -169,7 +166,7 @@ import Marquee from './Marquee.astro';
       left: 0.28rem;
       top: 1.2rem;
       bottom: 1.2rem;
-      border-left: 2px dashed rgb(0 115 77 / 0.35);
+      border-left: 2px solid rgb(0 115 77 / 0.25);
     }
 
     .steps-grid li {
@@ -194,7 +191,7 @@ import Marquee from './Marquee.astro';
     position: relative;
     height: 100%;
     background: var(--paper-soft);
-    border: 1px solid var(--line-light);
+    border: none;
     border-radius: var(--radius);
     padding: 2.1rem 1.6rem 1.8rem;
     overflow: visible;

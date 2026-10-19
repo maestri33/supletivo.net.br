@@ -88,9 +88,7 @@ const PARTICLES = Array.from({ length: 6 }, (_, i) => {
 
 <style>
   .final {
-    background:
-      radial-gradient(50rem 28rem at 50% 110%, rgb(255 196 0 / 0.14), transparent 60%),
-      linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%);
+    background: var(--blue);
     color: var(--paper);
     text-align: center;
     overflow: clip;
@@ -103,7 +101,7 @@ const PARTICLES = Array.from({ length: 6 }, (_, i) => {
     left: -3%;
     width: 106%;
     z-index: 2;
-    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
   }
 
   @media (max-width: 720px) {

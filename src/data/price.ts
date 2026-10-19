@@ -43,9 +43,24 @@ export const fullBRL = brl(PRICE.full);
 export const cardTotalBRL = brl(PRICE.cardTotal);
 export const savingsBRL = brl(savings);
 
-/** "12x de R$ 99" */
+/** Condição Promocional Oficial de Indicação (?ref=) */
+export const PROMO_PRICE = {
+  installments: 12,
+  perMonth: 99,
+  cardTotal: 1188,
+  pixTotal: 999,
+  full: 1615,
+};
+export const promoSavings = PROMO_PRICE.full - PROMO_PRICE.pixTotal; // R$ 616
+export const promoSavingsBRL = brl(promoSavings); // "R$ 616"
+export const promoPerMonthBRL = brl(PROMO_PRICE.perMonth);
+export const promoPixBRL = brl(PROMO_PRICE.pixTotal);
+export const promoCardTotalBRL = brl(PROMO_PRICE.cardTotal);
+export const promoCardLine = `${PROMO_PRICE.installments}x de ${promoPerMonthBRL}`;
+
+/** "12x de R$ 159,90" */
 export const cardLine = `${PRICE.installments}x de ${perMonthBRL}`;
-/** "12x R$ 99" (versão curta, sticky) */
+/** "12x R$ 159,90" (versão curta, sticky) */
 export const cardLineShort = `${PRICE.installments}x ${perMonthBRL}`;
-/** "Menos de R$ 100" — teto de marketing arredondando a parcela pra cima */
+/** "Menos de R$ 200" — teto de marketing arredondando a parcela pra cima */
 export const underPerMonthBRL = brl(Math.ceil(PRICE.perMonth / 100) * 100);

@@ -89,7 +89,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
                   }}
                   className="absolute inset-0 origin-bottom"
                 >
-                  <div className="relative h-full w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-neutral-900">
+                  <div className="relative h-full w-full rounded-3xl overflow-hidden shadow-none border-0 bg-neutral-900">
                     <img
                       src={testimonial.src}
                       alt={`Foto de ${testimonial.name}`}
@@ -125,7 +125,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
               <div className="flex items-center gap-2 mb-3">
                 <Quote className="w-8 h-8 text-yellow-400 opacity-80" aria-hidden="true" />
                 {current.outcome && (
-                  <span className="text-sm font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                  <span className="text-sm font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
                     {current.outcome}
                   </span>
                 )}
@@ -176,7 +176,7 @@ export const AnimatedTestimonials: React.FC<AnimatedTestimonialsProps> = ({
             >
               <ArrowRight className="h-5 w-5" />
             </button>
-            <span className="text-sm text-neutral-400 ml-2 font-mono tabular-nums">
+            <span className="text-sm text-neutral-400 ml-2 tabular-nums">
               {active + 1} / {testimonials.length}
             </span>
           </div>

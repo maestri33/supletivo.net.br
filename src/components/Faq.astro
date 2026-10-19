@@ -8,9 +8,8 @@ import { faq } from '../data/faq';
 
 <section id="faq" class="faq section" aria-labelledby="faq-title" data-section="faq">
   <span class="sec-num" aria-hidden="true" data-n="06"></span>
-  <span class="faq-mark" aria-hidden="true">?</span>
+  <span class="faq-mark" aria-hidden="true"></span>
   <div class="container narrow">
-    <p class="kicker faq-kicker" data-reveal>Tire suas dúvidas</p>
     <h2 id="faq-title" data-reveal>Perguntas frequentes</h2>
 
     <div class="faq-list">
@@ -92,6 +91,10 @@ import { faq } from '../data/faq';
     user-select: none;
   }
 
+  .faq-mark::after {
+    content: '?';
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .faq-mark {
       animation: faq-sway 9s ease-in-out infinite;
@@ -118,7 +121,7 @@ import { faq } from '../data/faq';
 
   .faq-item {
     background: var(--paper-soft);
-    border: 1px solid var(--line-light);
+    border: none;
     border-radius: 14px;
   }
 

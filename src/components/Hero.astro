@@ -48,12 +48,6 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   </div>
 
   <div class="container hero-inner">
-    <p class="hero-eyebrow anim-up" style="--i: 0">
-      <span class="dot" aria-hidden="true"></span>
-      <span class="eyebrow-short">Supletivo online · EJA</span>
-      <span class="eyebrow-full">Supletivo online · Educação de Jovens e Adultos (EJA)</span>
-    </p>
-
     <h1 id="hero-title" class="hero-title" aria-label="Você parou. Mas não acabou.">
       <span class="hero-line hero-line--ghost">
         {words1.map((w, i) => <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>)}{' '}
@@ -74,9 +68,8 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
       </span>
     </h1>
 
-    <p class="hero-sub anim-up" style="--i: 7">
-      Termine o Ensino Fundamental ou o Ensino Médio pelo celular, no seu ritmo
-      — com certificado válido em todo o Brasil.
+    <p class="hero-sub anim-up" style="--i: 5">
+      Supletivo online de Educação de Jovens e Adultos (EJA). Termine o Ensino Fundamental ou Médio pelo celular, no seu ritmo — com certificado oficial válido em todo o Brasil.
     </p>
 
     <ul class="hero-chips anim-up" style="--i: 8">
@@ -135,9 +128,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
        Mobile-first: padding menor pra CTA caber above-the-fold em 360px. */
     padding-top: max(clamp(4.5rem, 10vh, 9rem), calc(env(safe-area-inset-top) + 3.5rem));
     padding-bottom: 0;
-    background:
-      radial-gradient(58rem 32rem at 18% 4%, rgb(255 196 0 / 0.1), transparent 62%),
-      linear-gradient(168deg, var(--blue) 0%, var(--blue-deep) 55%, var(--ink) 100%);
+    background: var(--ink);
     color: var(--paper);
     overflow: clip;
   }

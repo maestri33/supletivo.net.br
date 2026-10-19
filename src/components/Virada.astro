@@ -34,7 +34,6 @@ const outcomeCards = [
   <span class="sec-num" aria-hidden="true" data-n="05"></span>
   <div class="container virada-grid">
     <div class="virada-copy">
-      <p class="kicker virada-kicker" data-reveal>A virada</p>
       <h2 id="virada-title" data-reveal>
         Daqui a pouco, é o seu nome neste certificado
       </h2>
@@ -47,33 +46,6 @@ const outcomeCards = [
           outcomeCards.map((card) => (
             <div class="outcome-card">
               <div class="outcome-card-top">
-                <span class="outcome-icon" aria-hidden="true">
-                  {card.type === 'concursos' && (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 3l9 7H3z" />
-                    </svg>
-                  )}
-                  {card.type === 'faculdade' && (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                    </svg>
-                  )}
-                  {card.type === 'cnh' && (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.4-1.7-1.1-2.2l-2.4-1.8A3 3 0 0 0 16.7 8H7.3a3 3 0 0 0-1.8 1l-2.4 1.8A3 3 0 0 0 2 13v3c0 .6.4 1 1 1h2" />
-                      <circle cx="7" cy="17" r="2" />
-                      <path d="M9 17h6" />
-                      <circle cx="17" cy="17" r="2" />
-                    </svg>
-                  )}
-                  {card.type === 'carreira' && (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                    </svg>
-                  )}
-                </span>
                 <span class="outcome-tag">{card.tag}</span>
               </div>
               <h3 class="outcome-title">{card.title}</h3>
@@ -229,10 +201,9 @@ const outcomeCards = [
 
 <style>
   .virada {
-    background:
-      radial-gradient(rgb(0 39 118 / 0.05) 1px, transparent 1.5px) 0 0 / 26px 26px,
-      var(--paper-soft);
+    background: var(--paper-soft);
     overflow: clip;
+    padding-top: calc(var(--space-section) + 6.5rem);
     scroll-margin-top: 5rem;
   }
 
@@ -288,24 +259,25 @@ const outcomeCards = [
   }
 
   .outcome-card {
-    background: var(--paper);
-    border: 1px solid rgb(0 39 118 / 0.1);
+    background: var(--paper-soft);
+    border: none;
     border-radius: var(--radius);
-    padding: 1.1rem 1.2rem;
-    box-shadow: 0 4px 12px rgb(11 18 32 / 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 1.25rem 1.4rem;
+    box-shadow: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   }
 
   .outcome-card:hover {
     transform: translateY(-2px);
+    background: #edf1f7;
     box-shadow: 0 8px 20px rgb(11 18 32 / 0.08);
   }
 
   .outcome-card-top {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+    justify-content: flex-start;
+    margin-bottom: 0.75rem;
   }
 
   .outcome-icon {
@@ -328,7 +300,7 @@ const outcomeCards = [
     font-size: 0.82rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
     padding: 0.2rem 0.5rem;
     border-radius: 999px;
     background: color-mix(in srgb, var(--green) 12%, transparent);

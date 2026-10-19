@@ -52,7 +52,25 @@ export default {
     }
     const response = await env.ASSETS.fetch(request);
 
-    // 0. Suporte a Links Amigáveis de Afiliados via Path (/ref/SLUG ou UUID direto)
+    // 0. Normalização Canônica de Barra Final (converte 307 temporário do Cloudflare Assets em 301 permanente)
+    if (response.status === 307 || response.status === 308) {
+      const location = response.headers.get('Location');
+      if (location) {
+        const redirectHeaders = new Headers(response.headers);
+        redirectHeaders.set('Location', location);
+        redirectHeaders.set('Cache-Control', 'public, max-age=31536000, immutable');
+        if (!redirectHeaders.has('Strict-Transport-Security')) {
+          redirectHeaders.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+        }
+        return new Response(null, {
+          status: 301,
+          statusText: 'Moved Permanently',
+          headers: redirectHeaders,
+        });
+      }
+    }
+
+    // 0.1 Suporte a Links Amigáveis de Afiliados via Path (/ref/SLUG ou UUID direto)
     if (response.status === 404) {
       const cleanPath = pathname.replace(/^\/+|\/+$/g, '');
       if (cleanPath.length > 0 && !cleanPath.includes('.')) {
@@ -96,7 +114,7 @@ export default {
     } else if (pathname.startsWith('/images/') || pathname.match(/\.(png|jpg|jpeg|webp|svg|ico)$/i)) {
       headers.set('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=86400');
     } else if (contentType.includes('text/html')) {
-      headers.set('Cache-Control', 'no-store');
+      headers.set('Cache-Control', 'private, no-cache, must-revalidate');
       headers.delete('ETag');
       headers.delete('Content-Length');
     }

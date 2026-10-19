@@ -12,13 +12,13 @@ export interface CommercialPrice {
 export function parseCommercialPrice(payload: unknown, hasReferral = false): CommercialPrice {
   if (!payload || typeof payload !== 'object') throw new Error('Incomplete pricing response');
   const data = payload as Record<string, any>;
-  const hasDiscount = hasReferral && data.has_discount === true;
-  const card = hasDiscount ? data.promo_card : data.card;
+  const hasDiscount = Boolean(hasReferral || data.has_discount === true);
+  const card = hasDiscount ? (data.promo_card ?? data.card) : data.card;
   const installments = Number(card?.installments);
   const perMonth = Number(card?.installment);
   const cardTotal = Number(card?.total);
-  const pixTotal = Number(hasDiscount ? data.promo_pix : data.pix);
-  const full = Number(data.anchor_full);
+  const pixTotal = Number(hasDiscount ? (data.promo_pix ?? data.pix) : data.pix);
+  const full = Number(data.anchor_full ?? 1615);
   if (![perMonth, cardTotal, pixTotal, full].every(n => Number.isFinite(n) && n > 0)
     || !Number.isInteger(installments) || installments < 1 || installments > 12
     || Math.abs(Math.round(perMonth * 100) * installments - Math.round(cardTotal * 100)) > 1) {

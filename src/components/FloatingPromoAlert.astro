@@ -6,7 +6,7 @@
  * Posicionado no desktop à direita (sem sobrepor o Hero CTA) e
  * com ativação inteligente que não obstrui o Hero mobile.
  */
-import { savingsBRL, cardLine, pixBRL } from '../data/price';
+import { promoSavingsBRL, promoCardLine, promoPixBRL } from '../data/price';
 ---
 
 <aside
@@ -45,10 +45,10 @@ import { savingsBRL, cardLine, pixBRL } from '../data/price';
 
       <div class="promo-alert-content">
         <p class="promo-alert-headline">
-          Economia de <span class="promo-highlight" data-price-savings>{savingsBRL}</span> aplicada
+          Economia de <span class="promo-highlight" data-price-savings>{promoSavingsBRL}</span> aplicada
         </p>
         <p class="promo-alert-sub">
-          Por <strong data-price-card-line>{cardLine}</strong> ou <strong data-price-pix-val>{pixBRL}</strong> no Pix
+          Por <strong data-price-card-line>{promoCardLine}</strong> ou <strong data-price-pix-val>{promoPixBRL}</strong> no Pix
         </p>
       </div>
     </div>
