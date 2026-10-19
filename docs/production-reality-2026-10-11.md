@@ -1,94 +1,18 @@
-# Realidade operacional e plano de recuperação — 11/10/2026
+# Realidade operacional — 11/10/2026
 
-Este documento registra o estado observado durante a recuperação da plataforma Supletivo Brasil. Ele separa publicação, teste automatizado, homologação humana e evidência de produção. Um teste local ou um HTTP 200 isolado não é tratado como validação de negócio.
+Este arquivo é um índice. Ainda não há evidência completa de todos os fluxos nem homologação integral do proprietário. Versões e afirmações do rascunho anterior foram substituídas pelos registros:
 
-## Snapshot
+- [Sessão atual: decisões, intervenções, versões/digests, canários, testes reais e pendências](audit/production-session-2026-10-11.md).
+- [Inventário de apps e fronteiras de dados](inventory-matrix-production.md).
+- [Coleta remota inicial: Cloudflare/Azure, bancos/filas/secrets e divergências](audit/infra-evidence-2026-10-11.md), com horário explícito.
+- [Análise inicial aluno/hub](audit/student-hub-evidence-2026-10-11.md) e [promotor/financeiro](audit/promoter-finance-evidence-2026-10-11.md), sujeitas às correções posteriores.
 
-| Área | Estado observado | Evidência | Próximo bloqueio |
-|---|---|---|---|
-| `app.supletivo.net.br` | **PUBLICADO `.64`** | Worker `23a943d8-5d59-4c6c-a2c1-1bf1137c67da`; resposta pública 200 | Homologação autenticada dos fluxos completos |
-| `backend.supletivo.net.br` | **PUBLICADO `.62`** | `/api/v1/health/healthz` respondeu 200, banco conectado e sem migrações pendentes | Promoção controlada do backend e teste de OCR real |
-| Notify edge | **PUBLICADO** | Rotas `notify.supletivo.net.br` e `notify.v7m.live`; D1 conectado | Provar entrega/reprocessamento de webhook em produção |
-| Admin | **EXISTENTE, não homologado integralmente** | Código e rotas operacionais presentes | Conferir preços, documentos, financeiro, estornos e permissões |
-| Pagamentos | **CANÁRIOS EXECUTADOS** | Pix Asaas de R$ 0,01 e checkout InfinitePay de R$ 1,01 pagos | Conferir reconciliação, comissão, chargeback e fechamento |
-| Infraestrutura | **HÍBRIDA DEFINIDA** | Azure para backend/PostgreSQL; Cloudflare para borda, D1 e R2 | Registrar artefatos, versões, rollback e observabilidade |
+No canário atual, Victor entrou pela landing/OTP e recebeu cobrança Pix de R$1,01 vinculada à proposta. Asaas confirmou o recebimento em 11/10 às 11:33:14 America/Sao_Paulo; `PAYMENT_RECEIVED` foi persistido/consumido, criando matrícula no status `rg` e uma comissão canário de R$0,01 `pending` para a promotora padrão. WhatsApp mostrou confirmação/comprovante e novo login real levou à tela RG com status Aluno/MATRÍCULA. O envio anterior de `rg_inteiro.jpg` como `rg_full` terminou aprovado na .82/.84; esse resultado é histórico. A conferência posterior encontrou erro do Scout no verso/CPF do RG e exigiu correção do leitor. Na .88, leituras reais pré-deploy reconheceram frente/verso/inteiro e conferiram nome/CPF/nascimento do RG e da CNH PDF; a reanálise desse mesmo RG pela fila real concluiu com sucesso às20:21:23UTC, com nome/CPF/nascimento conferidos, campos persistidos e UI mostrando RG aprovado. A confirmação foi observada pelo GOWA às20:21:25UTC. Não foi novo upload/cadastro/pagamento nesta etapa. Selfie ao vivo pelo titular. Pagamentos diretos antigos permanecem separados.
 
-## O que foi implementado
+Decisão expressa atual do proprietário: **toda IA utiliza exclusivamente Cloudflare Workers AI**, incluindo texto, visão e OCR/extração documental. O gateway autenticado `supletivo-ai-gateway.v7m.live` está publicado no Cloudflare com Gemma, Scout, Whisper e Aura2-es; o backend `.88` usa URL e token protegidos no servidor. Segredos e chamadas de inferência ficam apenas no servidor. Bancos principais permanecem no Azure; D1 atende dados de borda. A integração Cloudflare está exercitada. Precisão documental é conferida por arquivo e versão: RG usa Gemma com vistas orientadas; CNH conserva OCR Scout + extração JSON Cloudflare. Os demais fluxos e o promotor completo ainda exigem provas próprias. O diagnóstico anterior de provider fake, loopback e alternativa externa é histórico, não solução futura nem dependência de login no Infisical. Acompanhamento: [backend#22](https://github.com/maestri33/backend.supletivo.net.br/issues/22) e [app#17](https://github.com/maestri33/app.supletivo.net.br/issues/17).
 
-### Aplicação multi-role
+Memória Azure ampliada e backend web/Q unificados por digest. O backend `.88` responde health 200, `db=true` e zero migrações pendentes, artefato `6fc98d4de15c8c8321c29aff15318ebf223629af2a7b3db3ccb30f5f9819d518`; o app `.88` está publicado, Worker `68c5c611-d875-4ad0-ae97-aa5fde5d664e`. A imagem anterior .87 permite rollback sem migração. Admin real ainda retorna 404: proxy corrigido localmente, não publicado por esta execução. O fluxo Pix pago chegou à matrícula e a nova reanálise do RG foi aprovada na .88 após conferir os três dados de identidade; a fatura não paga sem login e os demais papéis ainda exigem nova observação. Mensagem de coordenação com variável literal foi corrigida no produtor `.78`; conteúdo do novo recibo de coordenação ainda necessário. Mudanças concorrentes do Antigravity continuam registradas como risco operacional.
 
-- Login universal por telefone e OTP, com destino definido pelo estado retornado pelo backend.
-- Guards de rota para aluno, promotor e polo, incluindo estados suspenso, candidato, ativo e desconhecido.
-- Tabs superiores de status e dock adaptativo inferior, seguindo o Design System canônico.
-- Compatibilidade das rotas legadas com redirecionamento para as rotas canônicas.
-- Painéis de candidato/promotor com link de indicação imediato, Pix, escolaridade, termo, selfie e acompanhamento de status.
+Lacuna financeira encontrada nesta conferência: comissão0,01 tem partidas contábeis equilibradas, mas não existe lançamento payment_received da receita1,01 nem qualquer transação desse tipo na consulta global; acompanhada em [backend#21](https://github.com/maestri33/backend.supletivo.net.br/issues/21). O trecho pagamento→matrícula→comissão funciona neste canário; isso não comprova ledger completo, OCR, repasses ou os demais fluxos.
 
-### Documentos do aluno e do candidato-promotor
-
-- Validação inicial no navegador para arquivo vazio, tipo, tamanho e formato.
-- Classificação anterior ao upload pelo endpoint do backend.
-- Bloqueio de documento incompatível com a etapa selecionada.
-- Upload assíncrono sem transformar `pending` em aprovado.
-- Polling até estado terminal (`approved`, `rejected`, `review` ou `needs_kinship`).
-- Extração de endereço e titular retornada pelo backend quando disponível.
-- Persistência de campos extraídos somente nos campos vazios.
-- Testes do fluxo de candidato-promotor para documento errado, análise pendente e rejeição.
-
-### Regras comerciais registradas
-
-- Sem referência válida: Pix R$ 1.615 ou 12× R$ 159,90.
-- Com referência válida: Pix R$ 999 ou 12× R$ 99.
-- Preços exibidos pelo frontend vêm do backend.
-- Alterações de preço valem somente para novas propostas; propostas existentes preservam o snapshot.
-- Promotor: R$ 100 por matrícula paga e bônus único de R$ 500 ao atingir cinco matrículas no período de sexta 18h a sexta 18h.
-- Candidato pode indicar imediatamente; saldo fica acumulado até se tornar ativo.
-- Coordenador: R$ 50 pela entrega do diploma, no fechamento semanal.
-- Chargeback cancela pendências e desconta valores já pagos nos próximos repasses.
-
-### Pagamentos e parceiro educacional
-
-- InfinitePay é o provedor de cartão.
-- Asaas é usado para Pix, taxas do parceiro e repasses.
-- O coordenador informa Pix/QR do parceiro; a plataforma paga ou agenda pelo Asaas.
-- O parceiro atual é acessado em `https://cbi.sistemasiga.net/login`.
-- A matrícula no parceiro ainda é manual; login e senha recebidos são registrados no nosso sistema.
-- Prova, resultado, documentos do diploma e foto da entrega continuam sob responsabilidade do polo.
-
-## O que foi realmente testado
-
-- Frontend: `astro check` sem erros, TypeScript sem erros, testes unitários passando.
-- Frontend E2E: 14 testes passaram no conjunto de rotas e fluxo de candidato/promotor.
-- Backend: 26 testes focados de upload, validação documental e ativação passaram.
-- Produção: app público respondeu 200 na versão `.64`; backend respondeu health 200 na versão `.62`.
-- Pagamentos: os dois canários do proprietário foram pagos.
-
-Esses resultados não substituem a homologação humana com uma conta autenticada e um documento real. O OCR, a análise visual, a biometria, o webhook e o fechamento financeiro ainda precisam de evidência no ambiente vivo.
-
-## Pendências que impedem declarar a plataforma pronta
-
-1. Promover o backend por um procedimento controlado, com imagem/digest, manifesto de build, smoke test e rollback. O procedimento operacional atual da VM é read-only e o repositório não possui um pipeline versionado de promoção do backend.
-2. Executar um fluxo autenticado real de aluno: pagamento, RG/CNH, comprovante, OCR, endereço, selfie, aprovação do polo e liberação.
-3. Executar o mesmo fluxo para candidato-promotor, incluindo ativação automática e comissão acumulada.
-4. Confirmar que o worker de tarefas consome a análise documental e que uma falha de IA termina em `review`, sem prender o usuário em `pending`.
-5. Homologar o painel admin: preço, proposta, fila de documentos, saldo Asaas, comissão, fechamento, estorno e chargeback.
-6. Provar os webhooks Asaas e InfinitePay com persistência idempotente, retry e reconciliação visível.
-7. Testar a operação do polo até a matrícula no parceiro, taxas, credenciais e entrega do diploma.
-8. Publicar monitoramento de erro, fila, worker, banco, webhook e divergência de versão.
-
-## Critério de encerramento
-
-Uma área só pode ser marcada como pronta quando houver:
-
-- versão e artefato identificados;
-- teste automatizado correspondente;
-- teste autenticado no ambiente vivo;
-- evidência persistida do estado final no banco;
-- rollback conhecido;
-- homologação do usuário.
-
-Até esses critérios serem satisfeitos, o status correto é **em recuperação**, mesmo que a tela carregue e os testes locais passem.
-
-## Issues de acompanhamento
-
-As issues criadas em `app.supletivo.net.br`, `backend.supletivo.net.br`, `notify.supletivo.net.br`, `admin.supletivo.net.br` e neste repositório dividem essas pendências por responsabilidade. Cada issue deve ser encerrada apenas com a evidência descrita no próprio texto.
-
+Acompanhamento: [pivô#19](https://github.com/maestri33/supletivo.net.br/issues/19), [backend#18](https://github.com/maestri33/backend.supletivo.net.br/issues/18), [app#14](https://github.com/maestri33/app.supletivo.net.br/issues/14), [admin#1](https://github.com/maestri33/admin.supletivo.net.br/issues/1), [notify#10](https://github.com/maestri33/notify.supletivo.net.br/issues/10). Novos defeitos: [Pix anônimo#16](https://github.com/maestri33/app.supletivo.net.br/issues/16), [proxy admin#2](https://github.com/maestri33/admin.supletivo.net.br/issues/2), [fontes financeiras do canário#20](https://github.com/maestri33/backend.supletivo.net.br/issues/20). Manter abertas até cumprir cada critério. [Handoff para coordenação](audit/coordination-handoff-2026-10-11.md).

@@ -34,7 +34,6 @@ const steps = [
   data-section="validade"
 >
   <div class="container">
-    <p class="kicker validity-kicker" data-reveal>Como funciona a validade</p>
     <h2 id="validity-title" data-reveal>Como o seu certificado ganha validade</h2>
     <p class="validity-lead" data-reveal style="--d: 1">
       Sem logo emprestado: o que dá validade é um processo previsto em lei.
@@ -53,7 +52,7 @@ const steps = [
       ))}
     </ol>
 
-    <div class="validity-legal-card spatial-card-3d" data-tilt-3d data-tilt-max="6" data-reveal>
+    <div class="validity-legal-card spatial-card-3d" data-ui data-tilt-3d data-tilt-max="6" data-reveal>
       <div class="legal-card-header" data-tilt-sublayer="20">
         <svg class="law-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M12 3v18M5 7h14M7 21h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -88,29 +87,51 @@ const steps = [
       </div>
     </div>
 
-    <p class="validity-note" data-reveal>
-      <strong>Como você confere o credenciamento:</strong> no ato da matrícula,
-      dentro do app, você vê os dados e o credenciamento da instituição parceira
-      responsável pela certificação.
-    </p>
+    <div class="validity-accreditation-card glass-panel" data-reveal style="--d: 2">
+      <div class="accred-header">
+        <svg class="accred-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div>
+          <h4 class="accred-title">Instituição Certificadora e Credenciamento CEE</h4>
+          <p class="accred-sub">Escola parceira autorizada pelo Conselho Estadual de Educação com publicação oficial</p>
+        </div>
+      </div>
+      <div class="accred-grid">
+        <div class="accred-col">
+          <span class="accred-label">Autorização do Conselho</span>
+          <p class="accred-val">Parecer e Deliberação do CEE para EJA na modalidade a distância (EaD)</p>
+        </div>
+        <div class="accred-col">
+          <span class="accred-label">Publicação em Diário Oficial</span>
+          <p class="accred-val">Portaria de autorização publicada no Diário Oficial do Estado (DOE) e Censo Escolar</p>
+        </div>
+        <div class="accred-col">
+          <span class="accred-label">Registro & Rastreabilidade</span>
+          <p class="accred-val">Certificado com número de livro/folha, autenticação digital e consulta direta no órgão emissor</p>
+        </div>
+        <div class="accred-col">
+          <span class="accred-label">Aceitação Universal</span>
+          <p class="accred-val">Válido para faculdades (MEC), concursos públicos, CNH e plano de carreira em todo o Brasil</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
   .validity {
-    background:
-      radial-gradient(46rem 26rem at 85% 0%, rgb(255 196 0 / 0.07), transparent 60%),
-      var(--green-deep);
+    background: var(--green-deep);
     color: var(--paper);
     overflow: clip;
-  }
-
-  .validity-kicker {
-    color: var(--yellow);
+    padding-top: calc(var(--space-section) + 5rem);
+    scroll-margin-top: 5rem;
   }
 
   #validity-title {
     font-size: var(--text-h2-sm);
+    position: relative;
+    z-index: 2;
   }
 
   .validity-lead {
@@ -282,15 +303,76 @@ const steps = [
     color: var(--yellow-soft);
   }
 
-  .validity-note {
-    margin-top: 2rem;
-    max-width: 50ch;
-    font-size: 0.92rem;
-    color: var(--muted-on-dark);
+  .validity-accreditation-card {
+    margin-top: 2.25rem;
+    max-width: 52rem;
+    background: rgba(11, 18, 32, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius, 16px);
+    padding: clamp(1.4rem, 3.5vw, 2rem);
+    backdrop-filter: blur(16px);
   }
 
-  .validity-note strong {
+  .accred-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .accred-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--yellow);
+    flex: none;
+  }
+
+  .accred-title {
+    font-size: 1.15rem;
+    font-family: var(--font-display);
     color: var(--paper);
+    margin-bottom: 0.2rem;
+  }
+
+  .accred-sub {
+    font-size: 0.85rem;
+    color: var(--muted-on-dark);
+    margin: 0;
+  }
+
+  .accred-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
+
+  @media (min-width: 640px) {
+    .accred-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .accred-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .accred-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--yellow);
+  }
+
+  .accred-val {
+    font-size: 0.88rem;
+    color: var(--paper-soft);
+    line-height: 1.45;
+    margin: 0;
   }
 
   @media (min-width: 720px) {

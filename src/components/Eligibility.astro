@@ -13,15 +13,16 @@ import CtaButton from './CtaButton.astro';
   aria-labelledby="elig-title"
   data-section="elegibilidade"
 >
-  <span class="elig-watermark" aria-hidden="true">18+</span>
+  <svg class="elig-watermark" viewBox="0 0 160 100" aria-hidden="true">
+    <text x="0" y="80" font-family="var(--font-display)" font-weight="900" font-size="80" fill="none" stroke="rgb(255 196 0 / 0.12)" stroke-width="2">18+</text>
+  </svg>
   <div class="container narrow elig-inner">
-    <p class="kicker elig-kicker" data-reveal>Elegibilidade</p>
     <h2 id="elig-title" data-reveal>Você já pode se matricular?</h2>
     <p class="elig-lead" data-reveal style="--d: 1">
       Pela lei, depende só da sua idade. Confere aí:
     </p>
 
-    <div class="elig-widget elig-card spatial-card-3d" data-tilt-3d data-tilt-max="6" data-reveal style="--d: 2">
+    <div class="elig-widget elig-card spatial-card-3d" data-ui data-tilt-3d data-tilt-max="6" data-reveal style="--d: 2">
       <div class="elig-options" role="group" aria-label="Selecione a sua faixa de idade" data-tilt-sublayer="25">
         <!-- alvo principal com peso de CTA; demais faixas como secundários -->
         <button type="button" class="elig-btn elig-btn--primary" data-elig="18mais" aria-pressed="false">
@@ -63,7 +64,7 @@ import CtaButton from './CtaButton.astro';
     </div>
 
     <!-- régua de idades: sempre visível (com ou sem JS) -->
-    <div class="elig-ages" data-reveal style="--d: 3">
+    <div class="elig-ages" data-ui data-reveal style="--d: 3">
       <div class="age" data-age="15">
         <b>15</b>
         <span>anos completos<br />Ensino Fundamental</span>
@@ -135,16 +136,18 @@ import CtaButton from './CtaButton.astro';
 
 <style>
   .elig {
-    background:
-      radial-gradient(46rem 26rem at 15% 100%, rgb(255 196 0 / 0.08), transparent 60%),
-      var(--green-deep);
+    background: var(--green-deep);
     color: var(--paper);
     text-align: center;
     overflow: clip;
+    scroll-margin-top: 5rem;
   }
 
   #elig-title {
     font-size: var(--text-h2-sm);
+    scroll-margin-top: 5rem;
+    position: relative;
+    z-index: 2;
   }
 
   /* watermark temático: a idade que destrava tudo. Recuado pro canto
@@ -155,11 +158,8 @@ import CtaButton from './CtaButton.astro';
     right: clamp(-0.5rem, 1vw, 1.5rem);
     bottom: clamp(1.5rem, 5vw, 3.5rem);
     z-index: 0;
-    font-family: var(--font-display);
-    font-size: clamp(4.5rem, 11vw, 8.5rem);
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 2px rgb(255 196 0 / 0.12);
+    width: clamp(7rem, 18vw, 13rem);
+    height: auto;
     pointer-events: none;
     user-select: none;
   }
@@ -198,7 +198,7 @@ import CtaButton from './CtaButton.astro';
     border: 1px solid rgb(255 255 255 / 0.16);
     border-radius: var(--radius-lg);
     padding: clamp(1.8rem, 4.5vw, 2.8rem) clamp(1.2rem, 4vw, 2.6rem) clamp(1.6rem, 4vw, 2.4rem);
-    box-shadow: 0 26px 52px -28px rgb(0 0 0 / 0.55);
+    box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.25);
     rotate: -0.6deg;
   }
 
@@ -230,11 +230,14 @@ import CtaButton from './CtaButton.astro';
     color: var(--ink);
     font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.18rem);
     padding: 1em 2em;
-    box-shadow: 0 12px 32px -12px rgb(255 196 0 / 0.55);
+    box-shadow: none;
+    transition: transform 0.18s var(--ease-out), box-shadow 0.2s var(--ease-out);
   }
 
   .elig-btn.elig-btn--primary:hover {
     border-color: var(--yellow);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -8px rgb(255 196 0 / 0.6);
   }
 
   .elig-btn.elig-btn--primary[aria-pressed='true'] {
@@ -405,7 +408,7 @@ import CtaButton from './CtaButton.astro';
 
   .elig-law {
     margin-top: 1.5rem;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: rgb(255 255 255 / 0.55);
     max-width: 46ch;
     margin-inline: auto;

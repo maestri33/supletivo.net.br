@@ -1,6 +1,6 @@
 {
   "name": "supletivo.net.br",
-  "version": "0.0.0-sandbox.56",
+  "version": "0.0.1-beta",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,9 +11,12 @@
     "test": "vitest run",
     "check-types": "astro check",
     "test:e2e": "playwright test",
+    "test:cli": "playwright-cli",
+    "test:cli:show": "playwright-cli show",
     "checkpoint": "sh scripts/checkpoint/checkpoint.sh",
     "checkpoint:fast": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier fast",
-    "checkpoint:agent": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier agent"
+    "checkpoint:agent": "pwsh scripts/checkpoint/checkpoint.ps1 -Tier agent",
+    "test:seo": "pwsh scripts/seo-loop.ps1"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",
@@ -28,6 +31,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@axe-core/playwright": "^4.11.3",
     "@fontsource/archivo-black": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
@@ -38,6 +42,7 @@
     "happy-dom": "^20.10.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "wrangler": "^4.149.0"
   }
 }

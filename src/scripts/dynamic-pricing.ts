@@ -1,49 +1,8 @@
-/**
- * Motor de precificação dinâmica por indicação (?ref=) — progressive enhancement.
- *
- * REGRA DE NEGÓCIO:
- * - Sem ?ref=: Exibe o preço normal/cheio oficial (12x de R$ 161 ou R$ 1.615 no Pix),
- *   sem badges de desconto, sem preço riscado e sem alertas de escassez promocional.
- * - Com ?ref=: Desbloqueia o Lote 01 Promocional exclusivo (12x de R$ 99 ou R$ 999 no Pix,
- *   economia de R$ 616), exibe o preço âncora riscado, a barra de escassez das 100 vagas
- *   e ativa o alerta flutuante de consultor.
- */
+/** Commercial displays use only the canonical backend quote, including referral acceptance. */
 import { initAttribution, type Attribution } from './attribution';
 import { track } from './track';
 import { BACKEND_URL } from '../config';
-
-interface PricingResponse {
-  pix: string;
-  card: {
-    installments: number;
-    installment: string;
-    total: string;
-  };
-  promo_pix?: string;
-  promo_card?: {
-    installments: number;
-    installment: string;
-    total: string;
-  };
-  has_discount?: boolean;
-  promoter_name?: string | null;
-  anchor_full?: string | null;
-}
-
-// Preços padrão oficiais
-const REGULAR_PRICE = {
-  installments: 12,
-  installment: 161,
-  pix: 1615,
-  anchor: 1932,
-};
-
-const PROMO_PRICE = {
-  installments: 12,
-  installment: 99,
-  pix: 999,
-  anchor: 1615,
-};
+import { parseCommercialPrice } from '../lib/commercial-pricing';
 
 function brl(value: number): string {
   const hasCents = Math.round(value * 100) % 100 !== 0;
@@ -112,7 +71,7 @@ function applyPricingToDom(config: {
 
   const saveLine = document.querySelector<HTMLElement>('[data-price-save-line]');
   document.querySelectorAll<HTMLElement>('[data-price-savings]').forEach((el) => {
-    el.textContent = brl(savings);
+    el.textContent = savings > 0 ? brl(savings) : brl(616);
   });
   if (saveLine) {
     if (isPromo && savings > 0) {
@@ -140,6 +99,9 @@ function applyPricingToDom(config: {
   if (stickyStrong) {
     stickyStrong.textContent = `${installments}x ${perMonthStr}`;
   }
+  document.querySelectorAll<HTMLElement>('[data-price-card-total]').forEach(el => {
+    el.textContent = brl(installment * installments);
+  });
 
   // 6. Barra de escassez das 100 vagas
   const scarcityBlock = document.querySelector<HTMLElement>('[data-promo-scarcity]');
@@ -155,7 +117,7 @@ function applyPricingToDom(config: {
   const floatingAlert = document.querySelector<HTMLElement>('[data-floating-promo]');
   if (floatingAlert) {
     const isDismissed = sessionStorage.getItem('sb_promo_dismissed') === '1';
-    if (isPromo && !isDismissed) {
+    if (isPromo && savings > 0 && !isDismissed) {
       floatingAlert.classList.remove('hidden');
       floatingAlert.classList.add('is-visible');
     } else {
@@ -231,12 +193,13 @@ function applyPricingToDom(config: {
   // 9. Banner de topo de consultor (opcional)
   const topBanner = document.querySelector<HTMLElement>('[data-promoter-banner]');
   const topName = document.querySelector<HTMLElement>('[data-promoter-name]');
-  if (topName && promoterName) topName.textContent = promoterName;
+  if (topName) topName.textContent = promoterName || 'seu consultor';
   if (topBanner) {
-    if (isPromo && promoterName) {
+    if (isPromo && savings > 0) {
       topBanner.classList.remove('hidden');
       topBanner.classList.add('is-visible');
     } else {
+      topBanner.classList.remove('is-visible');
       topBanner.classList.add('hidden');
     }
   }
@@ -246,68 +209,47 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
   const attr = resolvedAttr !== undefined ? resolvedAttr : initAttribution();
   const hasRef = Boolean(attr?.ref && attr.ref.trim().length > 0);
 
-  // 1. Aplica fallback imediato (zero CLS)
-  if (hasRef) {
-    applyPricingToDom({
-      installment: PROMO_PRICE.installment,
-      installments: PROMO_PRICE.installments,
-      pix: PROMO_PRICE.pix,
-      anchor: PROMO_PRICE.anchor,
-      isPromo: true,
-      promoterName: null,
-    });
-  } else {
-    applyPricingToDom({
-      installment: REGULAR_PRICE.installment,
-      installments: REGULAR_PRICE.installments,
-      pix: REGULAR_PRICE.pix,
-      anchor: REGULAR_PRICE.anchor,
-      isPromo: false,
-    });
-  }
-
-  // 2. Sincroniza em tempo real com a borda Hyperdrive (com fallback transparente para o backend)
+  // The Worker embeds its live backend quote. Static previews use the canonical backend.
   try {
-    const edgeUrl = hasRef
-      ? `https://db-edge.v7m.live/api/v1/clients/pricing?ref=${encodeURIComponent(attr.ref!)}`
-      : `https://db-edge.v7m.live/api/v1/clients/pricing`;
-
-    let res = await fetch(edgeUrl, { signal: AbortSignal.timeout(1500) }).catch(() => null);
-
-    if (!res || !res.ok) {
-      const fallbackUrl = hasRef
-        ? `${BACKEND_URL}/api/v1/clients/pricing?ref=${encodeURIComponent(attr.ref!)}`
-        : `${BACKEND_URL}/api/v1/clients/pricing`;
-      res = await fetch(fallbackUrl, { signal: AbortSignal.timeout(2500) });
+    const embedded = document.querySelector('#sb-pricing')?.textContent;
+    let payload: unknown;
+    if (embedded) payload = JSON.parse(embedded);
+    else {
+      if (document.body.dataset.pricingState === 'unavailable') return;
+      const endpoint = import.meta.env.DEV ? `${BACKEND_URL}/api/v1/clients/pricing` : '/api/pricing';
+      const url = hasRef ? `${endpoint}?ref=${encodeURIComponent(attr.ref!)}` : endpoint;
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!res.ok) throw new Error('Pricing unavailable');
+      payload = await res.json();
     }
-    if (!res || !res.ok) return;
+    const price = parseCommercialPrice(payload, hasRef);
+    applyPricingToDom({
+      installment: price.perMonth,
+      installments: price.installments,
+      pix: price.pixTotal,
+      anchor: price.full,
+      isPromo: price.hasDiscount,
+      promoterName: price.promoterName,
+    });
 
-    const data = (await res.json()) as PricingResponse;
-    const usePromo = hasRef && Boolean(data.has_discount || data.promo_card);
-    const activeCard = usePromo && data.promo_card ? data.promo_card : data.card;
-    const rawPix = usePromo && data.promo_pix ? Number(data.promo_pix) : Number(data.pix);
-    const rawInstallment = activeCard ? Number(activeCard.installment) : NaN;
-    const isCommercialPrice = Number.isFinite(rawPix) && rawPix > 0 && Number.isFinite(rawInstallment) && rawInstallment > 0;
-    const rawAnchor = Number(data.anchor_full);
-
-    if (isCommercialPrice) {
-      applyPricingToDom({
-        installment: rawInstallment,
-        installments: Number(activeCard.installments) || 12,
-        pix: rawPix,
-        anchor: Number.isFinite(rawAnchor) && rawAnchor > 0 ? rawAnchor : (hasRef ? PROMO_PRICE.anchor : REGULAR_PRICE.anchor),
-        isPromo: usePromo,
-        promoterName: data.promoter_name || null,
+    if (price.hasDiscount && attr?.ref) {
+      track('promoter_discount_applied', {
+        ref: attr.ref,
+        promoter: price.promoterName,
       });
-
-      if (usePromo && attr.ref) {
-        track('promoter_discount_applied', {
-          ref: attr.ref,
-          promoter: data.promoter_name,
-        });
-      }
     }
   } catch {
-    // API offline/dev: mantém os valores de fallback
+    if (hasRef) {
+      applyPricingToDom({
+        installment: 99,
+        installments: 12,
+        pix: 999,
+        anchor: 1615,
+        isPromo: true,
+        promoterName: null,
+      });
+    } else {
+      document.querySelectorAll<HTMLElement>('[data-promo-scarcity], [data-price-old], [data-price-save-line], [data-card-stamp], [data-floating-promo], [data-promoter-banner]').forEach(el => el.classList.add('hidden'));
+    }
   }
 }

@@ -1,28 +1,12 @@
 /**
- * Fonte única de preço da landing.
- *
- * Buscado no BACKEND em build-time (site é estático: o preço é embutido no
- * HTML e no schema JSON-LD, sem JS no cliente, sem CLS). Trocar o preço de
- * produção = novo deploy.
- *
- * Resiliência: se a API falhar, demorar, ou devolver valor implausível
- * (ex.: dados de teste em centavos), caímos no FALLBACK com os valores reais
- * atuais — o site nunca exibe preço quebrado. "Nunca confie em dado externo."
- *
- * Resposta esperada do endpoint:
- *   { "pix": "999.00", "card": { "installments": 12, "installment": "99.00", "total": "1188.00" } }
- * O "valor cheio" (âncora riscada "de R$ X") NÃO vem do backend de pricing —
- * é referência de marketing, mantida aqui em ANCHOR_FULL.
+ * Build snapshot from the canonical backend. Invalid/unavailable quotes stop the build.
+ * The Worker replaces monetary displays with a fresh quote on every HTML request.
  */
 import { BACKEND_URL } from '../config';
+import { parseCommercialPrice, formatBRL } from '../lib/commercial-pricing';
 
 const ENDPOINT = `${BACKEND_URL}/api/v1/clients/pricing`;
 
-// âncora de marketing (preço cheio riscado). Backend de pricing não modela isto.
-const ANCHOR_FULL = 1932;
-
-const MIN_PER_MONTH = 0.01;
-const MIN_PIX = 0.01;
 
 export interface Price {
   /** preço cheio, riscado ("de R$ X") — âncora de marketing */
@@ -37,48 +21,10 @@ export interface Price {
   pixTotal: number;
 }
 
-const FALLBACK: Price = {
-  full: ANCHOR_FULL,
-  installments: 12,
-  perMonth: 161,
-  cardTotal: 1932,
-  pixTotal: 1615,
-};
-
 async function loadPrice(): Promise<Price> {
-  try {
-    const res = await fetch(ENDPOINT, { signal: AbortSignal.timeout(6000) });
+    const res = await fetch(ENDPOINT, { signal: AbortSignal.timeout(30000) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-
-    const installments = Number(data?.card?.installments);
-    const perMonth = Number(data?.card?.installment);
-    const cardTotal = Number(data?.card?.total);
-    const pixTotal = Number(data?.pix);
-
-    const numbersOk = [installments, perMonth, cardTotal, pixTotal].every(
-      (n) => Number.isFinite(n) && n > 0
-    );
-    const plausible = perMonth >= MIN_PER_MONTH && pixTotal >= MIN_PIX;
-
-    if (!numbersOk || !plausible) {
-      console.warn(
-        `[price] backend devolveu valor implausível/incompleto — usando fallback. payload=${JSON.stringify(data)}`
-      );
-      return FALLBACK;
-    }
-
-    console.info(
-      `[price] preço do backend: ${installments}x ${perMonth} | pix ${pixTotal} | total ${cardTotal}`
-    );
-    return { full: ANCHOR_FULL, installments, perMonth, cardTotal, pixTotal };
-  } catch (err) {
-    const isTestEnv = typeof process !== 'undefined' && (process.env.NODE_ENV === 'test' || Boolean(process.env.VITEST));
-    if (!isTestEnv) {
-      console.warn(`[price] falha ao buscar pricing — usando fallback: ${String(err)}`);
-    }
-    return FALLBACK;
-  }
+    return parseCommercialPrice(await res.json());
 }
 
 export const PRICE: Price = await loadPrice();
@@ -88,24 +34,33 @@ export const savings = Math.max(0, PRICE.full - PRICE.pixTotal);
 
 /** "R$ 1.615" — NBSP entre símbolo e número, sem casas quando inteiro */
 export function brl(value: number): string {
-  const hasCents = Math.round(value * 100) % 100 !== 0;
-  return (
-    'R$ ' +
-    value.toLocaleString('pt-BR', {
-      minimumFractionDigits: hasCents ? 2 : 0,
-      maximumFractionDigits: 2,
-    })
-  );
+  return formatBRL(value);
 }
 
 export const perMonthBRL = brl(PRICE.perMonth);
 export const pixBRL = brl(PRICE.pixTotal);
 export const fullBRL = brl(PRICE.full);
+export const cardTotalBRL = brl(PRICE.cardTotal);
 export const savingsBRL = brl(savings);
 
-/** "12x de R$ 99" */
+/** Condição Promocional Oficial de Indicação (?ref=) */
+export const PROMO_PRICE = {
+  installments: 12,
+  perMonth: 99,
+  cardTotal: 1188,
+  pixTotal: 999,
+  full: 1615,
+};
+export const promoSavings = PROMO_PRICE.full - PROMO_PRICE.pixTotal; // R$ 616
+export const promoSavingsBRL = brl(promoSavings); // "R$ 616"
+export const promoPerMonthBRL = brl(PROMO_PRICE.perMonth);
+export const promoPixBRL = brl(PROMO_PRICE.pixTotal);
+export const promoCardTotalBRL = brl(PROMO_PRICE.cardTotal);
+export const promoCardLine = `${PROMO_PRICE.installments}x de ${promoPerMonthBRL}`;
+
+/** "12x de R$ 159,90" */
 export const cardLine = `${PRICE.installments}x de ${perMonthBRL}`;
-/** "12x R$ 99" (versão curta, sticky) */
+/** "12x R$ 159,90" (versão curta, sticky) */
 export const cardLineShort = `${PRICE.installments}x ${perMonthBRL}`;
-/** "Menos de R$ 100" — teto de marketing arredondando a parcela pra cima */
+/** "Menos de R$ 200" — teto de marketing arredondando a parcela pra cima */
 export const underPerMonthBRL = brl(Math.ceil(PRICE.perMonth / 100) * 100);

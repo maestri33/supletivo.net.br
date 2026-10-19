@@ -48,18 +48,12 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   </div>
 
   <div class="container hero-inner">
-    <p class="hero-eyebrow anim-up" style="--i: 0">
-      <span class="dot" aria-hidden="true"></span>
-      <span class="eyebrow-short">Supletivo online · EJA</span>
-      <span class="eyebrow-full">Supletivo online · Educação de Jovens e Adultos (EJA)</span>
-    </p>
-
-    <h1 id="hero-title" class="hero-title">
+    <h1 id="hero-title" class="hero-title" aria-label="Você parou. Mas não acabou.">
       <span class="hero-line hero-line--ghost">
-        {words1.map((w, i) => <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>)}
-      </span>
+        {words1.map((w, i) => <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>)}{' '}
+      </span>{' '}
       <span class="hero-line">
-        {words2.map((w, i) => <span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>)}
+        {words2.map((w, i) => <span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>)}{' '}
         <span class="w w-accent" style={`--i: ${words1.length + words2.length + 1}`}>
           {LINE_2_B}
           <svg class="swoosh" aria-hidden="true" viewBox="0 0 220 24" fill="none" preserveAspectRatio="none">
@@ -74,9 +68,8 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
       </span>
     </h1>
 
-    <p class="hero-sub anim-up" style="--i: 7">
-      Termine o Ensino Fundamental ou o Ensino Médio pelo celular, no seu ritmo
-      — com certificado válido em todo o Brasil.
+    <p class="hero-sub anim-up" style="--i: 5">
+      Supletivo online de Educação de Jovens e Adultos (EJA). Termine o Ensino Fundamental ou Médio pelo celular, no seu ritmo — com certificado oficial válido em todo o Brasil.
     </p>
 
     <ul class="hero-chips anim-up" style="--i: 8">
@@ -117,6 +110,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   <div class="hero-marquee">
     <Marquee
       items={[cardLine, 'Sem sala de aula', 'Certificado válido no Brasil inteiro', 'Estude pelo celular', 'No seu ritmo', 'Garantia de 7 dias']}
+      priceIndex={0}
       variant="yellow"
       speed={30}
     />
@@ -134,9 +128,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
        Mobile-first: padding menor pra CTA caber above-the-fold em 360px. */
     padding-top: max(clamp(4.5rem, 10vh, 9rem), calc(env(safe-area-inset-top) + 3.5rem));
     padding-bottom: 0;
-    background:
-      radial-gradient(58rem 32rem at 18% 4%, rgb(255 196 0 / 0.1), transparent 62%),
-      linear-gradient(168deg, var(--blue) 0%, var(--blue-deep) 55%, var(--ink) 100%);
+    background: var(--ink);
     color: var(--paper);
     overflow: clip;
   }
@@ -253,12 +245,13 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
 
     /* abre espaço pro texto não disputar com a peça */
     .hero-inner {
-      padding-right: min(42vw, 540px);
+      padding-right: min(34vw, 440px);
       max-width: var(--container);
     }
 
     .hero .hero-title {
-      font-size: clamp(3.4rem, 5.4vw, 4.8rem);
+      font-size: clamp(3.1rem, 4.8vw, 4.5rem);
+      max-width: 20ch;
     }
   }
 
@@ -271,9 +264,9 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    font-size: 0.78rem;
+    font-size: 0.84rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--yellow);
     border: 1px solid rgb(255 196 0 / 0.4);
@@ -315,13 +308,14 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   }
 
   .hero-title {
-    font-size: var(--text-hero);
-    max-width: 12ch;
+    font-size: clamp(2.35rem, 1.2rem + 4.2vw, 4.4rem);
+    max-width: 20ch;
     letter-spacing: -0.015em;
   }
 
   .hero-line {
     display: block;
+    white-space: nowrap;
   }
 
   .hero-line--ghost {

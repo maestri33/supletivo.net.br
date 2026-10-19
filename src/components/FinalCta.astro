@@ -88,9 +88,7 @@ const PARTICLES = Array.from({ length: 6 }, (_, i) => {
 
 <style>
   .final {
-    background:
-      radial-gradient(50rem 28rem at 50% 110%, rgb(255 196 0 / 0.14), transparent 60%),
-      linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%);
+    background: var(--blue);
     color: var(--paper);
     text-align: center;
     overflow: clip;
@@ -103,7 +101,7 @@ const PARTICLES = Array.from({ length: 6 }, (_, i) => {
     left: -3%;
     width: 106%;
     z-index: 2;
-    box-shadow: 0 14px 30px -16px rgb(0 0 0 / 0.4);
+    box-shadow: none;
   }
 
   @media (max-width: 720px) {
@@ -113,7 +111,10 @@ const PARTICLES = Array.from({ length: 6 }, (_, i) => {
   }
 
   .final-inner h2 {
-    font-size: clamp(2.3rem, 1.4rem + 4.5vw, 4.6rem);
+    font-size: clamp(1.8rem, 1.1rem + 2.2vw, 2.9rem);
+    line-height: 1.15;
+    max-width: 22ch;
+    margin-inline: auto;
   }
 
   /* fogos: dois estouros de losangos alternados, bem discretos */

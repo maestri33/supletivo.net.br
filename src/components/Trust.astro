@@ -53,7 +53,6 @@ const objections = [
       stroke-linejoin="round"></path>
   </svg>
   <div class="container">
-    <p class="kicker trust-kicker" data-reveal>Confiança e legalidade</p>
     <h2 id="trust-title" data-reveal>Reconhecido por lei. Válido no Brasil inteiro.</h2>
     <p class="trust-lead" data-reveal style="--d: 1">
       Sem letras miúdas: a Educação de Jovens e Adultos é prevista na
@@ -106,12 +105,11 @@ const objections = [
 
 <style>
   .trust {
-    background:
-      radial-gradient(50rem 26rem at 85% 0%, rgb(255 196 0 / 0.07), transparent 60%),
-      var(--blue);
+    background: var(--blue);
     color: var(--paper);
     overflow: clip;
     padding-top: calc(var(--space-section) + 2rem);
+    scroll-margin-top: 5rem;
   }
 
   .trust .sec-num {
@@ -126,7 +124,7 @@ const objections = [
     left: -3%;
     width: 106%;
     z-index: 2;
-    box-shadow: 0 14px 30px -16px rgb(0 0 0 / 0.45);
+    box-shadow: none;
   }
 
   /* tela estreita: menos inclinação = sem corte nos cantos */
@@ -138,6 +136,9 @@ const objections = [
 
   #trust-title {
     font-size: var(--text-h2-sm);
+    scroll-margin-top: 5rem;
+    position: relative;
+    z-index: 3;
   }
 
   /* escudo fantasma: respira devagar, check se redesenha em ciclo */
@@ -205,23 +206,29 @@ const objections = [
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   }
 
+  @media (min-width: 880px) {
+    .seals {
+      grid-template-columns: 1.08fr 1fr 1.04fr;
+    }
+  }
+
   .seal {
     display: flex;
     align-items: center;
     gap: 1.1rem;
-    background: rgb(255 255 255 / 0.06);
-    border: 1px solid rgb(255 255 255 / 0.14);
+    background: rgb(255 255 255 / 0.08);
+    border: none;
     border-radius: var(--radius);
     padding: 1.2rem 1.3rem;
     font-weight: 700;
     line-height: 1.4;
     font-size: 0.95rem;
     backdrop-filter: blur(4px);
-    transition: border-color 0.3s var(--ease-out);
+    transition: background-color 0.25s var(--ease-out), transform 0.25s ease;
   }
 
   .seal:hover {
-    border-color: rgb(255 196 0 / 0.5);
+    background: rgb(255 255 255 / 0.13);
   }
 
   /* carimbos levemente tortos, como num documento real */
@@ -241,8 +248,8 @@ const objections = [
   }
 
   .seal-badge {
-    width: 3.6rem;
-    height: 3.6rem;
+    width: 4.25rem;
+    height: 4.25rem;
     flex: none;
   }
 

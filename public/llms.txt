@@ -1,0 +1,29 @@
+# Supletivo.net.br — Educação de Jovens e Adultos (EJA)
+
+> Plataforma brasileira de aceleração e conclusão do Ensino Fundamental e Ensino Médio pela modalidade EJA EAD (Educação de Jovens e Adultos a distância), com certificação oficial amparada pela Lei de Diretrizes e Bases da Educação Nacional (LDB nº 9.394/1996) e Conselhos Estaduais de Educação (CEE).
+
+## Informações Institucionais e Legais
+- **Nome Oficial**: Supletivo Brasil ([supletivo.net.br](https://supletivo.net.br/))
+- **Modalidade**: EJA EAD — Educação de Jovens e Adultos a distância (estudos 100% online, prova presencial conforme determinação legal dos órgãos educacionais).
+- **Amparo Legal**: Lei Federal nº 9.394/1996 (LDB - Artigos 37 e 38), Resoluções do Conselho Nacional de Educação (CNE) e normas dos Conselhos Estaduais de Educação (CEE).
+- **Validade do Certificado**: Válido em todo o território nacional para faculdades, cursos técnicos, concursos públicos e progressão de carreira. Registro nos sistemas oficiais e Diário Oficial.
+- **Idade Mínima Legal**:
+  - Ensino Fundamental: 15 anos completos.
+  - Ensino Médio: 18 anos completos.
+
+## Cursos Disponíveis
+- **Ensino Fundamental (EJA)**: 6º ao 9º ano em ritmo acelerado online.
+- **Ensino Médio (EJA)**: 1º ao 3º ano em ritmo acelerado online.
+- **Combo Fundamental + Médio (EJA)**: Conclusão integrada para quem não concluiu nenhuma das etapas.
+
+## Condições Comerciais e Valores
+- **Preço à Vista no Pix**: R$ 997,00 (desconto imediato).
+- **Preço Parcelado no Cartão**: Até 12x de R$ 99,70.
+- **Transparência**: Sem mensalidades ocultas, material didático digital incluso e suporte pedagógico via WhatsApp.
+
+## Links Canônicos
+- [Site Oficial](https://supletivo.net.br/): Início e matrícula na plataforma
+- [Programa de Promotores](https://promotor.supletivo.net.br/): Programa de afiliação e indicações
+- [Termos de Uso](https://supletivo.net.br/termos/): Termos e condições gerais de contratação
+- [Política de Privacidade](https://supletivo.net.br/privacidade/): Diretrizes de tratamento e proteção de dados (LGPD)
+- [Sitemap XML](https://supletivo.net.br/sitemap.xml): Mapa oficial de rotas indexáveis

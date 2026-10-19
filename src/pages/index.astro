@@ -12,6 +12,7 @@ import Eligibility from '../components/Eligibility.astro';
 import Trust from '../components/Trust.astro';
 import TestimonialsIsland from '../components/TestimonialsIsland.astro';
 import Validity from '../components/Validity.astro';
+import PoloCoverage from '../components/PoloCoverage.astro';
 import Pricing from '../components/Pricing.astro';
 import Virada from '../components/Virada.astro';
 import Faq from '../components/Faq.astro';
@@ -49,6 +50,21 @@ const schema = {
         'Educação de Jovens e Adultos (EJA) com estudo 100% online e prova final presencial, para concluir o Ensino Fundamental ou o Ensino Médio, com certificação emitida por escola parceira autorizada pelo Conselho Estadual de Educação (CEE), amparada pela LDB e com publicação no Diário Oficial.',
       url: siteUrl,
       provider: { '@id': `${siteUrl}#org` },
+      educationalCredentialAwarded: {
+        '@type': 'EducationalOccupationalCredential',
+        '@id': `${siteUrl}#credential`,
+        name: 'Certificado de Conclusão do Ensino Fundamental e Médio',
+        credentialCategory: 'certificate',
+        educationalLevel: 'Ensino Fundamental e Médio',
+        recognizedBy: {
+          '@type': 'Organization',
+          name: 'Conselho Estadual de Educação (CEE)',
+        },
+        validIn: {
+          '@type': 'AdministrativeArea',
+          name: 'Brasil',
+        },
+      },
       offers: {
         '@type': 'AggregateOffer',
         priceCurrency: 'BRL',
@@ -83,9 +99,10 @@ const schema = {
     <Eligibility />
     <Trust />
     <Validity />
+    <PoloCoverage />
     <Virada />
     <TestimonialsIsland />
-    <div class="testimonials-band" aria-hidden="true">
+    <div class="testimonials-band" data-ui aria-hidden="true">
       <Marquee
         items={[
           'Casos reais de superação',

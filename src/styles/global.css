@@ -117,9 +117,9 @@ strong {
 }
 
 .kicker {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   margin-bottom: 1.1rem;
 }
@@ -277,7 +277,8 @@ input[type="password"]:focus-visible,
 input[type="search"]:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgb(0 39 118 / 0.18);
 }
@@ -318,9 +319,7 @@ textarea:focus-visible {
   color: var(--ink);
   text-decoration: none;
   text-align: center;
-  box-shadow:
-    0 12px 32px -12px rgb(255 196 0 / 0.55),
-    inset 0 -3px 0 rgb(11 18 32 / 0.16);
+  box-shadow: none;
   transition:
     transform 0.18s var(--ease-out),
     box-shadow 0.25s var(--ease-out);
@@ -328,9 +327,7 @@ textarea:focus-visible {
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 18px 40px -14px rgb(255 196 0 / 0.7),
-    inset 0 -3px 0 rgb(11 18 32 / 0.16);
+  box-shadow: 0 14px 32px -10px rgb(255 196 0 / 0.65);
 }
 
 .btn:active {
