@@ -151,7 +151,7 @@ test.describe('acessibilidade (axe)', () => {
   for (const path of [
     '/',
     '/supletivo-online/',
-    '/supletivo-ensino-fundamental/',
+    '/ensino-fundamental/',
     '/eja-a-distancia/',
     '/terminar-ensino-medio/',
     '/termos/',
