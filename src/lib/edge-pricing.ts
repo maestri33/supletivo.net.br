@@ -72,6 +72,30 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
     if (!isPromoEffective) classes.push('hidden');
     element.setAttribute('class', classes.join(' '));
   } });
+  if (isPromoEffective) {
+    const promoter = price?.promoterName || 'seu consultor';
+    rewriter.on('[data-promoter-banner]', {
+      element(element) {
+        element.setAttribute('class', 'promoter-banner is-visible');
+        element.setInnerContent(`
+  <div class="container promoter-banner-inner">
+    <div class="promoter-badge">
+      <svg class="promoter-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+          fill="currentColor"
+        />
+      </svg>
+      <span class="promoter-pill">Desconto de Consultor Ativado</span>
+    </div>
+    <p class="promoter-text">
+      Você foi indicado(a) por <strong data-promoter-name>${promoter}</strong>!
+      O valor promocional exclusivo foi aplicado em todos os planos.
+    </p>
+  </div>`, { html: true });
+      }
+    });
+  }
   const replace = (selector: string, text: string) => rewriter.on(selector, { element: element => element.setInnerContent(text, { html: true }) });
   replace('[data-price-card-line]', card);
   replace('[data-price-card-line-short], .sticky-price strong', price ? `${price.installments}x ${month}` : unavailable);

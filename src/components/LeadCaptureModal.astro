@@ -668,10 +668,6 @@ import CredentialCard from './CredentialCard.astro';
     const credentialStatusBadge = modal.querySelector<HTMLElement>('#credential-status-badge');
     const credentialStatusText = modal.querySelector<HTMLElement>('#credential-status-text');
 
-    if (credentialStudentName && !credentialStudentName.textContent) credentialStudentName.textContent = 'CANDIDATO OFICIAL';
-    if (credentialDoc && !credentialDoc.textContent) credentialDoc.textContent = 'DOCUMENTAÇÃO PENDENTE';
-    if (credentialStatusText && !credentialStatusText.textContent) credentialStatusText.textContent = 'AGUARDANDO CONTATO';
-
     let isCheckingPhone = false;
     let isCheckingCpf = false;
     let isSubmitting = false;
@@ -889,8 +885,8 @@ import CredentialCard from './CredentialCard.astro';
 
       // CPF validado/enriquecido: autorização na credencial e avança para e-mail
       cpfWrapper?.classList.add('valid');
-      if (data?.name && credentialStudentName) {
-        credentialStudentName.textContent = data.name.toUpperCase();
+      if (credentialStudentName) {
+        credentialStudentName.textContent = data?.name ? data.name.toUpperCase() : 'CANDIDATO OFICIAL';
       }
       if (credentialDoc) credentialDoc.textContent = `CPF: ${formatCPF(digits)}`;
       credentialStatusBadge?.classList.add('authorized');

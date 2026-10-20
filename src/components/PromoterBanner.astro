@@ -14,15 +14,20 @@
 >
 </div>
 
-<style>
+<style is:global>
   .promoter-banner {
-    position: relative;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    width: 100%;
     background: linear-gradient(90deg, var(--ink) 0%, var(--blue-deep) 50%, var(--ink-soft) 100%);
     border-bottom: 1px solid color-mix(in srgb, var(--yellow) 30%, transparent);
     color: var(--yellow-soft);
     padding-block: 0.65rem;
     font-size: 0.88rem;
     z-index: 40;
+    box-sizing: border-box;
     transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
   }
 
@@ -32,7 +37,7 @@
 
   .promoter-banner.is-visible {
     display: block;
-    animation: bannerSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: bannerFadeIn 0.3s var(--ease-out) forwards;
   }
 
   .promoter-banner-inner {
@@ -78,19 +83,18 @@
     font-weight: 700;
   }
 
-  @keyframes bannerSlideDown {
+  @keyframes bannerFadeIn {
     from {
       opacity: 0;
-      transform: translateY(-100%);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 
   @media (max-width: 640px) {
     .promoter-banner {
+      top: 61px;
       font-size: 0.8rem;
       padding-block: 0.5rem;
     }

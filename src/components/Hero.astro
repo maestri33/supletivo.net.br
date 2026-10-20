@@ -51,20 +51,13 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     <h1 id="hero-title" class="hero-title" aria-label="Você parou. Mas não acabou.">
       <span class="hero-line hero-line--ghost">
         {words1.map((w, i) => (
-          <>
-            {i > 0 ? ' ' : ''}
-            <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>
-          </>
+          <><span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>{' '}</>
         ))}
       </span>{' '}
       <span class="hero-line">
         {words2.map((w, i) => (
-          <>
-            {i > 0 ? ' ' : ''}
-            <span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>
-          </>
+          <><span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>{' '}</>
         ))}
-        {' '}
         <span class="w w-accent" style={`--i: ${words1.length + words2.length + 1}`}>
           {LINE_2_B}
           <svg class="swoosh" aria-hidden="true" viewBox="0 0 220 24" fill="none" preserveAspectRatio="none">
@@ -240,7 +233,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     .hero-diploma {
       display: block;
       position: absolute;
-      right: clamp(-3rem, -1.5vw, 0rem);
+      right: clamp(1rem, 2.5vw, 3.5rem);
       top: 50%;
       translate: 0 -50%;
       width: min(46vw, 620px);
@@ -319,14 +312,27 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   }
 
   .hero-title {
-    font-size: clamp(2.35rem, 1.2rem + 4.2vw, 4.4rem);
+    font-size: clamp(2.1rem, 1.2rem + 4.2vw, 4.4rem);
     max-width: 20ch;
     letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 480px) {
+    .hero-title {
+      font-size: clamp(1.85rem, 1.05rem + 3.8vw, 2.25rem);
+      letter-spacing: -0.02em;
+    }
   }
 
   .hero-line {
     display: block;
     white-space: nowrap;
+  }
+
+  @media (max-width: 380px) {
+    .hero-line {
+      white-space: normal;
+    }
   }
 
   .hero-line--ghost {
@@ -335,7 +341,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
 
   .w {
     display: inline-block;
-    margin-inline-end: 0.26em;
+    margin-inline-end: 0.28em;
   }
 
   .w:last-child {
@@ -486,22 +492,41 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     order: 4;
   }
 
+  .w,
+  .anim-up {
+    opacity: 1;
+    transform: none;
+  }
+
   /* Entrada na carga — CSS puro, escalonada por --i */
   @media (prefers-reduced-motion: no-preference) {
-    .w,
-    .anim-up {
-      opacity: 0;
-      transform: translateY(0.55em);
-      animation: hero-in 0.7s var(--ease-out) forwards;
-      animation-delay: calc(var(--i) * 90ms + 120ms);
+    .w {
+      animation: hero-w-in 0.65s var(--ease-out) backwards;
+      animation-delay: calc(var(--i) * 80ms + 100ms);
     }
 
     .anim-up {
-      transform: translateY(18px);
+      animation: hero-up-in 0.65s var(--ease-out) backwards;
+      animation-delay: calc(var(--i) * 80ms + 100ms);
     }
   }
 
-  @keyframes hero-in {
+  @keyframes hero-w-in {
+    from {
+      opacity: 0.1;
+      transform: translateY(0.4em);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes hero-up-in {
+    from {
+      opacity: 0.1;
+      transform: translateY(16px);
+    }
     to {
       opacity: 1;
       transform: none;

@@ -185,16 +185,20 @@ if (priceCard && !REDUCED && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
-// Sticky CTA: exibido quando a rolagem ultrapassa o hero e nenhum CTA inline está visível no viewport.
+// Sticky CTA: exibido quando a rolagem ultrapassa o hero e nenhum CTA inline ou seção decisória está visível no viewport.
 const sticky = document.querySelector<HTMLElement>('.sticky-cta');
 if (sticky && 'IntersectionObserver' in window) {
   const hero = document.querySelector('#hero');
   const inlineCtas = document.querySelectorAll('a[data-cta]:not([data-cta="sticky"])');
+  const hideStickySections = document.querySelectorAll('#preco, [data-price], footer, .site-footer');
 
   let pastHero = !hero;
   const ctasOnScreen = new Set<Element>();
+  const sectionsOnScreen = new Set<Element>();
+
   const updateSticky = (): void => {
-    sticky.classList.toggle('visible', pastHero && ctasOnScreen.size === 0);
+    const shouldShow = pastHero && ctasOnScreen.size === 0 && sectionsOnScreen.size === 0;
+    sticky.classList.toggle('visible', shouldShow);
   };
 
   if (hero) {
@@ -215,9 +219,22 @@ if (sticky && 'IntersectionObserver' in window) {
       }
       updateSticky();
     },
-    { threshold: 0.4 }
+    { threshold: 0.05, rootMargin: '40px 0px 40px 0px' }
   );
   inlineCtas.forEach((el) => ctaIo.observe(el));
+
+  const sectionIo = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) sectionsOnScreen.add(entry.target);
+        else sectionsOnScreen.delete(entry.target);
+      }
+      updateSticky();
+    },
+    { threshold: 0.05, rootMargin: '40px 0px 40px 0px' }
+  );
+  hideStickySections.forEach((el) => sectionIo.observe(el));
+
   updateSticky();
 } else {
   sticky?.classList.add('visible');

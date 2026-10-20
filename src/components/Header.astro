@@ -310,57 +310,31 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     transform: translateX(2px);
   }
 
-  /* Em telas menores que 960px, ativa link Trabalhe Conosco no nav mobile com beacon */
+  /* Em telas menores que 960px, esconde os links de navegação para evitar colisão e foca no CTA de conversão */
   @media (max-width: 959px) {
-    .header-action {
+    .site-nav {
       display: none;
     }
-    .site-nav {
-      margin-left: auto;
-      margin-inline: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      max-width: 100%;
-    }
-    .site-nav-careers-mobile {
-      display: inline-flex !important;
+    .header-action {
+      display: flex;
       align-items: center;
-      gap: 0.45rem;
-      color: var(--yellow-soft) !important;
-      background: rgba(0, 115, 77, 0.25) !important;
-      border: 1px solid rgba(0, 230, 153, 0.35) !important;
-      border-radius: 999px;
-      font-weight: 700 !important;
-    }
-    .nav-beacon-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background-color: #00e699;
-      box-shadow: 0 0 6px #00e699;
-      display: inline-block;
+      gap: 0.5rem;
+      margin-left: auto;
     }
   }
 
-  /* Em mobile pequeno, links com rolagem horizontal suave mantendo ergonomia de toque */
+  /* Em mobile pequeno, visual refinado e ergonômico com CTA direto */
   @media (max-width: 640px) {
     .site-header {
-      padding-block: 0.4rem;
+      padding-block: 0.45rem;
     }
-    .site-nav {
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding-right: 0.5rem;
-      gap: 0.1rem;
-    }
-    .site-nav::-webkit-scrollbar {
+    .header-careers-btn {
       display: none;
     }
-    .site-nav a {
+    .header-cta {
       font-size: 0.82rem;
-      padding: 0.4rem 0.65rem;
+      padding: 0.45rem 0.95rem;
+      min-height: 42px;
     }
   }
 </style>
