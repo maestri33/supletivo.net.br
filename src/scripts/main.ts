@@ -240,30 +240,36 @@ if (sticky && 'IntersectionObserver' in window) {
   sticky?.classList.add('visible');
 }
 
+/* ---------- Barra de progresso de leitura horizontal ---------- */
 const readingTrack = document.querySelector<HTMLElement>('.reading-track');
-if (
-  readingTrack &&
-  !(typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('animation-timeline', 'scroll()'))
-) {
+const bar = document.querySelector<HTMLElement>('.progress-bar, .reading-bar');
+if (readingTrack || bar) {
   let ticking = false;
-  let cachedMax = 1;
-  const updateMetrics = (): void => {
+  const update = (): void => {
     const doc = document.documentElement;
-    cachedMax = Math.max(1, doc.scrollHeight - window.innerHeight);
-  };
-  const onScroll = (): void => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(() => {
-        const ratio = Math.min(1, Math.max(0, (window.scrollY || document.documentElement.scrollTop) / cachedMax));
-        readingTrack.style.setProperty('--progress-scale', ratio.toFixed(4));
-        ticking = false;
-      });
+    const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+    const scrollY = window.scrollY || doc.scrollTop || 0;
+    const ratio = Math.min(1, Math.max(0, scrollY / max));
+    if (bar) {
+      bar.style.transform = `scaleX(${ratio})`;
     }
+    if (readingTrack) {
+      readingTrack.style.setProperty('--progress-scale', ratio.toFixed(4));
+    }
+    ticking = false;
   };
-  updateMetrics();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', updateMetrics, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true }
+  );
+  window.addEventListener('resize', update, { passive: true });
+  update();
 }
 
 const legalBtn = document.querySelector<HTMLButtonElement>('#legal-info-btn');

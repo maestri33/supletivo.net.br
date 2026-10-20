@@ -69,4 +69,37 @@ test.describe('Responsividade e Geometria Viewport (9 Larguras)', () => {
     expect(cs.position).toBe('sticky');
     expect(cs.hasBackdrop).toBe(true);
   });
+
+  test('barra de progresso de leitura horizontal move com o scroll na home e rotas internas', async ({ page }) => {
+    await page.goto('/');
+    const bar = page.locator('.reading-bar');
+    await expect(bar).toBeAttached();
+
+    // Rola a página até a metade
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+    await page.waitForTimeout(100);
+
+    const transformHome = await bar.evaluate((el) => el.style.transform);
+    expect(transformHome).toContain('scaleX');
+    expect(transformHome).not.toBe('scaleX(0)');
+
+    // Testa em rota de conteúdo interna
+    await page.goto('/supletivo-online/');
+    const contentBar = page.locator('.reading-bar');
+    await expect(contentBar).toBeAttached();
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+    await page.waitForTimeout(100);
+
+    const transformContent = await contentBar.evaluate((el) => el.style.transform);
+    expect(transformContent).toContain('scaleX');
+    expect(transformContent).not.toBe('scaleX(0)');
+  });
+
+  test('seção de polos seleciona estado a partir de query param ?uf=', async ({ page }) => {
+    await page.goto('/?uf=RJ#polos');
+    const resultCard = page.locator('#polo-result');
+    await expect(resultCard).toHaveAttribute('data-current-uf', 'RJ');
+    await expect(page.locator('#polo-state-title')).toContainText('Rio de Janeiro');
+  });
 });

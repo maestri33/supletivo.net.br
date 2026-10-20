@@ -4,6 +4,7 @@
  * legível, CTA e rodapé. Sticky CTA continua presente (mobile).
  */
 import Base from './Base.astro';
+import ProgressBar from '../components/ProgressBar.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StickyCta from '../components/StickyCta.astro';
@@ -22,6 +23,7 @@ const { title, description, schema, noindex = false, kicker, h1, ogImage } = Ast
 ---
 
 <Base {title} {description} {noindex} {ogImage} {schema}>
+  <ProgressBar />
   <Header />
 
   <main id="conteudo" class="content-main" tabindex="-1">

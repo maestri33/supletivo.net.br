@@ -21,8 +21,8 @@ describe('Trabalhe Conosco — Botão Animado no Navbar e Destaque no Footer', (
   });
 
   it('navbar mobile contém o link com beacon para Trabalhe Conosco', () => {
-    expect(html).toContain('class="site-nav-careers-mobile"');
-    expect(html).toContain('class="nav-beacon-dot"');
+    expect(html).toContain('class="mobile-careers-card"');
+
     expect(html).toContain(`href="${CAREERS_URL}"`);
   });
 

@@ -502,4 +502,12 @@ const topStates = ['SP', 'RJ', 'MG', 'PR', 'BA', 'DF', 'RS', 'PE', 'GO', 'SC'];
       if (uf) updatePoloView(uf);
     });
   });
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const queryUf = (params.get('uf') || params.get('polo') || params.get('estado') || '').toUpperCase();
+    if (queryUf && BRAZIL_STATES_POLOS.some((s) => s.uf === queryUf)) {
+      updatePoloView(queryUf);
+    }
+  } catch {}
 </script>
