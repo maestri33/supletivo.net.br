@@ -291,12 +291,15 @@ if (legalBtn && legalContainer) {
   });
 }
 
-document.querySelector('[data-close-promo-alert]')?.addEventListener('click', () => {
-  sessionStorage.setItem('sb_promo_dismissed', '1');
-  const alertEl = document.querySelector<HTMLElement>('[data-floating-promo]');
-  if (alertEl) {
-    alertEl.classList.remove('is-visible');
-    alertEl.classList.add('hidden');
+document.addEventListener('click', (e) => {
+  const target = e.target as HTMLElement | null;
+  if (target?.closest('[data-close-promo-alert]')) {
+    sessionStorage.setItem('sb_promo_dismissed', '1');
+    const alertEl = document.querySelector<HTMLElement>('[data-floating-promo]');
+    if (alertEl) {
+      alertEl.classList.remove('is-visible');
+      alertEl.classList.add('hidden');
+    }
   }
 });
 

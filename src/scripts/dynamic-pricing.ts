@@ -174,7 +174,12 @@ function applyPricingToDom(config: {
           <line x1="12" y1="6" x2="12" y2="18"></line>
         </svg>
       </a>
-      <span class="promo-alert-micro">Consultor Autorizado Supletivo Brasil</span>
+      <span class="promo-alert-micro">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#00e699" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Consultor Autorizado Supletivo Brasil
+      </span>
     </div>
   </div>`;
       floatingAlert.querySelector('[data-close-promo-alert]')?.addEventListener('click', () => {
