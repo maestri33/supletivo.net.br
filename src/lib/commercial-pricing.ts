@@ -12,7 +12,7 @@ export interface CommercialPrice {
 export function parseCommercialPrice(payload: unknown, hasReferral = false): CommercialPrice {
   if (!payload || typeof payload !== 'object') throw new Error('Incomplete pricing response');
   const data = payload as Record<string, any>;
-  const hasDiscount = Boolean(hasReferral || data.has_discount === true);
+  const hasDiscount = Boolean(hasReferral && (data.has_discount === true || (data.promo_pix && Number(data.promo_pix) < Number(data.pix))));
   const card = hasDiscount ? (data.promo_card ?? data.card) : data.card;
   const installments = Number(card?.installments);
   const perMonth = Number(card?.installment);

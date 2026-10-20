@@ -34,33 +34,41 @@ const waLabel = '(11) 92006-2177';
       <nav aria-label="Conteúdo e links legais" class="footer-nav">
         <div class="footer-nav-group">
           <p class="footer-nav-title">Guias</p>
-          <a href="/supletivo-online/">Supletivo Online</a>
-          <a href="/eja-a-distancia/">EJA a Distância</a>
-          <a href="/ensino-fundamental/">Ensino Fundamental</a>
-          <a href="/terminar-ensino-medio/">Terminar o Ensino Médio</a>
+          <ul class="footer-nav-list">
+            <li><a href="/supletivo-online/">Supletivo Online</a></li>
+            <li><a href="/eja-a-distancia/">EJA a Distância</a></li>
+            <li><a href="/ensino-fundamental/">Ensino Fundamental</a></li>
+            <li><a href="/terminar-ensino-medio/">Terminar o Ensino Médio</a></li>
+          </ul>
         </div>
         <div class="footer-nav-group">
           <p class="footer-nav-title">Legal</p>
-          <a href="/termos/">Termos de Uso</a>
-          <a href="/privacidade/">Política de Privacidade</a>
+          <ul class="footer-nav-list">
+            <li><a href="/termos/">Termos de Uso</a></li>
+            <li><a href="/privacidade/">Política de Privacidade</a></li>
+          </ul>
         </div>
         <div class="footer-nav-group footer-careers-group">
           <p class="footer-nav-title">Parceria</p>
-          <a
-            href={CAREERS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="footer-careers-btn"
-            aria-label="Trabalhe conosco como promotor ou polo parceiro (abre em nova aba)"
-          >
-            <span class="footer-careers-beacon" aria-hidden="true">
-              <span class="beacon-pulse"></span>
-              <span class="beacon-dot"></span>
-            </span>
-            <span class="footer-careers-text">Trabalhe conosco</span>
-            <span class="footer-careers-badge">Renda Extra</span>
-            <span class="footer-careers-arrow" aria-hidden="true">↗</span>
-          </a>
+          <ul class="footer-nav-list">
+            <li>
+              <a
+                href={CAREERS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-careers-btn"
+                aria-label="Trabalhe conosco como promotor ou polo parceiro (abre em nova aba)"
+              >
+                <span class="footer-careers-beacon" aria-hidden="true">
+                  <span class="beacon-pulse"></span>
+                  <span class="beacon-dot"></span>
+                </span>
+                <span class="footer-careers-text">Trabalhe conosco</span>
+                <span class="footer-careers-badge">Renda Extra</span>
+                <span class="footer-careers-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          </ul>
           <p class="footer-careers-hint">Ganhe por indicação no Pix semanal</p>
         </div>
       </nav>
@@ -191,6 +199,14 @@ const waLabel = '(11) 92006-2177';
     display: grid;
     gap: 0.15rem;
     justify-items: start;
+  }
+
+  .footer-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.15rem;
   }
 
   .footer-nav-title {

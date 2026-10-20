@@ -105,6 +105,9 @@ function applyPricingToDom(config: {
   if (stickyStrong) {
     stickyStrong.textContent = `${installments}x ${perMonthStr}`;
   }
+  document.querySelectorAll<HTMLElement>('[data-price-card-line-short]').forEach((el) => {
+    el.textContent = `${installments}x ${perMonthStr}`;
+  });
   document.querySelectorAll<HTMLElement>('[data-price-card-total]').forEach(el => {
     el.textContent = brl(installment * installments);
   });

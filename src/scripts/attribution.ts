@@ -148,19 +148,55 @@ export function initAttribution(search: string = location.search): Attribution |
   return final && Object.keys(final).length > 0 ? final : null;
 }
 
-/** Reescreve todos os CTAs anexando os parâmetros capturados. */
+/** Reescreve todos os CTAs, links para o app e navegação interna anexando os parâmetros capturados. */
 export function decorateCtas(attr: Attribution | null): void {
   if (!attr) return;
-  document.querySelectorAll<HTMLAnchorElement>('a[data-cta]').forEach((a) => {
+
+  // 1. Links para o App (com ou sem data-cta) e todos os botões CTA
+  document.querySelectorAll<HTMLAnchorElement>('a[data-cta], a[href*="app.supletivo.net.br"]').forEach((a) => {
     try {
-      const url = new URL(a.href);
-      for (const key of ATTR_KEYS) {
-        const value = attr[key];
-        if (value) url.searchParams.set(key, value);
+      const url = new URL(a.href, window.location.href);
+      if (url.hostname.includes('app.supletivo.net.br') || a.hasAttribute('data-cta')) {
+        for (const key of ATTR_KEYS) {
+          const value = attr[key];
+          if (value && !url.searchParams.has(key)) {
+            url.searchParams.set(key, value);
+          } else if (value && key === 'ref') {
+            url.searchParams.set('ref', value);
+          }
+        }
+        a.href = url.toString();
       }
-      a.href = url.toString();
     } catch {
       /* href inválido — mantém como está */
     }
   });
+
+  // 2. Links de navegação interna entre Home e Guias (preserva ?ref= em toda a jornada)
+  if (attr.ref) {
+    const internalPaths = new Set([
+      '/',
+      '/supletivo-online/',
+      '/eja-a-distancia/',
+      '/terminar-ensino-medio/',
+      '/ensino-fundamental/',
+      '/supletivo-ensino-fundamental/',
+    ]);
+    document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
+      try {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('https://wa.me')) return;
+        const url = new URL(a.href, window.location.href);
+        if (url.origin === window.location.origin) {
+          const normPath = url.pathname.endsWith('/') ? url.pathname : `${url.pathname}/`;
+          if (internalPaths.has(normPath) && !url.searchParams.has('ref')) {
+            url.searchParams.set('ref', attr.ref!);
+            a.href = url.pathname + url.search + url.hash;
+          }
+        }
+      } catch {
+        /* mantém como está */
+      }
+    });
+  }
 }

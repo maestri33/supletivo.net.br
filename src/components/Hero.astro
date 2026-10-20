@@ -50,10 +50,21 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   <div class="container hero-inner">
     <h1 id="hero-title" class="hero-title" aria-label="Você parou. Mas não acabou.">
       <span class="hero-line hero-line--ghost">
-        {words1.map((w, i) => <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>)}{' '}
+        {words1.map((w, i) => (
+          <>
+            {i > 0 ? ' ' : ''}
+            <span class="w ghost" style={`--i: ${i + 1}`}>{w}</span>
+          </>
+        ))}
       </span>{' '}
       <span class="hero-line">
-        {words2.map((w, i) => <span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>)}{' '}
+        {words2.map((w, i) => (
+          <>
+            {i > 0 ? ' ' : ''}
+            <span class="w" style={`--i: ${words1.length + i + 1}`}>{w}</span>
+          </>
+        ))}
+        {' '}
         <span class="w w-accent" style={`--i: ${words1.length + words2.length + 1}`}>
           {LINE_2_B}
           <svg class="swoosh" aria-hidden="true" viewBox="0 0 220 24" fill="none" preserveAspectRatio="none">

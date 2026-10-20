@@ -59,10 +59,10 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
     const description = element.getAttribute('content') || '';
     if (!/R\$|\d+x\b/.test(description)) return;
     element.setAttribute('content', price
-      ? description.replace(/\d{1,2}x\s+(?:de\s+)?R\$\s*[\d.,]+/g, card).replace(/R\$\s*[\d.,]+\s*(?=no Pix|via Pix|à vista)/gi, formatBRL(price.pixTotal))
+      ? description.replace(/\d{1,2}x\s+(?:de\s+)?R\$\s*[\d.,]+/g, card).replace(/R\$\s*[\d.,]+(?=\s*(?:no Pix|via Pix|à vista))/gi, formatBRL(price.pixTotal))
       : 'Conheça o Supletivo Brasil e consulte as condições comerciais assim que estiverem disponíveis.');
   } });
-  const isPromoEffective = Boolean(price?.hasDiscount && (price.full - price.pixTotal > 0));
+  const isPromoEffective = Boolean(ref && price?.hasDiscount && (price.full - price.pixTotal > 0));
   const savings = isPromoEffective && price
     ? price.full - price.pixTotal
     : (price ? Math.max(0, Math.round((price.cardTotal - price.pixTotal) * 100) / 100) : 0);
