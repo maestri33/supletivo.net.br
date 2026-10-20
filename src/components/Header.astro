@@ -136,7 +136,7 @@ const homePrefix = isHome ? '' : '/';
             <span class="mobile-careers-tag">Renda Extra ↗</span>
           </a>
 
-          <a href={`${homePrefix}#preco`} class="btn btn-primary mobile-cta-btn" data-cta="header_mobile" data-mobile-link>
+          <a href={`${homePrefix}#preco`} class="mobile-nav-cta-btn" data-cta="header_mobile" data-mobile-link>
             <span>{CTA_LABEL}</span>
             <span aria-hidden="true">→</span>
           </a>
@@ -711,9 +711,27 @@ const homePrefix = isHome ? '' : '/';
     white-space: nowrap;
   }
 
-  .mobile-cta-btn {
-    width: 100%;
+  .mobile-nav-cta-btn {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 48px;
+    padding: 0.65rem 1.25rem;
+    border-radius: 999px;
+    background-color: var(--yellow);
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(255, 196, 0, 0.35);
+  }
+
+  .mobile-nav-cta-btn:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 20px rgba(255, 196, 0, 0.45);
   }
 
   .cta-text-short {
