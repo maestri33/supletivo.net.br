@@ -4,7 +4,7 @@
  * legível, CTA e rodapé. Sticky CTA continua presente (mobile).
  */
 import Base from './Base.astro';
-import Logo from '../components/Logo.astro';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StickyCta from '../components/StickyCta.astro';
 
@@ -22,11 +22,7 @@ const { title, description, schema, noindex = false, kicker, h1, ogImage } = Ast
 ---
 
 <Base {title} {description} {noindex} {ogImage} {schema}>
-  <header id="hero" class="content-header">
-    <div class="container">
-      <Logo variant="dark" />
-    </div>
-  </header>
+  <Header />
 
   <main id="conteudo" class="content-main" tabindex="-1">
     <div class="container narrow">
@@ -44,11 +40,6 @@ const { title, description, schema, noindex = false, kicker, h1, ogImage } = Ast
 </Base>
 
 <style>
-  .content-header {
-    padding-block: 1.4rem;
-    border-bottom: 1px solid var(--line-light);
-  }
-
   .content-main {
     padding-block: clamp(2.5rem, 7vw, 4.5rem) clamp(3rem, 8vw, 5rem);
   }

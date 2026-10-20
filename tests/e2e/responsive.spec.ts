@@ -28,4 +28,45 @@ test.describe('Responsividade e Geometria Viewport (9 Larguras)', () => {
       expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
     });
   }
+
+  test('menu mobile abre e fecha com tecla Escape e clique no backdrop', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+
+    const toggleBtn = page.locator('#nav-toggle-btn');
+    const drawer = page.locator('#mobile-nav-drawer');
+
+    await expect(toggleBtn).toBeVisible();
+    await expect(drawer).not.toHaveClass(/is-open/);
+    expect(await toggleBtn.getAttribute('aria-expanded')).toBe('false');
+
+    // Abre o menu
+    await toggleBtn.click();
+    await expect(drawer).toHaveClass(/is-open/);
+    expect(await toggleBtn.getAttribute('aria-expanded')).toBe('true');
+    expect(await drawer.getAttribute('aria-hidden')).toBe('false');
+
+    // Fecha com a tecla Escape
+    await page.keyboard.press('Escape');
+    await expect(drawer).not.toHaveClass(/is-open/);
+    expect(await toggleBtn.getAttribute('aria-expanded')).toBe('false');
+    expect(await drawer.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  test('paridade do header sticky institucional em rotas de conteúdo (/supletivo-online/)', async ({ page }) => {
+    await page.goto('/supletivo-online/');
+    const header = page.locator('header#header');
+    await expect(header).toBeVisible();
+
+    const cs = await header.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return {
+        position: style.position,
+        hasBackdrop: style.backdropFilter !== 'none' || style.webkitBackdropFilter !== 'none',
+      };
+    });
+
+    expect(cs.position).toBe('sticky');
+    expect(cs.hasBackdrop).toBe(true);
+  });
 });

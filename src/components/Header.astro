@@ -1,10 +1,15 @@
 ---
 /**
  * Header sticky institucional com dark glassmorphism e filete de marca Supletivo Brasil.
- * Acompanha a rolagem da página proporcionando navegação rápida e acesso imediato ao CTA.
+ * Acompanha a rolagem da página proporcionando navegação rápida, menu mobile e acesso imediato ao CTA.
+ * Padrão Editorial "Pátria Amada Refinada" em total conformidade com o DESIGN.md e WCAG AA/AAA.
  */
 import Logo from './Logo.astro';
 import { CTA_LABEL, CAREERS_URL } from '../config';
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/' || pathname === '';
+const homePrefix = isHome ? '' : '/';
 ---
 
 <header class="site-header" id="header">
@@ -14,25 +19,17 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
       <Logo variant="light" />
     </div>
 
+    <!-- Navegação Desktop -->
     <nav class="site-nav" aria-label="Seções da página">
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#elegibilidade">Requisitos</a>
-      <a href="#depoimentos">Depoimentos</a>
-      <a href="#preco">Preço</a>
-      <a href="#faq">Dúvidas</a>
-      <a
-        href={CAREERS_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="site-nav-careers-mobile"
-        aria-label="Trabalhe conosco como promotor ou polo parceiro (abre em nova aba)"
-      >
-        <span class="nav-beacon-dot" aria-hidden="true"></span>
-        Trabalhe conosco
-      </a>
+      <a href={`${homePrefix}#como-funciona`}>Como funciona</a>
+      <a href={`${homePrefix}#elegibilidade`}>Requisitos</a>
+      <a href={`${homePrefix}#depoimentos`}>Depoimentos</a>
+      <a href={`${homePrefix}#preco`}>Preço</a>
+      <a href={`${homePrefix}#faq`}>Dúvidas</a>
     </nav>
 
     <div class="header-action">
+      <!-- Botão Trabalhe Conosco (Desktop) -->
       <a
         href={CAREERS_URL}
         target="_blank"
@@ -49,13 +46,175 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
         <span class="careers-btn-tag">Renda Extra</span>
       </a>
 
-      <a href="#preco" class="header-cta" data-cta="header">
-        <span>{CTA_LABEL}</span>
+      <!-- Botão CTA Principal -->
+      <a href={`${homePrefix}#preco`} class="header-cta" data-cta="header">
+        <span class="header-cta-text cta-text-full">{CTA_LABEL}</span>
+        <span class="header-cta-text cta-text-short">Matrícula</span>
         <span class="header-arrow" aria-hidden="true">→</span>
       </a>
+
+      <!-- Botão Hambúrguer Mobile (< 960px) -->
+      <button
+        type="button"
+        class="nav-toggle-btn"
+        id="nav-toggle-btn"
+        aria-label="Abrir menu de navegação"
+        aria-expanded="false"
+        aria-controls="mobile-nav-drawer"
+      >
+        <span class="nav-toggle-box" aria-hidden="true">
+          <span class="nav-bar nav-bar--top"></span>
+          <span class="nav-bar nav-bar--mid"></span>
+          <span class="nav-bar nav-bar--bot"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Drawer / Gaveta de Navegação Mobile -->
+  <div
+    id="mobile-nav-drawer"
+    class="mobile-nav-drawer"
+    aria-hidden="true"
+  >
+    <div class="mobile-nav-backdrop" data-close-drawer tabindex="-1"></div>
+    <div
+      class="mobile-nav-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu de navegação Supletivo Brasil"
+    >
+      <div class="mobile-nav-header">
+        <Logo variant="light" />
+        <button
+          type="button"
+          class="mobile-nav-close"
+          data-close-drawer
+          aria-label="Fechar menu de navegação"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="mobile-nav-content" aria-label="Navegação mobile">
+        <div class="mobile-nav-section">
+          <span class="mobile-nav-heading">O Supletivo</span>
+          <ul class="mobile-nav-list">
+            <li><a href={`${homePrefix}#como-funciona`} class="mobile-nav-link" data-mobile-link>Como funciona</a></li>
+            <li><a href={`${homePrefix}#elegibilidade`} class="mobile-nav-link" data-mobile-link>Requisitos</a></li>
+            <li><a href={`${homePrefix}#depoimentos`} class="mobile-nav-link" data-mobile-link>Depoimentos</a></li>
+            <li><a href={`${homePrefix}#preco`} class="mobile-nav-link" data-mobile-link>Investimento e Preço</a></li>
+            <li><a href={`${homePrefix}#faq`} class="mobile-nav-link" data-mobile-link>Dúvidas Frequentes</a></li>
+          </ul>
+        </div>
+
+        <div class="mobile-nav-section">
+          <span class="mobile-nav-heading">Guias & Cursos</span>
+          <ul class="mobile-nav-list mobile-nav-sublist">
+            <li><a href="/supletivo-online/" class="mobile-nav-link" data-mobile-link>Supletivo Online</a></li>
+            <li><a href="/eja-a-distancia/" class="mobile-nav-link" data-mobile-link>EJA a Distância</a></li>
+            <li><a href="/ensino-fundamental/" class="mobile-nav-link" data-mobile-link>Ensino Fundamental</a></li>
+            <li><a href="/terminar-ensino-medio/" class="mobile-nav-link" data-mobile-link>Terminar Ensino Médio</a></li>
+          </ul>
+        </div>
+
+        <div class="mobile-nav-footer">
+          <a
+            href={CAREERS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mobile-careers-card"
+            data-mobile-link
+          >
+            <div class="mobile-careers-info">
+              <span class="mobile-careers-title">Programa de Promotores</span>
+              <span class="mobile-careers-desc">Ganhe renda extra indicando alunos</span>
+            </div>
+            <span class="mobile-careers-tag">Renda Extra ↗</span>
+          </a>
+
+          <a href={`${homePrefix}#preco`} class="btn btn-primary mobile-cta-btn" data-cta="header_mobile" data-mobile-link>
+            <span>{CTA_LABEL}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </nav>
     </div>
   </div>
 </header>
+
+<script>
+  function setupMobileNavigation() {
+    const toggleBtn = document.getElementById('nav-toggle-btn');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    if (!toggleBtn || !drawer) return;
+
+    let isOpen = false;
+
+    function openDrawer() {
+      isOpen = true;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      toggleBtn.setAttribute('aria-label', 'Fechar menu de navegação');
+      document.documentElement.classList.add('mobile-nav-locked');
+      
+      // Focar o botão de fechar ou o primeiro link interativo
+      const firstFocusable = drawer.querySelector<HTMLElement>('.mobile-nav-close, .mobile-nav-link');
+      firstFocusable?.focus();
+    }
+
+    function closeDrawer() {
+      if (!isOpen) return;
+      isOpen = false;
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.setAttribute('aria-label', 'Abrir menu de navegação');
+      document.documentElement.classList.remove('mobile-nav-locked');
+      toggleBtn.focus();
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isOpen) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+
+    // Fechar ao clicar no backdrop ou em botões data-close-drawer
+    drawer.querySelectorAll('[data-close-drawer]').forEach((el) => {
+      el.addEventListener('click', () => closeDrawer());
+    });
+
+    // Fechar ao clicar em qualquer link interno
+    drawer.querySelectorAll('[data-mobile-link]').forEach((link) => {
+      link.addEventListener('click', () => {
+        closeDrawer();
+      });
+    });
+
+    // Fechar com tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeDrawer();
+      }
+    });
+  }
+
+  // Execução na carga e suporte a navegações Astro
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupMobileNavigation);
+  } else {
+    setupMobileNavigation();
+  }
+  document.addEventListener('astro:page-load', setupMobileNavigation);
+</script>
 
 <style>
   .site-header {
@@ -105,6 +264,7 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     flex-shrink: 0;
   }
 
+  /* Navegação Desktop */
   .site-nav {
     display: flex;
     align-items: center;
@@ -132,7 +292,12 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     background-color: rgba(255, 255, 255, 0.1);
   }
 
-  .site-nav a:focus-visible {
+  .site-nav a:focus-visible,
+  .header-cta:focus-visible,
+  .header-careers-btn:focus-visible,
+  .nav-toggle-btn:focus-visible,
+  .mobile-nav-close:focus-visible,
+  .mobile-nav-link:focus-visible {
     outline: 2px solid var(--yellow);
     outline-offset: 2px;
   }
@@ -144,12 +309,7 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     flex-shrink: 0;
   }
 
-  /* Link Trabalhe Conosco no menu mobile (nunca exibido no desktop para evitar duplicidade com o botão de destaque) */
-  .site-nav a.site-nav-careers-mobile {
-    display: none !important;
-  }
-
-  /* Botão Animado Trabalhe Conosco no Navbar */
+  /* Botão Animado Trabalhe Conosco no Navbar Desktop */
   .header-careers-btn {
     position: relative;
     display: inline-flex;
@@ -170,7 +330,6 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     transition: transform 0.2s var(--ease-out), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   }
 
-  /* Varredura luminosa contínua suave (Shine) */
   @media (prefers-reduced-motion: no-preference) {
     .header-careers-btn::before {
       content: '';
@@ -213,7 +372,6 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     transform: translateY(0) scale(0.99);
   }
 
-  /* Beacon / Radar pulsante em verde neon */
   .careers-beacon {
     position: relative;
     display: inline-flex;
@@ -271,13 +429,13 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     border-color: var(--yellow);
   }
 
-  /* Em telas intermediárias (960px-1120px), esconde a tag para caber com conforto */
   @media (max-width: 1120px) {
     .careers-btn-tag {
       display: none;
     }
   }
 
+  /* Botão CTA Principal */
   .header-cta {
     display: inline-flex;
     align-items: center;
@@ -310,7 +468,259 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     transform: translateX(2px);
   }
 
-  /* Em telas menores que 960px, esconde o menu de links para não colidir com o logo e foca no CTA direto */
+  /* Botão Toggle Hambúrguer Mobile */
+  .nav-toggle-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .nav-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--yellow);
+  }
+
+  .nav-toggle-box {
+    position: relative;
+    width: 20px;
+    height: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .nav-bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  /* Estado ativo do hambúrguer quando o drawer está aberto */
+  .site-header:has(.mobile-nav-drawer.is-open) .nav-bar--top {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .site-header:has(.mobile-nav-drawer.is-open) .nav-bar--mid {
+    opacity: 0;
+  }
+
+  .site-header:has(.mobile-nav-drawer.is-open) .nav-bar--bot {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Drawer Mobile (Sheet) */
+  .mobile-nav-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0.28s ease;
+  }
+
+  .mobile-nav-drawer.is-open {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mobile-nav-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 18, 32, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.28s ease;
+  }
+
+  .mobile-nav-drawer.is-open .mobile-nav-backdrop {
+    opacity: 1;
+  }
+
+  .mobile-nav-dialog {
+    position: relative;
+    width: min(85vw, 360px);
+    height: 100%;
+    background: #0b1220;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .mobile-nav-drawer.is-open .mobile-nav-dialog {
+    transform: translateX(0);
+  }
+
+  .mobile-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-nav-close {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mobile-nav-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--yellow);
+  }
+
+  .mobile-nav-content {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem 1.4rem;
+    gap: 1.4rem;
+  }
+
+  .mobile-nav-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .mobile-nav-heading {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted-on-dark);
+    margin-bottom: 0.2rem;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .mobile-nav-link {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .mobile-nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--yellow);
+  }
+
+  .mobile-nav-sublist .mobile-nav-link {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .mobile-nav-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 0.6rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-careers-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 12px;
+    background: rgba(0, 115, 77, 0.25);
+    border: 1px solid rgba(0, 230, 153, 0.3);
+    text-decoration: none;
+    color: #ffffff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mobile-careers-card:hover {
+    background: rgba(0, 115, 77, 0.4);
+    border-color: var(--yellow);
+  }
+
+  .mobile-careers-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .mobile-careers-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .mobile-careers-desc {
+    font-size: 0.72rem;
+    color: var(--muted-on-dark);
+  }
+
+  .mobile-careers-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .mobile-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cta-text-short {
+    display: none;
+  }
+
+  /* Adaptações Responsivas */
   @media (max-width: 959px) {
     .site-nav {
       display: none;
@@ -321,9 +731,11 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
       gap: 0.5rem;
       margin-left: auto;
     }
+    .nav-toggle-btn {
+      display: inline-flex;
+    }
   }
 
-  /* Em mobile pequeno, ergonomia touch e visual compacto */
   @media (max-width: 640px) {
     .site-header {
       padding-block: 0.45rem;
@@ -331,10 +743,27 @@ import { CTA_LABEL, CAREERS_URL } from '../config';
     .header-careers-btn {
       display: none;
     }
+    .cta-text-full {
+      display: none;
+    }
+    .cta-text-short {
+      display: inline;
+    }
     .header-cta {
-      font-size: 0.82rem;
-      padding: 0.45rem 0.95rem;
-      min-height: 42px;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.75rem;
+      min-height: 40px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .header-cta .header-arrow {
+      display: none;
+    }
+    .header-cta {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.6rem;
+      min-height: 36px;
     }
   }
 </style>

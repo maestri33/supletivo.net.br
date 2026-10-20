@@ -43,7 +43,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-padding-top: 2rem;
+  scroll-padding-top: 5rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {
