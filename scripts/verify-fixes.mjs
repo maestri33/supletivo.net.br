@@ -56,6 +56,8 @@ console.log('--- Verifying supletivo.net.br/dist ---');
 const indexOk = checkFile(supletivoDist, 'index.html', [
   { forbidden: 'Desconto de Consultor Ativado' },
   { forbidden: 'Condição por Indicação Ativada' },
+  { forbidden: 'CONSULTOR AUTORIZADO · LOTE 01' },
+  { forbidden: 'DESCONTO APLICADO' },
   { forbidden: 'Economia de R$ 0' },
   { forbidden: 'Matrícula Localizada' },
   { forbidden: 'Redirecionando para autenticação' },

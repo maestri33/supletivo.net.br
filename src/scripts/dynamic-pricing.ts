@@ -211,16 +211,17 @@ function applyPricingToDom(config: {
 
   // 8. Aleta de Alerta no Card de Preços
   const cardAleta = document.querySelector<HTMLElement>('[data-card-aleta]');
-  const aletaPromoter = document.querySelector<HTMLElement>('[data-aleta-promoter]');
   if (cardAleta) {
     if (isPromo) {
+      cardAleta.innerHTML = `
+        <div class="aleta-flag">
+          <span class="aleta-dot" aria-hidden="true"></span>
+          <span class="aleta-text">CONDIÇÃO PROMOCIONAL ATIVA · LINK VERIFICADO <span data-aleta-promoter>${promoterName ? `· CONSULTOR: ${promoterName}` : ''}</span></span>
+        </div>`;
       cardAleta.classList.remove('hidden');
-      if (aletaPromoter) {
-        aletaPromoter.textContent = promoterName ? `· CONSULTOR: ${promoterName}` : '';
-      }
     } else {
+      cardAleta.innerHTML = '';
       cardAleta.classList.add('hidden');
-      if (aletaPromoter) aletaPromoter.textContent = '';
     }
   }
 
@@ -229,10 +230,19 @@ function applyPricingToDom(config: {
   const priceCard = document.querySelector<HTMLElement>('.price-card');
   if (cardStamp) {
     if (isPromo) {
+      cardStamp.innerHTML = `
+        <div class="stamp-seal">
+          <div class="stamp-seal-inner">
+            <span class="stamp-seal-tag">★ SUPLETIVO BRASIL · CEE / LDB ★</span>
+            <strong class="stamp-seal-title">DESCONTO APLICADO</strong>
+            <span class="stamp-seal-sub">CONSULTOR AUTORIZADO · LOTE 01</span>
+          </div>
+        </div>`;
       cardStamp.classList.remove('hidden');
       cardStamp.classList.add('is-stamped');
       if (priceCard) priceCard.classList.add('has-consultant-discount');
     } else {
+      cardStamp.innerHTML = '';
       cardStamp.classList.remove('is-stamped');
       cardStamp.classList.add('hidden');
       if (priceCard) priceCard.classList.remove('has-consultant-discount');
@@ -292,8 +302,9 @@ function applyPricingToDom(config: {
 }
 
 export async function initDynamicPricing(resolvedAttr?: Attribution | null): Promise<void> {
+  const urlRef = new URL(window.location.href).searchParams.get('ref');
   const attr = resolvedAttr !== undefined ? resolvedAttr : initAttribution();
-  const hasRef = Boolean(attr?.ref && attr.ref.trim().length > 0);
+  const hasRef = resolvedAttr !== undefined ? Boolean(resolvedAttr?.ref) : Boolean(urlRef && urlRef.trim().length > 0);
 
   // The Worker embeds its live backend quote. Static previews use the canonical backend.
   try {

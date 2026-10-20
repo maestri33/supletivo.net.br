@@ -24,23 +24,10 @@ const priceChars = perMonthBRL.split('');
       style="--d: 1"
     >
       <!-- Aleta de Destaque com Cores Fortes -->
-      <div class="card-aleta hidden" data-card-aleta data-tilt-sublayer="40">
-        <div class="aleta-flag">
-          <span class="aleta-dot" aria-hidden="true"></span>
-          <span class="aleta-text">CONDIÇÃO PROMOCIONAL ATIVA · LINK VERIFICADO <span data-aleta-promoter></span></span>
-        </div>
-      </div>
+      <div class="card-aleta hidden" data-card-aleta data-tilt-sublayer="40"></div>
 
       <!-- Carimbo Grande Físico com Cores Fortes -->
-      <div class="card-stamp hidden" data-card-stamp data-tilt-sublayer="55" aria-hidden="true">
-        <div class="stamp-seal">
-          <div class="stamp-seal-inner">
-            <span class="stamp-seal-tag">★ SUPLETIVO BRASIL · CEE / LDB ★</span>
-            <strong class="stamp-seal-title">DESCONTO APLICADO</strong>
-            <span class="stamp-seal-sub">CONSULTOR AUTORIZADO · LOTE 01</span>
-          </div>
-        </div>
-      </div>
+      <div class="card-stamp hidden" data-card-stamp data-tilt-sublayer="55" aria-hidden="true"></div>
 
       <p class="price-old hidden" data-price-old data-tilt-sublayer="20">
         de <s><span data-price-old-val>{fullBRL}</span></s>
@@ -150,7 +137,8 @@ const priceChars = perMonthBRL.split('');
     z-index: 10;
   }
 
-  .aleta-flag {
+  .aleta-flag,
+  :global(.aleta-flag) {
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
@@ -174,7 +162,8 @@ const priceChars = perMonthBRL.split('');
     animation: aletaPulse 2.5s infinite ease-in-out;
   }
 
-  .aleta-dot {
+  .aleta-dot,
+  :global(.aleta-dot) {
     width: 9px;
     height: 9px;
     border-radius: 50%;
@@ -184,7 +173,8 @@ const priceChars = perMonthBRL.split('');
     animation: aletaBlink 1.2s infinite ease-in-out;
   }
 
-  .aleta-text {
+  .aleta-text,
+  :global(.aleta-text) {
     line-height: 1.2;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
   }
@@ -227,7 +217,8 @@ const priceChars = perMonthBRL.split('');
     animation: stampSlam 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   }
 
-  .stamp-seal {
+  .stamp-seal,
+  :global(.stamp-seal) {
     display: inline-block;
     padding: 0.5rem 0.7rem;
     border: 3.5px double var(--danger);
@@ -242,7 +233,8 @@ const priceChars = perMonthBRL.split('');
     backdrop-filter: blur(6px);
   }
 
-  .stamp-seal-inner {
+  .stamp-seal-inner,
+  :global(.stamp-seal-inner) {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -252,7 +244,8 @@ const priceChars = perMonthBRL.split('');
     border-radius: 8px;
   }
 
-  .stamp-seal-tag {
+  .stamp-seal-tag,
+  :global(.stamp-seal-tag) {
     font-size: 0.84rem;
     font-weight: 900;
     letter-spacing: 0.16em;
@@ -260,7 +253,8 @@ const priceChars = perMonthBRL.split('');
     text-shadow: 0 0 10px color-mix(in srgb, var(--yellow) 80%, transparent);
   }
 
-  .stamp-seal-title {
+  .stamp-seal-title,
+  :global(.stamp-seal-title) {
     font-family: var(--font-display, 'Archivo Black', Impact, sans-serif);
     font-size: clamp(1.45rem, 5vw, 2.1rem);
     font-weight: 900;
@@ -274,7 +268,8 @@ const priceChars = perMonthBRL.split('');
     text-transform: uppercase;
   }
 
-  .stamp-seal-sub {
+  .stamp-seal-sub,
+  :global(.stamp-seal-sub) {
     font-size: 0.84rem;
     font-weight: 800;
     letter-spacing: 0.12em;

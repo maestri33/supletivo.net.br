@@ -15,8 +15,7 @@ declare const HTMLRewriter: { new(): {
 export function referralFromRequest(request: Request): string | null {
   const url = new URL(request.url);
   if (url.searchParams.has('ref')) return url.searchParams.get('ref');
-  const cookie = (request.headers.get('cookie') || '').split(';').find(part => part.trim().startsWith('sb_ref='));
-  try { return cookie ? decodeURIComponent(cookie.trim().slice(7)) : null; } catch { return null; }
+  return null;
 }
 
 export async function fetchBackendPricing(ref: string | null): Promise<Record<string, unknown>> {
@@ -93,6 +92,31 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
       O valor promocional exclusivo foi aplicado em todos os planos.
     </p>
   </div>`, { html: true });
+      }
+    });
+
+    rewriter.on('[data-card-aleta]', {
+      element(element) {
+        element.setAttribute('class', 'card-aleta');
+        element.setInnerContent(`
+        <div class="aleta-flag">
+          <span class="aleta-dot" aria-hidden="true"></span>
+          <span class="aleta-text">CONDIÇÃO PROMOCIONAL ATIVA · LINK VERIFICADO <span data-aleta-promoter>${price?.promoterName ? `· CONSULTOR: ${price.promoterName}` : ''}</span></span>
+        </div>`, { html: true });
+      }
+    });
+
+    rewriter.on('[data-card-stamp]', {
+      element(element) {
+        element.setAttribute('class', 'card-stamp is-stamped');
+        element.setInnerContent(`
+        <div class="stamp-seal">
+          <div class="stamp-seal-inner">
+            <span class="stamp-seal-tag">★ SUPLETIVO BRASIL · CEE / LDB ★</span>
+            <strong class="stamp-seal-title">DESCONTO APLICADO</strong>
+            <span class="stamp-seal-sub">CONSULTOR AUTORIZADO · LOTE 01</span>
+          </div>
+        </div>`, { html: true });
       }
     });
   }
