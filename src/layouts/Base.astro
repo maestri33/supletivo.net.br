@@ -5,6 +5,7 @@
 import '../styles/tokens.css';
 import '../styles/global.css';
 import { APP_URL, BRAND } from '../config';
+import pkg from '../../package.json';
 
 const appOrigin = new URL(APP_URL).origin;
 
@@ -39,6 +40,7 @@ const ogImage = new URL(ogImagePath, site);
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="app-version" content={pkg.version} />
     <link rel="canonical" href={canonical.href} />
     <meta
       name="robots"
@@ -112,6 +114,7 @@ const ogImage = new URL(ogImagePath, site);
             "urls": [
               "/supletivo-online/",
               "/eja-a-distancia/",
+              "/ensino-fundamental/",
               "/supletivo-ensino-fundamental/",
               "/terminar-ensino-medio/",
               "/termos/",

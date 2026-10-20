@@ -4,7 +4,7 @@
  * entrar em cena + spotlight seguindo o mouse (desktop) + shine periódico.
  */
 import CtaButton from './CtaButton.astro';
-import { PRICE, perMonthBRL, pixBRL, fullBRL, promoSavingsBRL } from '../data/price';
+import { PRICE, perMonthBRL, pixBRL, fullBRL, standardPixSavingsBRL } from '../data/price';
 
 // dígitos animados a partir da parcela vinda do backend ("R$ 159,90" ou "R$ 99")
 const priceChars = perMonthBRL.split('');
@@ -63,7 +63,7 @@ const priceChars = perMonthBRL.split('');
 
       <p class="price-alt" data-tilt-sublayer="30">
         ou <strong data-price-pix-val>{pixBRL}</strong> à vista no Pix
-        <span class="price-save hidden" data-price-save-line>— você economiza <span data-price-savings>{promoSavingsBRL}</span></span>
+        <span class="price-save" data-price-save-line>— você economiza <span data-price-savings>{standardPixSavingsBRL}</span> no Pix</span>
       </p>
 
       <!-- Tríade de Confiança Decisória -->

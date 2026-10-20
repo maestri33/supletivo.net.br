@@ -27,8 +27,9 @@ function applyPricingToDom(config: {
   const perMonthStr = brl(installment);
   const pixStr = brl(pix);
   const cardLine = `${installments}x de ${perMonthStr}`;
+  const totalCard = installment * installments;
   const underPerMonth = installment < 10 ? brl(Math.max(1, Math.ceil(installment))) : brl(Math.ceil(installment / 100) * 100);
-  const savings = Math.max(0, anchor - pix);
+  const savings = isPromo ? Math.max(0, anchor - pix) : Math.max(0, Math.round((totalCard - pix) * 100) / 100);
 
   // 1. Título da seção de preços
   const titleEl = document.querySelector<HTMLElement>('#pricing-title');
@@ -70,15 +71,20 @@ function applyPricingToDom(config: {
   });
 
   const saveLine = document.querySelector<HTMLElement>('[data-price-save-line]');
-  document.querySelectorAll<HTMLElement>('[data-price-savings]').forEach((el) => {
-    el.textContent = savings > 0 ? brl(savings) : brl(616);
-  });
   if (saveLine) {
     if (isPromo && savings > 0) {
+      saveLine.innerHTML = `— você economiza <span data-price-savings>${brl(savings)}</span>`;
+      saveLine.classList.remove('hidden');
+    } else if (!isPromo && savings > 0) {
+      saveLine.innerHTML = `— você economiza <span data-price-savings>${brl(savings)}</span> no Pix`;
       saveLine.classList.remove('hidden');
     } else {
       saveLine.classList.add('hidden');
     }
+  } else {
+    document.querySelectorAll<HTMLElement>('[data-price-savings]').forEach((el) => {
+      el.textContent = brl(savings);
+    });
   }
 
   // 5. Linhas de parcelamento
@@ -118,11 +124,67 @@ function applyPricingToDom(config: {
   if (floatingAlert) {
     const isDismissed = sessionStorage.getItem('sb_promo_dismissed') === '1';
     if (isPromo && savings > 0 && !isDismissed) {
+      const promoSavingsText = brl(savings);
+      floatingAlert.innerHTML = `
+  <div class="promo-alert-card">
+    <div class="promo-alert-header">
+      <div class="promo-alert-pill">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span class="promo-alert-pill-text">Condição por Indicação Ativada</span>
+      </div>
+      <button
+        type="button"
+        class="promo-alert-close"
+        data-close-promo-alert
+        aria-label="Fechar aviso promocional"
+        title="Dispensar aviso"
+      >
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="promo-alert-body">
+      <div class="promo-alert-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+        </svg>
+      </div>
+
+      <div class="promo-alert-content">
+        <p class="promo-alert-headline">
+          Economia de <span class="promo-highlight" data-price-savings>${promoSavingsText}</span> aplicada
+        </p>
+        <p class="promo-alert-sub">
+          Por <strong data-price-card-line>${cardLine}</strong> ou <strong data-price-pix-val>${pixStr}</strong> no Pix
+        </p>
+      </div>
+    </div>
+
+    <div class="promo-alert-footer">
+      <a href="#preco" class="promo-alert-cta" data-cta="floating-alert" aria-label="Ver condição especial de preço">
+        <span>Aproveitar condição</span>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="7 13 12 18 17 13"></polyline>
+          <line x1="12" y1="6" x2="12" y2="18"></line>
+        </svg>
+      </a>
+      <span class="promo-alert-micro">Consultor Autorizado Supletivo Brasil</span>
+    </div>
+  </div>`;
+      floatingAlert.querySelector('[data-close-promo-alert]')?.addEventListener('click', () => {
+        sessionStorage.setItem('sb_promo_dismissed', '1');
+        floatingAlert.classList.remove('is-visible');
+        floatingAlert.classList.add('hidden');
+      });
       floatingAlert.classList.remove('hidden');
       floatingAlert.classList.add('is-visible');
     } else {
       floatingAlert.classList.remove('is-visible');
       floatingAlert.classList.add('hidden');
+      floatingAlert.innerHTML = '';
     }
   }
 
@@ -192,15 +254,31 @@ function applyPricingToDom(config: {
 
   // 9. Banner de topo de consultor (opcional)
   const topBanner = document.querySelector<HTMLElement>('[data-promoter-banner]');
-  const topName = document.querySelector<HTMLElement>('[data-promoter-name]');
-  if (topName) topName.textContent = promoterName || 'seu consultor';
   if (topBanner) {
     if (isPromo && savings > 0) {
+      const name = promoterName || 'seu consultor';
+      topBanner.innerHTML = `
+  <div class="container promoter-banner-inner">
+    <div class="promoter-badge">
+      <svg class="promoter-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+          fill="currentColor"
+        />
+      </svg>
+      <span class="promoter-pill">Desconto de Consultor Ativado</span>
+    </div>
+    <p class="promoter-text">
+      Você foi indicado(a) por <strong data-promoter-name>${name}</strong>!
+      O valor promocional exclusivo foi aplicado em todos os planos.
+    </p>
+  </div>`;
       topBanner.classList.remove('hidden');
       topBanner.classList.add('is-visible');
     } else {
       topBanner.classList.remove('is-visible');
       topBanner.classList.add('hidden');
+      topBanner.innerHTML = '';
     }
   }
 }
@@ -249,7 +327,15 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
         promoterName: null,
       });
     } else {
-      document.querySelectorAll<HTMLElement>('[data-promo-scarcity], [data-price-old], [data-price-save-line], [data-card-stamp], [data-floating-promo], [data-promoter-banner]').forEach(el => el.classList.add('hidden'));
+      applyPricingToDom({
+        installment: 159.9,
+        installments: 12,
+        pix: 1615,
+        anchor: 1615,
+        isPromo: false,
+        promoterName: null,
+      });
+      document.querySelectorAll<HTMLElement>('[data-promo-scarcity], [data-price-old], [data-card-stamp], [data-floating-promo], [data-promoter-banner]').forEach(el => el.classList.add('hidden'));
     }
   }
 }

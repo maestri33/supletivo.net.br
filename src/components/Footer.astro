@@ -4,10 +4,8 @@
  */
 import Logo from './Logo.astro';
 import { CAREERS_URL, CONTACT_WHATSAPP } from '../config';
-import pkg from '../../package.json';
 
 const year = new Date().getFullYear();
-const version = pkg.version;
 const waHref = CONTACT_WHATSAPP ? `https://wa.me/${CONTACT_WHATSAPP}` : null;
 const waLabel = '(11) 92006-2177';
 ---
@@ -38,7 +36,7 @@ const waLabel = '(11) 92006-2177';
           <p class="footer-nav-title">Guias</p>
           <a href="/supletivo-online/">Supletivo Online</a>
           <a href="/eja-a-distancia/">EJA a Distância</a>
-          <a href="/supletivo-ensino-fundamental/">Ensino Fundamental</a>
+          <a href="/ensino-fundamental/">Ensino Fundamental</a>
           <a href="/terminar-ensino-medio/">Terminar o Ensino Médio</a>
         </div>
         <div class="footer-nav-group">
@@ -75,13 +73,7 @@ const waLabel = '(11) 92006-2177';
 
     <div class="footer-legal">
       <p class="footer-contact">
-        Supletivo Brasil · CNPJ 48.811.016/0001-00 · <a href="mailto:contato@supletivo.net.br">contato@supletivo.net.br</a>
-        {waHref && (
-          <>
-            {' · '}
-            <a href={waHref} target="_blank" rel="noopener noreferrer">WhatsApp {waLabel}</a>
-          </>
-        )}
+        Supletivo Brasil · CNPJ 48.811.016/0001-00 · <a href="mailto:contato@supletivo.net.br">contato@supletivo.net.br</a> · <a href={waHref || 'https://wa.me/5511920062177'} target="_blank" rel="noopener noreferrer">WhatsApp {waLabel}</a>
       </p>
       <p>
         O Supletivo Brasil atua como plataforma de captação, intermediação e matrícula acelerada para a Educação de Jovens e Adultos (EJA). Os cursos, aulas, tutoria e certificação são prestados e emitidos exclusivamente por instituição de ensino parceira autorizada pelo Conselho Estadual de Educação (CEE), amparada pela Lei Federal nº 9.394/96 (LDB), com publicação no Diário Oficial e validade em todo o território nacional.
@@ -93,7 +85,6 @@ const waLabel = '(11) 92006-2177';
       </p>
       <p class="footer-copy">
         © {year} Supletivo Brasil. Todos os direitos reservados.
-        <span class="footer-version" data-platform-version={version} aria-hidden="true" style="display:none"></span>
       </p>
     </div>
   </div>
@@ -269,14 +260,6 @@ const waLabel = '(11) 92006-2177';
 
   .footer-copy {
     margin-top: 0.6rem;
-  }
-
-  .footer-version {
-    margin-left: 0.5rem;
-    font-size: 0.82rem;
-    color: var(--muted-on-dark);
-    letter-spacing: -0.02em;
-    user-select: none;
   }
 
   /* Destaque do botão Trabalhe Conosco no Rodapé */

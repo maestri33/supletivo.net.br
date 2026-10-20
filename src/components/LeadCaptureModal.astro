@@ -194,29 +194,8 @@ import CredentialCard from './CredentialCard.astro';
             </div>
           </div>
 
-          <!-- ESTADO: CPF COM OUTRO TELEFONE LOCALIZADO -->
-          <div id="step-existing" class="step-pane hidden">
-            <div class="existing-user-card">
-              <div class="existing-badge">
-                <span class="star-icon">★</span>
-                Matrícula Localizada
-              </div>
-              <p class="existing-text">
-                Identificamos seu cadastro seguro vinculado ao celular com final
-                <strong id="existing-phone-masked">(XX) •••••-XXXX</strong>.
-              </p>
-              <p class="existing-sub">
-                Enviamos o código de segurança para o seu número cadastrado. Redirecionando para autenticação…
-              </p>
-              <div class="existing-progress-wrap" aria-hidden="true">
-                <div class="existing-progress-bar" id="existing-progress-bar"></div>
-              </div>
-              <p class="existing-redirect-info">
-                Redirecionamento automático em <span id="existing-countdown">3</span>s
-                · <a href="#" id="btn-existing-redirect" class="existing-inline-link">Acessar agora &rarr;</a>
-              </p>
-            </div>
-          </div>
+          <!-- ESTADO: CPF COM OUTRO TELEFONE LOCALIZADO (RENDERIZADO DINAMICAMENTE NO CLIENTE) -->
+          <div id="step-existing" class="step-pane hidden"></div>
         </form>
 
         <div class="security-footer">
@@ -689,6 +668,10 @@ import CredentialCard from './CredentialCard.astro';
     const credentialStatusBadge = modal.querySelector<HTMLElement>('#credential-status-badge');
     const credentialStatusText = modal.querySelector<HTMLElement>('#credential-status-text');
 
+    if (credentialStudentName && !credentialStudentName.textContent) credentialStudentName.textContent = 'CANDIDATO OFICIAL';
+    if (credentialDoc && !credentialDoc.textContent) credentialDoc.textContent = 'DOCUMENTAÇÃO PENDENTE';
+    if (credentialStatusText && !credentialStatusText.textContent) credentialStatusText.textContent = 'AGUARDANDO CONTATO';
+
     let isCheckingPhone = false;
     let isCheckingCpf = false;
     let isSubmitting = false;
@@ -926,6 +909,31 @@ import CredentialCard from './CredentialCard.astro';
       stepPhone?.classList.add('hidden');
       stepCpf?.classList.add('hidden');
       stepEmail?.classList.add('hidden');
+
+      if (stepExisting && !stepExisting.innerHTML.trim()) {
+        const masked = data.masked_phone || '(XX) •••••-XXXX';
+        stepExisting.innerHTML = `
+            <div class="existing-user-card">
+              <div class="existing-badge">
+                <span class="star-icon">★</span>
+                Matrícula Localizada
+              </div>
+              <p class="existing-text">
+                Identificamos seu cadastro seguro vinculado ao celular com final
+                <strong id="existing-phone-masked">${masked}</strong>.
+              </p>
+              <p class="existing-sub">
+                Enviamos o código de segurança para o seu número cadastrado. Redirecionando para autenticação…
+              </p>
+              <div class="existing-progress-wrap" aria-hidden="true">
+                <div class="existing-progress-bar" id="existing-progress-bar"></div>
+              </div>
+              <p class="existing-redirect-info">
+                Redirecionamento automático em <span id="existing-countdown">3</span>s
+                · <a href="#" id="btn-existing-redirect" class="existing-inline-link">Acessar agora &rarr;</a>
+              </p>
+            </div>`;
+      }
       stepExisting?.classList.remove('hidden');
 
       const existingPhoneMasked = modal?.querySelector<HTMLElement>('#existing-phone-masked');

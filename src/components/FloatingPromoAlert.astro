@@ -5,8 +5,8 @@
  * Sem falsa escassez ou contadores artificiais.
  * Posicionado no desktop à direita (sem sobrepor o Hero CTA) e
  * com ativação inteligente que não obstrui o Hero mobile.
+ * Renderizado no cliente apenas com parâmetro ?ref= ativo.
  */
-import { promoSavingsBRL, promoCardLine, promoPixBRL } from '../data/price';
 ---
 
 <aside
@@ -16,54 +16,6 @@ import { promoSavingsBRL, promoCardLine, promoPixBRL } from '../data/price';
   aria-live="polite"
   role="status"
 >
-  <div class="promo-alert-card">
-    <div class="promo-alert-header">
-      <div class="promo-alert-pill">
-        <span class="pulse-dot" aria-hidden="true"></span>
-        <span class="promo-alert-pill-text">Condição por Indicação Ativada</span>
-      </div>
-      <button
-        type="button"
-        class="promo-alert-close"
-        data-close-promo-alert
-        aria-label="Fechar aviso promocional"
-        title="Dispensar aviso"
-      >
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-
-    <div class="promo-alert-body">
-      <div class="promo-alert-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-        </svg>
-      </div>
-
-      <div class="promo-alert-content">
-        <p class="promo-alert-headline">
-          Economia de <span class="promo-highlight" data-price-savings>{promoSavingsBRL}</span> aplicada
-        </p>
-        <p class="promo-alert-sub">
-          Por <strong data-price-card-line>{promoCardLine}</strong> ou <strong data-price-pix-val>{promoPixBRL}</strong> no Pix
-        </p>
-      </div>
-    </div>
-
-    <div class="promo-alert-footer">
-      <a href="#preco" class="promo-alert-cta" data-cta="floating-alert" aria-label="Ver condição especial de preço">
-        <span>Aproveitar condição</span>
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="7 13 12 18 17 13"></polyline>
-          <line x1="12" y1="6" x2="12" y2="18"></line>
-        </svg>
-      </a>
-      <span class="promo-alert-micro">Consultor Autorizado Supletivo Brasil</span>
-    </div>
-  </div>
 </aside>
 
 <style>

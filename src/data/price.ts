@@ -32,6 +32,9 @@ export const PRICE: Price = await loadPrice();
 /** economia do Pix vs. preço cheio (>= 0) */
 export const savings = Math.max(0, PRICE.full - PRICE.pixTotal);
 
+/** Economia padrão do Pix vs. parcelado no cartão (12x R$ 159,90 = R$ 1.918,80 vs R$ 1.615 = R$ 303,80) */
+export const standardPixSavings = Math.max(0, Math.round((PRICE.cardTotal - PRICE.pixTotal) * 100) / 100);
+
 /** "R$ 1.615" — NBSP entre símbolo e número, sem casas quando inteiro */
 export function brl(value: number): string {
   return formatBRL(value);
@@ -42,6 +45,7 @@ export const pixBRL = brl(PRICE.pixTotal);
 export const fullBRL = brl(PRICE.full);
 export const cardTotalBRL = brl(PRICE.cardTotal);
 export const savingsBRL = brl(savings);
+export const standardPixSavingsBRL = brl(standardPixSavings);
 
 /** Condição Promocional Oficial de Indicação (?ref=) */
 export const PROMO_PRICE = {

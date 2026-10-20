@@ -49,6 +49,7 @@ function updateStructuredPrices(node: any, price: CommercialPrice | null): any {
 
 /** Rewrite every monetary display from the same live backend quote, including no-JS HTML. */
 export function rewritePricing(response: Response, payload: Record<string, unknown> | null, ref: string | null): Response {
+  if (typeof HTMLRewriter === 'undefined') return response;
   const price = payload ? parseCommercialPrice(payload, Boolean(ref)) : null;
   const unavailable = 'Condições temporariamente indisponíveis';
   const month = price ? formatBRL(price.perMonth) : unavailable;
@@ -62,14 +63,16 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
       : 'Conheça o Supletivo Brasil e consulte as condições comerciais assim que estiverem disponíveis.');
   } });
   const isPromoEffective = Boolean(price?.hasDiscount && (price.full - price.pixTotal > 0));
-  const savings = isPromoEffective && price ? price.full - price.pixTotal : 0;
+  const savings = isPromoEffective && price
+    ? price.full - price.pixTotal
+    : (price ? Math.max(0, Math.round((price.cardTotal - price.pixTotal) * 100) / 100) : 0);
 
-  rewriter.on('[data-price-old], [data-price-save-line], [data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge], [data-floating-promo], [data-promoter-banner]', { element(element) {
+  rewriter.on('[data-price-old], [data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge], [data-floating-promo], [data-promoter-banner]', { element(element) {
     const classes = (element.getAttribute('class') || '').split(/\s+/).filter(Boolean).filter(name => name !== 'hidden');
     if (!isPromoEffective) classes.push('hidden');
     element.setAttribute('class', classes.join(' '));
   } });
-  const replace = (selector: string, text: string) => rewriter.on(selector, { element: element => element.setInnerContent(text) });
+  const replace = (selector: string, text: string) => rewriter.on(selector, { element: element => element.setInnerContent(text, { html: true }) });
   replace('[data-price-card-line]', card);
   replace('[data-price-card-line-short], .sticky-price strong', price ? `${price.installments}x ${month}` : unavailable);
   replace('[data-price-pix-val]', price ? formatBRL(price.pixTotal) : unavailable);
@@ -78,6 +81,11 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
   replace('[data-price-old-val]', price ? formatBRL(price.full) : unavailable);
   replace('[data-price-card-total]', price ? formatBRL(price.cardTotal) : unavailable);
   replace('[data-price-mode-line]', price ? `em ${price.installments}x no cartão de crédito` : 'Tente novamente em instantes.');
+  if (isPromoEffective && price) {
+    replace('[data-price-save-line]', `— você economiza <span data-price-savings>${formatBRL(savings)}</span>`);
+  } else if (price && savings > 0) {
+    replace('[data-price-save-line]', `— você economiza <span data-price-savings>${formatBRL(savings)}</span> no Pix`);
+  }
   replace('[data-price-savings]', savings > 0 ? formatBRL(savings) : '');
   if (price?.promoterName) {
     replace('[data-promoter-name]', price.promoterName);
