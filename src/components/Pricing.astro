@@ -104,8 +104,8 @@ const priceChars = perMonthBRL.split('');
     color: var(--paper);
     text-align: center;
     overflow: clip;
-    padding-top: calc(var(--space-section) + 4.5rem);
-    scroll-margin-top: 5rem;
+    padding-top: max(6rem, calc(var(--space-section) + 2.5rem));
+    scroll-margin-top: 6.5rem;
   }
 
   .pricing .sec-num {
@@ -118,6 +118,7 @@ const priceChars = perMonthBRL.split('');
 
   .pricing-inner {
     max-width: 44rem;
+    padding-top: 1.5rem;
   }
 
   .price-card {

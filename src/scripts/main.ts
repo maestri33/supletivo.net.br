@@ -189,8 +189,8 @@ if (priceCard && !REDUCED && window.matchMedia('(pointer: fine)').matches) {
 const sticky = document.querySelector<HTMLElement>('.sticky-cta');
 if (sticky && 'IntersectionObserver' in window) {
   const hero = document.querySelector('#hero');
-  const inlineCtas = document.querySelectorAll('a[data-cta]:not([data-cta="sticky"])');
-  const hideStickySections = document.querySelectorAll('#preco, [data-price], footer, .site-footer');
+  const inlineCtas = document.querySelectorAll('main a[data-cta]:not([data-cta="sticky"])');
+  const hideStickySections = document.querySelectorAll('#preco, footer, .site-footer');
 
   let pastHero = !hero;
   const ctasOnScreen = new Set<Element>();
@@ -219,7 +219,7 @@ if (sticky && 'IntersectionObserver' in window) {
       }
       updateSticky();
     },
-    { threshold: 0.05, rootMargin: '40px 0px 40px 0px' }
+    { threshold: 0.2 }
   );
   inlineCtas.forEach((el) => ctaIo.observe(el));
 
@@ -231,7 +231,7 @@ if (sticky && 'IntersectionObserver' in window) {
       }
       updateSticky();
     },
-    { threshold: 0.05, rootMargin: '40px 0px 40px 0px' }
+    { threshold: 0.1 }
   );
   hideStickySections.forEach((el) => sectionIo.observe(el));
 
