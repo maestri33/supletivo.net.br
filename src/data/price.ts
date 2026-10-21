@@ -21,13 +21,15 @@ export interface Price {
   pixTotal: number;
 }
 
-async function loadPrice(): Promise<Price> {
-    const res = await fetch(ENDPOINT, { signal: AbortSignal.timeout(30000) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return parseCommercialPrice(await res.json());
-}
+export const DEFAULT_PRICE: Price = {
+  full: 1615,
+  installments: 12,
+  perMonth: 159.9,
+  cardTotal: 1918.8,
+  pixTotal: 1615,
+};
 
-export const PRICE: Price = await loadPrice();
+export const PRICE: Price = DEFAULT_PRICE;
 
 /** economia do Pix vs. preço cheio (>= 0) */
 export const savings = Math.max(0, PRICE.full - PRICE.pixTotal);

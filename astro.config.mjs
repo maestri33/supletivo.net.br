@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
@@ -12,6 +13,7 @@ const SITE = process.env.SITE ?? 'https://supletivo.net.br';
 export default defineConfig({
   site: SITE,
   output: 'static',
+  adapter: cloudflare(),
   trailingSlash: 'ignore',
   build: {
     // CSS pequeno → inline no HTML, elimina request render-blocking

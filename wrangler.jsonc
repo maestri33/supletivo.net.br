@@ -1,17 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "landing-supletivo-net-br",
-  "main": "src/worker.ts",
   "compatibility_date": "2026-09-16",
   "compatibility_flags": ["nodejs_compat"],
-  "placement": {
-    "mode": "smart"
-  },
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    "run_worker_first": true
-  },
   "workers_dev": true,
   "routes": [
     {

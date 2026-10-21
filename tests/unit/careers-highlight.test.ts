@@ -4,7 +4,7 @@ import path from 'node:path';
 import { CAREERS_URL } from '../../src/config';
 
 describe('Trabalhe Conosco — Botão Animado no Navbar e Destaque no Footer', () => {
-  const htmlPath = path.resolve(__dirname, '../../dist/index.html');
+  const htmlPath = fs.existsSync(path.resolve(__dirname, '../../dist/client/index.html')) ? path.resolve(__dirname, '../../dist/client/index.html') : path.resolve(__dirname, '../../dist/index.html');
   const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, 'utf-8') : '';
 
   it('o arquivo dist/index.html foi gerado com sucesso', () => {
