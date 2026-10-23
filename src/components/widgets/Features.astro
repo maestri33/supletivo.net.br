@@ -1,0 +1,92 @@
+---
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Button from '~/components/ui/Button.astro';
+import { twMerge } from 'tailwind-merge';
+import type { Widget, Headline as HeadlineType, Item } from '~/types';
+
+export interface Props extends Omit<HeadlineType, 'classes'>, Widget {
+  items?: Array<Item>;
+  columns?: 1 | 2 | 3 | 4;
+}
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  items = [],
+  columns = 3,
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props as Props;
+
+const gridCols: Record<number, string> = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 sm:grid-cols-2',
+  3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+};
+---
+
+<WidgetWrapper
+  id={id}
+  isDark={isDark}
+  bg={bg}
+  classes={{ container: twMerge('max-w-6xl', typeof classes?.container === 'string' ? classes.container : '') }}
+>
+  <Headline
+    title={title}
+    subtitle={subtitle}
+    tagline={tagline}
+    isDark={isDark}
+    classes={typeof classes?.headline === 'object' && classes.headline !== null ? classes.headline as Record<string, string> : {}}
+  />
+
+  {
+    items.length > 0 && (
+      <div class={twMerge('grid gap-6 md:gap-8 list-none', gridCols[columns] || gridCols[3])}>
+        {items.map(({ title: itemTitle, description, callToAction, classes: itemClasses }) => (
+          <div
+            class={twMerge(
+              'p-6 rounded-[var(--radius)] transition-all duration-200 border',
+              isDark
+                ? 'bg-[var(--ink-soft)] border-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.18)]'
+                : 'bg-[var(--paper)] border-[var(--line-light)] hover:border-[var(--green)] hover:shadow-md',
+              itemClasses?.panel
+            )}
+          >
+            {itemTitle && (
+              <h3
+                class={twMerge(
+                  'font-display text-lg md:text-xl mb-2.5 leading-snug',
+                  isDark ? 'text-[var(--paper)]' : 'text-[var(--ink)]',
+                  itemClasses?.title
+                )}
+              >
+                {itemTitle}
+              </h3>
+            )}
+            {description && (
+              <p
+                class={twMerge(
+                  'text-sm md:text-base leading-relaxed',
+                  isDark ? 'text-[var(--muted-on-dark)]' : 'text-[var(--muted-on-light)]',
+                  itemClasses?.description
+                )}
+                set:html={description}
+              />
+            )}
+            {callToAction && (
+              <div class="mt-4">
+                <Button {...callToAction} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  <slot />
+</WidgetWrapper>

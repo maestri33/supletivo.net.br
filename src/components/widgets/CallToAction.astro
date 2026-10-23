@@ -1,0 +1,89 @@
+---
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Button from '~/components/ui/Button.astro';
+import { twMerge } from 'tailwind-merge';
+import type { Widget, Headline as HeadlineType, CallToAction as CallToActionType } from '~/types';
+
+export interface Props extends Omit<HeadlineType, 'classes'>, Widget {
+  callToAction?: CallToActionType | string;
+  callToAction2?: CallToActionType | string;
+}
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  callToAction,
+  callToAction2,
+  id,
+  isDark = true,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props as Props;
+---
+
+<WidgetWrapper
+  id={id}
+  isDark={isDark}
+  bg={bg}
+  classes={{
+    container: twMerge(
+      'max-w-4xl text-center py-10 md:py-16 px-6 md:px-12 rounded-[var(--radius-lg)] shadow-2xl relative overflow-hidden',
+      isDark ? 'bg-gradient-to-br from-[var(--ink-soft)] to-[var(--ink)] border border-[rgba(255,255,255,0.12)]' : 'bg-gradient-to-br from-[var(--paper-soft)] to-[var(--paper)] border border-[var(--line-light)]',
+      typeof classes?.container === 'string' ? classes.container : ''
+    ),
+  }}
+>
+  {tagline && (
+    <p
+      class={twMerge(
+        'text-xs md:text-sm font-bold tracking-[0.16em] uppercase mb-3',
+        isDark ? 'text-[var(--yellow)]' : 'text-[var(--green)]'
+      )}
+      set:html={tagline}
+    />
+  )}
+
+  {title && (
+    <h2
+      class={twMerge(
+        'font-display text-[length:var(--text-h2)] leading-[1.08] text-balance mb-4',
+        isDark ? 'text-[var(--paper)]' : 'text-[var(--ink)]'
+      )}
+      set:html={title}
+    />
+  )}
+
+  {subtitle && (
+    <p
+      class={twMerge(
+        'text-[length:var(--text-lg)] text-pretty max-w-2xl mx-auto mb-8',
+        isDark ? 'text-[var(--muted-on-dark)]' : 'text-[var(--muted-on-light)]'
+      )}
+      set:html={subtitle}
+    />
+  )}
+
+  <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+    {
+      callToAction && (
+        typeof callToAction === 'string' ? (
+          <Fragment set:html={callToAction} />
+        ) : (
+          <Button variant="primary" {...callToAction} />
+        )
+      )
+    }
+    {
+      callToAction2 && (
+        typeof callToAction2 === 'string' ? (
+          <Fragment set:html={callToAction2} />
+        ) : (
+          <Button variant="secondary" {...callToAction2} />
+        )
+      )
+    }
+  </div>
+
+  <slot />
+</WidgetWrapper>

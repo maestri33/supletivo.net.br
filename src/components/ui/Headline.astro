@@ -1,0 +1,56 @@
+---
+import type { Headline as Props } from '~/types';
+import { twMerge } from 'tailwind-merge';
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  isDark = false,
+  classes = {},
+} = Astro.props as Props;
+
+const {
+  container: containerClass = 'max-w-3xl',
+  title: titleClass = '',
+  subtitle: subtitleClass = '',
+  tagline: taglineClass = '',
+} = classes;
+---
+
+{
+  (title || subtitle || tagline) && (
+    <div class={twMerge('mb-8 md:mx-auto md:mb-12 text-center', containerClass)}>
+      {tagline && (
+        <p
+          class={twMerge(
+            'text-xs md:text-sm font-bold tracking-[0.16em] uppercase mb-2',
+            isDark ? 'text-[var(--yellow)]' : 'text-[var(--green)]',
+            taglineClass
+          )}
+          set:html={tagline}
+        />
+      )}
+      {title && (
+        <h2
+          class={twMerge(
+            'font-display text-[length:var(--text-h2)] leading-[1.08] text-balance mb-4',
+            isDark ? 'text-[var(--paper)]' : 'text-[var(--ink)]',
+            titleClass
+          )}
+          set:html={title}
+        />
+      )}
+      {subtitle && (
+        <p
+          class={twMerge(
+            'text-[length:var(--text-lg)] text-pretty max-w-2xl mx-auto',
+            isDark ? 'text-[var(--muted-on-dark)]' : 'text-[var(--muted-on-light)]',
+            subtitleClass
+          )}
+          set:html={subtitle}
+        />
+      )}
+    </div>
+  )
+}

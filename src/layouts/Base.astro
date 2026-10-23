@@ -4,6 +4,7 @@
  */
 import '../styles/tokens.css';
 import '../styles/global.css';
+import { Font } from 'astro:assets';
 import { APP_URL, BRAND } from '../config';
 import pkg from '../../package.json';
 
@@ -76,28 +77,9 @@ const ogImage = new URL(ogImagePath, site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage.href} />
 
-    <!-- Fontes críticas (display do hero + corpo) -->
-    <link
-      rel="preload"
-      href="/fonts/archivo-black-latin-400-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/inter-latin-400-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/inter-latin-700-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <!-- Native Fonts API (Astro 7): self-host, subset, metric fallbacks e preload -->
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-archivo-black" preload />
 
     <!-- Estado "tem JS": animações de reveal só escondem conteúdo sob html.js -->
     <script is:inline>

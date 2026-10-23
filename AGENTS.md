@@ -61,3 +61,17 @@
 - **Storage / Uploads / Documentos**: Cloudflare R2 (Zero Egress).
 - **Filas e Configurações**: Cloudflare Queues e Workers KV.
 - **Proteção e IA Leve**: Turnstile, Workers AI e Vectorize.
+
+---
+
+## 6. Arquitetura de Componentes, Seções e Fontes (Padrão AstroWind)
+- **Gestão de Fontes Nativa (Astro Fonts API)**:
+  - Fontes são gerenciadas nativamente pelo Astro no `astro.config.mjs` usando `fontProviders.fontsource()` para `Inter` (400, 700) e `Archivo Black` (400).
+  - Preloading e fallbacks métricos ajustados são injetados pelo componente `<Font cssVariable="..." preload />` de `astro:assets` em `src/layouts/Base.astro`.
+  - Zero declarações `@font-face` manuais ou chamadas externas ao Google Fonts.
+- **Padrão de Seções e Widgets**:
+  - Toda seção deve utilizar o envelope padrão `src/components/ui/WidgetWrapper.astro` para controle de id de âncora, dark/light mode (`isDark`), slot de background (`bg`) e padding responsivo (`py-[clamp(3.5rem,5vw,6.5rem)]`).
+  - Títulos de seção utilizam `src/components/ui/Headline.astro` com `tagline` (kicker), `title` (`Archivo Black`) e `subtitle` (`Inter`).
+  - Botões utilizam `src/components/ui/Button.astro` ou tokens canônicos do `DESIGN.md`.
+  - Contratos de interfaces e tipagem de seções residem em `src/types.d.ts` (`Widget`, `Headline`, `Item`, `CallToAction`).
+  - Import path alias padronizado: `~/` aponta para `src/` (ex: `import WidgetWrapper from '~/components/ui/WidgetWrapper.astro'`).

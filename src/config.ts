@@ -27,4 +27,4 @@ export const COMPANY_URL = 'https://supletivo.net.br';
 /** Página de captação de promotores / parceiros */
 export const CAREERS_URL = 'https://promotor.supletivo.net.br';
 /** WhatsApp de Atendimento e Suporte ao Aluno */
-export const CONTACT_WHATSAPP = '5511920062177';
+export const CONTACT_WHATSAPP = '5542984321915';

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Archivo Black', system-ui, sans-serif;
+  --font-sans: var(--font-inter, 'Inter', system-ui, -apple-system, sans-serif);
+  --font-display: var(--font-archivo-black, 'Archivo Black', system-ui, sans-serif);
 }
 
 :root {
@@ -40,8 +40,8 @@
   --input-focus-ring: 2px solid var(--blue);
 
   /* Tipografia */
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Archivo Black', system-ui, sans-serif;
+  --font-sans: var(--font-inter, 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
+  --font-display: var(--font-archivo-black, 'Archivo Black', system-ui, sans-serif);
   --font-body: var(--font-sans);
 
   --text-base: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);

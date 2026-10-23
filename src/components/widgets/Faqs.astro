@@ -1,0 +1,73 @@
+---
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import { twMerge } from 'tailwind-merge';
+import type { Widget, Headline as HeadlineType } from '~/types';
+
+export interface FaqItem {
+  title: string;
+  description: string;
+}
+
+export interface Props extends Omit<HeadlineType, 'classes'>, Widget {
+  items?: Array<FaqItem>;
+  columns?: 1 | 2;
+}
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  items = [],
+  columns = 1,
+  id = 'faq',
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props as Props;
+---
+
+<WidgetWrapper
+  id={id}
+  isDark={isDark}
+  bg={bg}
+  classes={{ container: twMerge('max-w-4xl', typeof classes?.container === 'string' ? classes.container : '') }}
+>
+  <Headline
+    title={title}
+    subtitle={subtitle}
+    tagline={tagline}
+    isDark={isDark}
+    classes={typeof classes?.headline === 'object' && classes.headline !== null ? classes.headline as Record<string, string> : {}}
+  />
+
+  {
+    items.length > 0 && (
+      <div class={twMerge('grid gap-4', columns === 2 ? 'md:grid-cols-2 md:gap-6' : 'grid-cols-1')}>
+        {items.map(({ title: q, description: a }) => (
+          <details
+            class={twMerge(
+              'group rounded-[14px] border transition-all duration-200 overflow-hidden',
+              isDark
+                ? 'bg-[var(--ink-soft)] border-[rgba(255,255,255,0.08)] open:border-[rgba(255,255,255,0.2)]'
+                : 'bg-[var(--paper)] border-[var(--line-light)] open:border-[var(--green)]'
+            )}
+          >
+            <summary class="flex justify-between items-center gap-4 p-5 cursor-pointer select-none font-bold text-base md:text-lg list-none [&::-webkit-details-marker]:hidden">
+              <span class={isDark ? 'text-[var(--paper)]' : 'text-[var(--ink)]'}>{q}</span>
+              <span class="flex-shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--green)]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </span>
+            </summary>
+            <div class={twMerge('px-5 pb-5 pt-1 text-sm md:text-base leading-relaxed', isDark ? 'text-[var(--muted-on-dark)]' : 'text-[var(--muted-on-light)]')}>
+              <p set:html={a} />
+            </div>
+          </details>
+        ))}
+      </div>
+    )
+  }
+  <slot />
+</WidgetWrapper>

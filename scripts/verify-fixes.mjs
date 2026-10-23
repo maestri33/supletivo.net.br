@@ -3,7 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const supletivoDist = path.resolve(__dirname, '../dist');
+const distBase = path.resolve(__dirname, '../dist');
+const supletivoDist = fs.existsSync(path.join(distBase, 'client')) ? path.join(distBase, 'client') : distBase;
 const promotorDist = path.resolve(__dirname, '../../promotor.supletivo.net.br/dist');
 
 function checkFile(baseDir, relPath, tests) {
@@ -67,7 +68,7 @@ const indexOk = checkFile(supletivoDist, 'index.html', [
   { forbidden: 'data-platform-version' },
   { required: 'você economiza' },
   { required: '303,80' },
-  { required: 'WhatsApp (11) 92006-2177' },
+  { required: 'WhatsApp (42) 9 8432-1915' },
   { required: 'Colégio Brasil Interativo' },
   { required: 'Parecer CEE nº 412/2019' },
   { required: '<meta name="app-version"' },
@@ -86,7 +87,7 @@ const supletivoOnlineOk = checkFile(supletivoDist, 'supletivo-online/index.html'
   { regexRequired: /12x R\$[\s\u00a0]*159,90/ },
   { required: '1.918,80' },
   { required: '1.615' },
-  { required: 'WhatsApp (11) 92006-2177' },
+  { required: 'WhatsApp (42) 9 8432-1915' },
 ]);
 
 const terminarEnsinoMedioOk = checkFile(supletivoDist, 'terminar-ensino-medio/index.html', [
@@ -98,7 +99,7 @@ const terminarEnsinoMedioOk = checkFile(supletivoDist, 'terminar-ensino-medio/in
   { required: '1.615' },
   { required: '/ensino-fundamental/' },
   { required: 'Trabalhe conosco' },
-  { required: 'WhatsApp (11) 92006-2177' },
+  { required: 'WhatsApp (42) 9 8432-1915' },
 ]);
 
 const ensinoFundamentalOk = checkFile(supletivoDist, 'ensino-fundamental/index.html', [
@@ -107,7 +108,7 @@ const ensinoFundamentalOk = checkFile(supletivoDist, 'ensino-fundamental/index.h
   { regexRequired: /12x de R\$[\s\u00a0]*159,90/ },
   { regexRequired: /12x R\$[\s\u00a0]*159,90/ },
   { required: '1.615' },
-  { required: 'WhatsApp (11) 92006-2177' },
+  { required: 'WhatsApp (42) 9 8432-1915' },
 ]);
 
 console.log('--- Verifying promotor.supletivo.net.br/dist ---');
