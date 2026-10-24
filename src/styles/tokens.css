@@ -1,12 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter, 'Inter', system-ui, -apple-system, sans-serif);
-  --font-display: var(--font-archivo-black, 'Archivo Black', system-ui, sans-serif);
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Archivo Black', system-ui, sans-serif;
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-yellow: var(--yellow);
+  --color-yellow-soft: var(--yellow-soft);
+  --color-blue: var(--blue);
+  --color-blue-deep: var(--blue-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-line-light: var(--line-light);
+  --color-muted-on-dark: var(--muted-on-dark);
+  --color-muted-on-light: var(--muted-on-light);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
 }
 
+/**
+ * Design Tokens Canônicos — Supletivo Brasil (Pátria Amada Refinada)
+ * Sincronizado com supletivo.net.br/DESIGN.md e c:\rep\AGENTS.md.
+ */
 :root {
-  /* Paleta */
+  /* ── Paleta Primária & Acentos (Pátria Amada Refinada) ── */
   --green: #00734d;
   --green-deep: #005238;
   --yellow: #ffc400;
@@ -19,11 +44,11 @@
   --paper-soft: #f5f7f3;
   --line-light: #e3e7ee;
 
-  /* Texto secundário (contraste AA garantido) */
-  --muted-on-dark: #b9c3db;  /* sobre --ink / --blue */
-  --muted-on-light: #49536a; /* sobre --paper / --paper-soft */
+  /* ── Contraste Secundário Auditado (WCAG AAA / AA) ── */
+  --muted-on-dark: #b9c3db;  /* sobre --ink / --blue (7.8:1+) */
+  --muted-on-light: #49536a; /* sobre --paper / --paper-soft (5.1:1) */
 
-  /* Feedback Semântico (Auditado WCAG AA - mínimo 4.5:1) */
+  /* ── Feedback Semântico (Auditado WCAG AA > 4.5:1) ── */
   --danger: #b91c1c;
   --danger-bg: #fee2e2;
   --success: #15803d;
@@ -33,40 +58,50 @@
   --info: #0369a1;
   --info-bg: #e0f2fe;
 
-  /* Formulários & Ergonomia Touch Mobile */
+  /* ── Aliases Canônicos de Compatibilidade e Acento Dourado ── */
+  --black: #0b1220;
+  --char: #121d33;
+  --char-2: #1e293b;
+  --gold: var(--yellow);
+  --gold-soft: var(--yellow-soft);
+  --gold-deep: #e6b000;
+  --gold-ink: var(--green);
+  --gold-grad: linear-gradient(135deg, #ffe066 0%, #ffc400 50%, #e6b000 100%);
+  --teal-live: #00734d;
+
+  /* ── Ergonomia Touch Mobile & Formulários ── */
   --input-height: 48px;
   --input-radius: 10px;
   --input-border: 1px solid var(--line-light);
   --input-focus-ring: 2px solid var(--blue);
 
-  /* Tipografia */
-  --font-sans: var(--font-inter, 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
-  --font-display: var(--font-archivo-black, 'Archivo Black', system-ui, sans-serif);
+  /* ── Tipografia Canônica ── */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Archivo Black', system-ui, sans-serif;
   --font-body: var(--font-sans);
 
   --text-base: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);
   --text-lg: clamp(1.125rem, 1.02rem + 0.55vw, 1.375rem);
   --text-h2: clamp(2rem, 1.3rem + 3vw, 3.6rem);
-  /* seções de instrução/dúvida: h2 menor — o olho "engorda" rumo à decisão */
   --text-h2-sm: clamp(1.55rem, 1.2rem + 1.6vw, 2.4rem);
   --text-h3: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
   --text-hero: clamp(2.85rem, 1.1rem + 8vw, 6.8rem);
   --text-price: clamp(3.2rem, 2rem + 5.6vw, 6rem);
 
-  /* Ritmo */
+  /* ── Ritmo Editorial & Containers ── */
   --space-section: clamp(4.5rem, 3rem + 6vw, 9rem);
   --container: 68rem;
   --container-narrow: 46rem;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
-  /* Movimento & Física Espacial */
+  /* ── Movimento & Curvas Espaciais (Antigravity Zero-G) ── */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-stamp: cubic-bezier(0.2, 1.4, 0.4, 1);
   --ease-antigravity: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --dur: 0.65s;
 
-  /* Superfícies & Glassmorphism */
+  /* ── Superfícies & Glassmorphism ── */
   --radius: 18px;
   --radius-lg: 28px;
   --radius-pill: 999px;
@@ -78,12 +113,50 @@
   --glass-blur: blur(16px);
   --glass-blur-sm: blur(8px);
 
-  /* Sombras de Gravidade Zero (Zero-G) */
+  /* ── Sombras Antigravity Zero-G ── */
   --shadow-zero-g: 0 24px 48px -12px rgba(0, 0, 0, 0.4), 0 12px 24px -8px rgba(0, 0, 0, 0.2);
+  --shadow-zero-g-gold: 0 20px 45px -10px rgba(255, 196, 0, 0.25), 0 0 20px -2px rgba(255, 215, 94, 0.15);
   --shadow-glass: 0 16px 36px -10px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --shadow-glass-gold: 0 18px 40px -10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 215, 94, 0.35), 0 0 24px -6px rgba(255, 196, 0, 0.2);
   --shadow-floating: 0 30px 60px -15px rgba(0, 0, 0, 0.45), 0 0 1px 1px rgba(255, 255, 255, 0.1);
 
-  /* Perspectiva e Camadas Espaciais */
+  /* ── Efeitos de Luz & Acento Dourado ── */
+  --gold-glow: rgba(255, 196, 0, 0.4);
+  --gold-glow-sm: rgba(255, 196, 0, 0.18);
+  --gold-border-glow: 0 0 16px -2px rgba(255, 196, 0, 0.35);
+
+  /* ── Perspectiva 3D ── */
   --perspective: 1200px;
   --perspective-near: 800px;
+
+  /* ── Aliases de Compatibilidade Retroativa ── */
+  --color-green: var(--green);
+  --color-green-dark: var(--green-deep);
+  --color-green-hover: var(--green-deep);
+  --color-green-light: var(--green);
+  --color-yellow: var(--yellow);
+  --color-yellow-soft: var(--yellow-soft);
+  --color-blue: var(--blue);
+  --color-blue-deep: var(--blue-deep);
+  --color-blue-bright: var(--blue);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-muted: var(--muted-on-light);
+  --color-muted-on-dark: var(--muted-on-dark);
+  --color-muted-on-light: var(--muted-on-light);
+  --color-bg: var(--paper-soft);
+  --color-surface: var(--paper);
+  --color-border: var(--line-light);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-green-bg: var(--success-bg);
+  --color-blue-bg: var(--info-bg);
+}
+
+@media (max-width: 720px) {
+  :root {
+    --space-section: clamp(3rem, 2rem + 4vw, 4.5rem);
+  }
 }
