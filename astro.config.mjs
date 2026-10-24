@@ -3,7 +3,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, fontProviders } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
-import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
 import seoFiles from './integrations/seo-files.mjs';
@@ -43,7 +42,7 @@ export default defineConfig({
       fallbacks: ['sans-serif'],
     },
   ],
-  integrations: [react(), svelte(), seoFiles()],
+  integrations: [svelte(), seoFiles()],
   vite: {
     plugins: [tailwindcss()],
     resolve: {
