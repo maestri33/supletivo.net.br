@@ -4,6 +4,8 @@
  * Mesmos dados alimentam o schema FAQPage (src/data/faq.ts).
  */
 import { faq } from '../data/faq';
+import Accordion from './ui/Accordion.astro';
+import AccordionItem from './ui/AccordionItem.astro';
 ---
 
 <section id="faq" class="faq section" aria-labelledby="faq-title" data-section="faq">
@@ -12,34 +14,17 @@ import { faq } from '../data/faq';
   <div class="container narrow">
     <h2 id="faq-title" data-reveal>Perguntas frequentes</h2>
 
-    <div class="faq-list">
+    <Accordion>
       {
         faq.map((item, i) => (
-          <details class="faq-item" data-faq data-reveal style={`--d: ${Math.min(i, 4)}`}>
-            <summary>
-              <h3>{item.q}</h3>
-              <svg
-                class="chev"
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M6 9l6 6 6-6"
-                  stroke="currentColor"
-                  stroke-width="2.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </summary>
-            <p>{item.a}</p>
-          </details>
+          <AccordionItem
+            question={item.q}
+            answer={item.a}
+            index={i}
+          />
         ))
       }
-    </div>
+    </Accordion>
   </div>
 </section>
 

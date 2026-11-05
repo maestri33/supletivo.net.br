@@ -1,0 +1,71 @@
+---
+interface Props {
+  question: string;
+  answer?: string;
+  index?: number;
+  open?: boolean;
+}
+
+const { question, answer, index = 0, open = false } = Astro.props;
+---
+
+<details
+  class="faq-item"
+  data-faq
+  data-reveal
+  open={open}
+  style={`--d: ${Math.min(index, 4)}`}
+>
+  <summary class="flex items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl cursor-pointer select-none transition-colors duration-150 hover:bg-[var(--paper-soft)] list-none">
+    <h3 class="text-base sm:text-lg font-bold text-[var(--ink)] font-sans m-0">
+      {question}
+    </h3>
+    <svg
+      class="chev size-5 text-[var(--blue)] shrink-0 transition-transform duration-200"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 9l6 6 6-6"
+        stroke="currentColor"
+        stroke-width="2.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </summary>
+  <div class="px-5 sm:px-6 pb-6 pt-1 text-sm sm:text-base text-[var(--muted-on-light)] leading-relaxed">
+    {answer ? <p class="m-0">{answer}</p> : <slot />}
+  </div>
+</details>
+
+<style>
+  details {
+    border: 1px solid var(--line-light);
+    border-radius: var(--radius);
+    background: var(--paper);
+    overflow: clip;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  details[open] {
+    border-color: var(--blue);
+    box-shadow: var(--shadow-zero-g);
+  }
+
+  details[open] .chev {
+    transform: rotate(180deg);
+    color: var(--yellow);
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    details {
+      interpolate-size: allow-keywords;
+    }
+  }
+</style>

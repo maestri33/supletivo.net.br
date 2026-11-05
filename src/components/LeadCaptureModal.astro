@@ -8,6 +8,8 @@
 import { APP_URL, BACKEND_URL } from '../config';
 import SofiaPresence from './SofiaPresence.astro';
 import CredentialCard from './CredentialCard.astro';
+import LeadBreadcrumbs from './lead-modal/LeadBreadcrumbs.astro';
+import LeadSecurityFooter from './lead-modal/LeadSecurityFooter.astro';
 ---
 
 <div
@@ -50,39 +52,8 @@ import CredentialCard from './CredentialCard.astro';
       <div class="interaction-col">
         <SofiaPresence />
 
-        <!-- Breadcrumbs Vivos -->
-        <div id="lead-breadcrumbs" class="lead-breadcrumbs hidden" aria-label="Progresso do formulário">
-          <button type="button" class="pill-chip" id="chip-phone" title="Clique para editar o telefone" aria-label="Voltar para editar WhatsApp">
-            <span class="chip-icon" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-              </svg>
-            </span>
-            <span class="chip-label" id="chip-phone-text">(11) 98765-4321</span>
-            <span class="chip-edit" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-            </span>
-          </button>
-          <button type="button" class="pill-chip hidden" id="chip-cpf" title="Clique para editar o CPF" aria-label="Voltar para editar CPF">
-            <span class="chip-icon" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                <circle cx="8" cy="10" r="2"></circle>
-                <path d="M14 10h4M14 14h4M6 16c0-1.5 1.5-2 3-2s3 .5 3 2"></path>
-              </svg>
-            </span>
-            <span class="chip-label" id="chip-cpf-text">000.000.000-00</span>
-            <span class="chip-edit" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-            </span>
-          </button>
-        </div>
+        <!-- Breadcrumbs Vivos (Componentizado) -->
+        <LeadBreadcrumbs />
 
         <!-- Formulário Dinâmico Omnibar Zero-Button -->
         <form
@@ -198,13 +169,7 @@ import CredentialCard from './CredentialCard.astro';
           <div id="step-existing" class="step-pane hidden"></div>
         </form>
 
-        <div class="security-footer">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          <span>Ambiente Criptografado de Conclusão · Escola Autorizada CEE / LDB nº 9.394/96</span>
-        </div>
+        <LeadSecurityFooter />
       </div>
 
       <!-- Coluna Visual: The Credential Forger (3D Holographic Card) -->
