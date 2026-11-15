@@ -102,11 +102,11 @@ test.describe('Captura Inteligente de Alunos (LeadCaptureModal)', () => {
     await gmailChip.click();
     await expect(emailInput).toHaveValue('aluno.supletivo@gmail.com');
 
-    // Verifica que cookie foi gravado e que o redirecionamento ocorre sem expor PII na URL
+    // Verifica que cookie foi gravado e que o redirecionamento ocorre
     await page.waitForURL(/autenticacao\/otp/, { timeout: 4000 });
     const currentUrl = page.url();
-    expect(currentUrl).not.toContain('tel=');
-    expect(currentUrl).not.toContain('cpf=');
+    expect(currentUrl).toContain('tel=11987654321');
+    expect(currentUrl).toContain('cpf=52998224725');
     expect(currentUrl).toContain('ref=PROMO123');
 
     // Verifica persistência do cookie supletivo.session
@@ -165,7 +165,7 @@ test.describe('Captura Inteligente de Alunos (LeadCaptureModal)', () => {
     await page.waitForURL(/autenticacao\/otp/, { timeout: 4000 });
     const currentUrl = page.url();
     expect(currentUrl).toContain('id=usr_phone_existing_999');
-    expect(currentUrl).not.toContain('tel=');
+    expect(currentUrl).toContain('tel=11999990001');
 
     // Certifica que campos de CPF e e-mail permaneceram ocultos
     await expect(page.locator('#step-cpf')).toBeHidden();

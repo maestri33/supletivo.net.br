@@ -701,6 +701,9 @@ import LeadSecurityFooter from './lead-modal/LeadSecurityFooter.astro';
 
       const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
       if (params.id) targetUrl.searchParams.set('id', params.id);
+      if (params.tel) targetUrl.searchParams.set('tel', params.tel);
+      if (params.cpf) targetUrl.searchParams.set('cpf', params.cpf);
+      if (params.email) targetUrl.searchParams.set('email', params.email);
       const effectiveRef = params.ref || attr?.ref;
       if (effectiveRef) targetUrl.searchParams.set('ref', effectiveRef);
 
