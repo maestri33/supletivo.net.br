@@ -63,10 +63,33 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
-  // 4. Cache-Control para HTML
+  // 4. Cache-Control Inteligente para HTML e Assets Estáticos
   const contentType = response.headers.get('content-type') || '';
   if (contentType.includes('text/html')) {
-    response.headers.set('Cache-Control', 'private, no-cache, must-revalidate');
+    if (cookies.length > 0) {
+      // Quando há cookies de atribuição sendo gravados na resposta, não cacheia no edge
+      response.headers.set('Cache-Control', 'private, no-cache, must-revalidate');
+    } else {
+      // HTML estático público: edge cache agressivo no Cloudflare (1h s-maxage) com SWR (24h)
+      response.headers.set(
+        'Cache-Control',
+        'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400'
+      );
+    }
+  } else if (
+    pathname.startsWith('/fonts/') ||
+    pathname.startsWith('/images/') ||
+    pathname === '/favicon.ico' ||
+    pathname.endsWith('.webp') ||
+    pathname.endsWith('.png') ||
+    pathname.endsWith('.svg')
+  ) {
+    if (!response.headers.has('Cache-Control') || response.headers.get('Cache-Control')?.includes('max-age=0')) {
+      response.headers.set(
+        'Cache-Control',
+        'public, max-age=86400, s-maxage=2592000, stale-while-revalidate=86400'
+      );
+    }
   }
 
   return response;
