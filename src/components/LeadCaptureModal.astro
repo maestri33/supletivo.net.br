@@ -691,11 +691,16 @@ import LeadSecurityFooter from './lead-modal/LeadSecurityFooter.astro';
 
     function redirectToOtp(params: { id?: string; tel?: string; cpf?: string; email?: string; ref?: string }, delayMs = 0) {
       const attr = initAttribution();
+      // Salva dados sensíveis em sessão segura de 1º nível, prevenindo vazamento de PII na URL (LGPD)
+      saveSession({
+        phone: params.tel,
+        cpf: params.cpf,
+        email: params.email,
+        externalId: params.id,
+      });
+
       const targetUrl = new URL(`${appUrl}/autenticacao/otp`);
       if (params.id) targetUrl.searchParams.set('id', params.id);
-      if (params.tel) targetUrl.searchParams.set('tel', params.tel);
-      if (params.cpf) targetUrl.searchParams.set('cpf', params.cpf);
-      if (params.email) targetUrl.searchParams.set('email', params.email);
       const effectiveRef = params.ref || attr?.ref;
       if (effectiveRef) targetUrl.searchParams.set('ref', effectiveRef);
 
