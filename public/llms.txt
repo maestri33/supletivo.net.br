@@ -1,29 +1,31 @@
-# Supletivo.net.br — Educação de Jovens e Adultos (EJA)
+# Supletivo Brasil
 
-> Plataforma brasileira de aceleração e conclusão do Ensino Fundamental e Ensino Médio pela modalidade EJA EAD (Educação de Jovens e Adultos a distância), com certificação oficial amparada pela Lei de Diretrizes e Bases da Educação Nacional (LDB nº 9.394/1996) e Conselhos Estaduais de Educação (CEE).
+> Plataforma brasileira de aceleração e conclusão do Ensino Fundamental e Ensino Médio pela modalidade EJA EAD (Educação de Jovens e Adultos a distância), com certificação oficial amparada pela LDB (Lei nº 9.394/1996) e Conselhos Estaduais de Educação (CEE).
 
-## Informações Institucionais e Legais
-- **Nome Oficial**: Supletivo Brasil ([supletivo.net.br](https://supletivo.net.br/))
-- **Modalidade**: EJA EAD — Educação de Jovens e Adultos a distância (estudos 100% online, prova presencial conforme determinação legal dos órgãos educacionais).
-- **Amparo Legal**: Lei Federal nº 9.394/1996 (LDB - Artigos 37 e 38), Resoluções do Conselho Nacional de Educação (CNE) e normas dos Conselhos Estaduais de Educação (CEE).
-- **Validade do Certificado**: Válido em todo o território nacional para faculdades, cursos técnicos, concursos públicos e progressão de carreira. Registro nos sistemas oficiais e Diário Oficial.
-- **Idade Mínima Legal**:
-  - Ensino Fundamental: 15 anos completos.
-  - Ensino Médio: 18 anos completos.
+Cursos de conclusão escolar com estudos 100% online pelo celular ou computador e prova final presencial em polo parceiro autorizado. Certificado oficial válido em todo o território nacional para faculdades, cursos técnicos, concursos públicos e progressão na carreira profissional.
 
-## Cursos Disponíveis
-- **Ensino Fundamental (EJA)**: 6º ao 9º ano em ritmo acelerado online.
-- **Ensino Médio (EJA)**: 1º ao 3º ano em ritmo acelerado online.
-- **Combo Fundamental + Médio (EJA)**: Conclusão integrada para quem não concluiu nenhuma das etapas.
+Requisitos de idade mínima legal:
+- Ensino Fundamental: 15 anos completos
+- Ensino Médio: 18 anos completos
 
-## Condições Comerciais e Valores
-- **Preço à Vista no Pix**: R$ 997,00 (desconto imediato).
-- **Preço Parcelado no Cartão**: Até 12x de R$ 99,70.
-- **Transparência**: Sem mensalidades ocultas, material didático digital incluso e suporte pedagógico via WhatsApp.
+Condições comerciais e valores canônicos:
+- Matrícula e curso completo: R$ 1.615,00 à vista no Pix ou em até 12x de R$ 159,90 no cartão de crédito
+- Sem cobrança de mensalidades adicionais, com material didático digital e suporte pedagógico via WhatsApp inclusos
 
-## Links Canônicos
-- [Site Oficial](https://supletivo.net.br/): Início e matrícula na plataforma
-- [Programa de Promotores](https://promotor.supletivo.net.br/): Programa de afiliação e indicações
-- [Termos de Uso](https://supletivo.net.br/termos/): Termos e condições gerais de contratação
-- [Política de Privacidade](https://supletivo.net.br/privacidade/): Diretrizes de tratamento e proteção de dados (LGPD)
-- [Sitemap XML](https://supletivo.net.br/sitemap.xml): Mapa oficial de rotas indexáveis
+## Cursos e Páginas Principais
+
+- [Supletivo Online](https://supletivo.net.br/): Página inicial com matrícula online, valores e visão geral da plataforma
+- [Ensino Fundamental EJA](https://supletivo.net.br/ensino-fundamental/): Conclusão acelerada do 6º ao 9º ano para maiores de 15 anos
+- [EJA a Distância](https://supletivo.net.br/eja-a-distancia/): Metodologia de estudos online e funcionamento da avaliação presencial
+- [Terminar o Ensino Médio](https://supletivo.net.br/terminar-ensino-medio/): Certificação oficial para faculdades e concursos para maiores de 18 anos
+
+## Institucional e Legal
+
+- [Termos de Uso](https://supletivo.net.br/termos/): Termos contratuais e condições gerais de contratação dos serviços educacionais
+- [Política de Privacidade](https://supletivo.net.br/privacidade/): Tratamento de dados pessoais em conformidade com a LGPD
+- [Sitemap XML](https://supletivo.net.br/sitemap.xml): Mapa oficial de rotas indexáveis da plataforma
+- [Versão Completa para Agentes](https://supletivo.net.br/llms-full.txt): Documentação consolidada em markdown com currículo, disciplinas e dúvidas frequentes
+
+## Optional
+
+- [Programa de Promotores](https://promotor.supletivo.net.br/): Portal de afiliação e captação de promotores educacionais

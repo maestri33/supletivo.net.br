@@ -12,7 +12,38 @@ export interface Env {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    // 0. Redirecionamento Canônico de Domínio (www -> ápice não-www)
+    if (url.hostname === 'www.supletivo.net.br') {
+      url.hostname = 'supletivo.net.br';
+      return new Response(null, {
+        status: 301,
+        statusText: 'Moved Permanently',
+        headers: {
+          Location: url.toString(),
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+        },
+      });
+    }
+
     const pathname = url.pathname;
+
+    // 0.1 Redirecionamento Canônico Permanente 301 para rotas consolidadas
+    if (pathname === '/supletivo-ensino-fundamental' || pathname === '/supletivo-ensino-fundamental/') {
+      const redirectUrl = new URL('/ensino-fundamental/', url.origin);
+      redirectUrl.search = url.search;
+      return new Response(null, {
+        status: 301,
+        statusText: 'Moved Permanently',
+        headers: {
+          Location: redirectUrl.toString(),
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+        },
+      });
+    }
+
     const ref = referralFromRequest(request);
     if (pathname === '/api/pricing') {
       if (request.method !== 'GET') return new Response(null, { status: 405, headers: { Allow: 'GET' } });
@@ -24,7 +55,7 @@ export default {
     }
     const response = await env.ASSETS.fetch(request);
 
-    // 0. Normalização Canônica de Barra Final (converte 307 temporário do Cloudflare Assets em 301 permanente)
+    // 0.2 Normalização Canônica de Barra Final (converte 307 temporário do Cloudflare Assets em 301 permanente)
     if (response.status === 307 || response.status === 308) {
       const location = response.headers.get('Location');
       if (location) {
@@ -42,7 +73,7 @@ export default {
       }
     }
 
-    // 0.1 Suporte a Links Amigáveis de Afiliados via Path (/ref/SLUG ou UUID direto)
+    // 0.3 Suporte a Links Amigáveis de Afiliados via Path (/ref/SLUG ou UUID direto)
     if (response.status === 404) {
       const cleanPath = pathname.replace(/^\/+|\/+$/g, '');
       if (cleanPath.length > 0 && !cleanPath.includes('.')) {

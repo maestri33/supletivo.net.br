@@ -165,4 +165,28 @@ describe('Supletivo Main Landing Edge Worker Attribution & Safari ITP Mitigation
     const res3 = await worker.fetch(req3, { ASSETS: { fetch: mockAssetFetch } });
     expect(res3.status).toBe(404);
   });
+
+  it('redirects www.supletivo.net.br to apex supletivo.net.br with 301 Moved Permanently', async () => {
+    const mockAssetFetch = vi.fn();
+    const req = new Request('https://www.supletivo.net.br/eja-a-distancia/?ref=teste');
+    const res = await worker.fetch(req, { ASSETS: { fetch: mockAssetFetch } });
+
+    expect(res.status).toBe(301);
+    expect(res.headers.get('Location')).toBe('https://supletivo.net.br/eja-a-distancia/?ref=teste');
+    expect(res.headers.get('Cache-Control')).toContain('max-age=31536000');
+    expect(res.headers.get('Strict-Transport-Security')).toBeTruthy();
+    expect(mockAssetFetch).not.toHaveBeenCalled();
+  });
+
+  it('redirects /supletivo-ensino-fundamental/ to /ensino-fundamental/ with 301 Moved Permanently', async () => {
+    const mockAssetFetch = vi.fn();
+    const req = new Request('https://supletivo.net.br/supletivo-ensino-fundamental/?utm_source=google');
+    const res = await worker.fetch(req, { ASSETS: { fetch: mockAssetFetch } });
+
+    expect(res.status).toBe(301);
+    expect(res.headers.get('Location')).toBe('https://supletivo.net.br/ensino-fundamental/?utm_source=google');
+    expect(res.headers.get('Cache-Control')).toContain('max-age=31536000');
+    expect(res.headers.get('Strict-Transport-Security')).toBeTruthy();
+    expect(mockAssetFetch).not.toHaveBeenCalled();
+  });
 });

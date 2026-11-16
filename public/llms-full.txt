@@ -1,0 +1,112 @@
+# Supletivo Brasil — Documentação Completa da Plataforma
+
+> Plataforma brasileira de aceleração e conclusão do Ensino Fundamental e Ensino Médio pela modalidade EJA EAD (Educação de Jovens e Adultos a distância), com certificação oficial amparada pela Lei Federal nº 9.394/1996 (LDB) e Conselhos Estaduais de Educação (CEE).
+
+---
+
+## 1. Visão Geral e Modelo Pedagógico
+
+O **Supletivo Brasil** (supletivo.net.br) opera como plataforma digital de matrícula, capacitação e aceleração educacional voltada a jovens e adultos que não concluíram os estudos na idade regular.
+
+- **Modalidade**: Educação a Distância (EAD) assíncrona para aulas e materiais didáticos, complementada por avaliação presencial obrigatória para a certificação oficial.
+- **Dispositivos**: Plataforma responsiva acessível via celular, tablet ou computador, sem necessidade de aplicativos pesados.
+- **Flexibilidade**: O aluno estuda no próprio ritmo, 24 horas por dia, 7 dias por semana, com simulados preparatórios ilimitados.
+- **Avaliação Final**: Realizada presencialmente em polo parceiro credenciado pelo órgão educacional competente, garantindo rigor e conformidade com as exigências dos Conselhos Estaduais de Educação.
+
+---
+
+## 2. Amparo Legal e Validade Jurídica
+
+A emissão e expedição do certificado seguem rigorosamente a legislação educacional brasileira:
+
+1. **Lei de Diretrizes e Bases da Educação Nacional (LDB - Lei Federal nº 9.394/1996)**:
+   - *Artigo 37*: Define a Educação de Jovens e Adultos (EJA) como direito para quem não teve acesso ou continuidade de estudos nos Ensinos Fundamental e Médio na idade própria.
+   - *Artigo 38*: Autoriza a realização de cursos e exames supletivos, estabelecendo as idades mínimas legais.
+2. **Conselhos Estaduais de Educação (CEE)**:
+   - A certificação oficial é emitida exclusivamente por instituição de ensino parceira devidamente credenciada e autorizada pelo CEE competente.
+3. **Publicação Oficial**:
+   - Os certificados emitidos contam com visto e publicação nos sistemas educacionais oficiais (SISTEC/GDAE conforme a jurisdição estadual) e Diário Oficial.
+4. **Abrangência e Validade**:
+   - O certificado possui validade jurídica nacional plena, sendo aceito para:
+     - Matrícula em cursos superiores (graduação, faculdades e universidades públicas ou privadas);
+     - Inscrição e posse em concursos públicos municipais, estaduais e federais;
+     - Cursos técnicos e profissionalizantes;
+     - Exigência de escolaridade para contratação e promoção em empresas (CLT);
+     - Emissão e renovação de CNH profissional.
+
+---
+
+## 3. Requisitos e Cursos Disponíveis
+
+### 3.1. Ensino Fundamental (EJA Anos Finais - 6º ao 9º ano)
+- **Idade mínima obrigatória**: 15 anos completos no momento da matrícula e avaliação.
+- **Áreas do Conhecimento abordadas**:
+  - Língua Portuguesa, Redação e Literatura;
+  - Matemática e Raciocínio Lógico;
+  - Ciências da Natureza;
+  - História e Geografia.
+
+### 3.2. Ensino Médio (EJA - 1º ao 3º ano)
+- **Idade mínima obrigatória**: 18 anos completos no momento da matrícula e avaliação.
+- **Áreas do Conhecimento abordadas**:
+  - Linguagens, Códigos e suas Tecnologias (Língua Portuguesa, Literatura, Língua Estrangeira, Artes);
+  - Matemática e suas Tecnologias;
+  - Ciências da Natureza e suas Tecnologias (Física, Química, Biologia);
+  - Ciências Humanas e Sociais Aplicadas (História, Geografia, Filosofia, Sociologia).
+
+### 3.3. Conclusão Integrada (Fundamental + Médio)
+- Para quem precisa concluir ambas as etapas: o estudante conclui a etapa fundamental e segue em fluxo contínuo para o Ensino Médio, assegurando o cumprimento dos requisitos legais de cada etapa.
+
+---
+
+## 4. Condições Comerciais e Formas de Pagamento
+
+- **Preço Padrão à Vista**: R$ 1.615,00 via Pix.
+- **Preço Parcelado**: Em até 12 parcelas de R$ 159,90 no cartão de crédito (total: R$ 1.918,80).
+- **Inclusões**:
+  - Acesso irrestrito ao portal de estudos e material didático digital;
+  - Banco de simulados para fixação e treino pré-exame;
+  - Suporte ao aluno e tutoria pedagógica via WhatsApp;
+  - Agendamento da prova presencial no polo parceiro;
+  - Trâmites de expedição e registro do certificado de conclusão.
+- **Sem Mensalidades**: Valor único e integral, sem cobrança recorrente de mensalidades ou taxas de rematrícula.
+
+---
+
+## 5. Perguntas Frequentes (FAQ Consolidado)
+
+### O certificado é reconhecido? Vale em todo o Brasil?
+Sim. A certificação é emitida por escola parceira autorizada pelo Conselho Estadual de Educação (CEE), amparada pela Lei Federal nº 9.394/96 (LDB), com publicação oficial no Diário Oficial e validade jurídica em todo o território nacional.
+
+### Quais são as formas de pagamento?
+Você pode pagar em até 12x de R$ 159,90 no cartão de crédito ou R$ 1.615,00 à vista no Pix. A escolha é feita no momento da matrícula pelo celular.
+
+### O certificado serve para faculdade, concurso e CNH?
+Sim. O certificado de conclusão serve para se matricular em faculdades, prestar concursos públicos, tirar a CNH e comprovar escolaridade no trabalho.
+
+### Qual é a idade mínima para fazer o supletivo?
+Pela Lei nº 9.394/96 (LDB), a idade mínima é de 15 anos completos para concluir o Ensino Fundamental e de 18 anos completos para o Ensino Médio.
+
+### Em quanto tempo consigo terminar?
+Depende do seu ritmo de dedicação. Como os estudos são online, você pode estudar nos horários livres (noites, fins de semana) e agendar a prova final presencial assim que atingir o domínio dos conteúdos nos simulados.
+
+### Como são as provas presenciais?
+A prova final é presencial: você escolhe o polo parceiro mais conveniente e a data disponível. Todo o estudo preparatório até a prova é realizado online pelo celular.
+
+### E se eu tiver dificuldade ou não passar de primeira?
+O estudante tem direito a suporte pedagógico, refazer os simulados ilimitados e realizar nova avaliação sem custos adicionais de mensalidade.
+
+### Preciso de computador para estudar?
+Não. Toda a jornada de matrícula, videoaulas, resumos em PDF e simulados é otimizada para smartphones (Android e iOS).
+
+---
+
+## 6. Dados Institucionais e Contato
+
+- **Plataforma**: Supletivo Brasil
+- **Domínio Principal**: [https://supletivo.net.br/](https://supletivo.net.br/)
+- **CNPJ**: 48.811.016/0001-00
+- **E-mail de Contato**: contato@supletivo.net.br
+- **Atendimento WhatsApp**: (42) 98432-1915
+- **Privacidade & LGPD**: [https://supletivo.net.br/privacidade/](https://supletivo.net.br/privacidade/)
+- **Termos e Condições**: [https://supletivo.net.br/termos/](https://supletivo.net.br/termos/)

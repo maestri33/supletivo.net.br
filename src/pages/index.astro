@@ -39,8 +39,16 @@ const schema = {
       '@type': 'Organization',
       '@id': `${siteUrl}#org`,
       name: BRAND,
+      legalName: BRAND,
+      taxID: '48.811.016/0001-00',
       url: siteUrl,
       logo: new URL('/apple-touch-icon.png', site).href,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'São Paulo',
+        addressRegion: 'SP',
+        addressCountry: 'BR',
+      },
     },
     {
       '@type': 'Course',
@@ -50,6 +58,21 @@ const schema = {
         'Educação de Jovens e Adultos (EJA) com estudo 100% online e prova final presencial, para concluir o Ensino Fundamental ou o Ensino Médio, com certificação emitida por escola parceira autorizada pelo Conselho Estadual de Educação (CEE), amparada pela LDB e com publicação no Diário Oficial.',
       url: siteUrl,
       provider: { '@id': `${siteUrl}#org` },
+      hasCourseInstance: [
+        {
+          '@type': 'CourseInstance',
+          courseMode: 'Online',
+          courseWorkload: 'PT100H',
+          description: 'Estudos 100% online com flexibilidade de horários pelo celular ou computador.',
+        },
+      ],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '5.0',
+        reviewCount: '5',
+        bestRating: '5',
+        worstRating: '1',
+      },
       educationalCredentialAwarded: {
         '@type': 'EducationalOccupationalCredential',
         '@id': `${siteUrl}#credential`,
