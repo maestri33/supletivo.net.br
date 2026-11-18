@@ -2,10 +2,7 @@
  * Build snapshot from the canonical backend. Invalid/unavailable quotes stop the build.
  * The Worker replaces monetary displays with a fresh quote on every HTML request.
  */
-import { BACKEND_URL } from '../config';
-import { parseCommercialPrice, formatBRL } from '../lib/commercial-pricing';
-
-const ENDPOINT = `${BACKEND_URL}/api/v1/clients/pricing`;
+import { formatBRL } from '../lib/commercial-pricing';
 
 
 export interface Price {

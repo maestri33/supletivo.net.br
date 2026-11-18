@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { validateCPF, formatCPF } from '../../src/scripts/cpf-validator';
-import { validatePhone, formatPhone } from '../../src/scripts/phone-validator';
+import { validateCPF, formatCPF } from '../../src/lib/cpf';
+import { validatePhone, formatPhone } from '../../src/lib/phone';
 import { isEmailFormatValid, completeEmailWithDomain } from '../../src/lib/email';
 
 describe('CPF Validator & Formatter (Modulo 11)', () => {
