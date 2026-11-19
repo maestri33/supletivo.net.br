@@ -66,35 +66,12 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
     ? price.full - price.pixTotal
     : (price ? Math.max(0, Math.round((price.cardTotal - price.pixTotal) * 100) / 100) : 0);
 
-  rewriter.on('[data-price-old], [data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge], [data-floating-promo], [data-promoter-banner]', { element(element) {
+  rewriter.on('[data-price-old], [data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge], [data-floating-promo]', { element(element) {
     const classes = (element.getAttribute('class') || '').split(/\s+/).filter(Boolean).filter(name => name !== 'hidden');
     if (!isPromoEffective) classes.push('hidden');
     element.setAttribute('class', classes.join(' '));
   } });
   if (isPromoEffective) {
-    const promoter = price?.promoterName || 'seu consultor';
-    rewriter.on('[data-promoter-banner]', {
-      element(element) {
-        element.setAttribute('class', 'promoter-banner is-visible');
-        element.setInnerContent(`
-  <div class="container promoter-banner-inner">
-    <div class="promoter-badge">
-      <svg class="promoter-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-          fill="currentColor"
-        />
-      </svg>
-      <span class="promoter-pill">Desconto de Consultor Ativado</span>
-    </div>
-    <p class="promoter-text">
-      Você foi indicado(a) por <strong data-promoter-name>${promoter}</strong>!
-      O valor promocional exclusivo foi aplicado em todos os planos.
-    </p>
-  </div>`, { html: true });
-      }
-    });
-
     rewriter.on('[data-card-aleta]', {
       element(element) {
         element.setAttribute('class', 'card-aleta');

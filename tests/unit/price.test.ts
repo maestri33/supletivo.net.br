@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parseCommercialPrice, formatBRL as brl } from '../../src/lib/commercial-pricing';
+import { PRICE as CANONICAL_PRICE, savings as CANONICAL_SAVINGS } from '../../src/data/price';
 
 // Unit contract fixture only. Live backend/Worker quotes are checked separately.
 const PRICE = parseCommercialPrice({pix:1615,anchor_full:1615,card:{installments:12,installment:159.90,total:1918.80}});
@@ -8,6 +9,15 @@ const cardLine = `${PRICE.installments}x de ${brl(PRICE.perMonth)}`;
 const cardLineShort = `${PRICE.installments}x ${brl(PRICE.perMonth)}`;
 
 describe('Supletivo Brasil — Pricing & Formatting Engine', () => {
+  it('preço oficial de tração padrão é 12x R$ 99 no cartão e R$ 999 no Pix com economia de R$ 616', () => {
+    expect(CANONICAL_PRICE.perMonth).toBe(99);
+    expect(CANONICAL_PRICE.installments).toBe(12);
+    expect(CANONICAL_PRICE.cardTotal).toBe(1188);
+    expect(CANONICAL_PRICE.pixTotal).toBe(999);
+    expect(CANONICAL_PRICE.full).toBe(1615);
+    expect(CANONICAL_SAVINGS).toBe(616);
+  });
+
   it('objeto PRICE possui estrutura consistente e valores positivos', () => {
     expect(PRICE.installments).toBeGreaterThan(0);
     expect(PRICE.perMonth).toBeGreaterThan(0);

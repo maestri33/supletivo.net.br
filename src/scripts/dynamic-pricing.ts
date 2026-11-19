@@ -49,11 +49,7 @@ function applyPricingToDom(config: {
   const oldVal = document.querySelector<HTMLElement>('[data-price-old-val]');
   if (oldVal) oldVal.textContent = brl(anchor);
   if (oldWrap) {
-    if (isPromo) {
-      oldWrap.classList.remove('hidden');
-    } else {
-      oldWrap.classList.add('hidden');
-    }
+    oldWrap.classList.remove('hidden');
   }
 
   // 4. Valores Pix e economia
@@ -260,36 +256,6 @@ function applyPricingToDom(config: {
       stampEl.classList.add('hidden');
     }
   }
-
-  // 9. Banner de topo de consultor (opcional)
-  const topBanner = document.querySelector<HTMLElement>('[data-promoter-banner]');
-  if (topBanner) {
-    if (isPromo && savings > 0) {
-      const name = promoterName || 'seu consultor';
-      topBanner.innerHTML = `
-  <div class="container promoter-banner-inner">
-    <div class="promoter-badge">
-      <svg class="promoter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width: 16px; height: 16px; min-width: 16px; max-width: 16px; display: inline-block; vertical-align: middle; flex-shrink: 0;">
-        <path
-          d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-          fill="currentColor"
-        />
-      </svg>
-      <span class="promoter-pill">Desconto de Consultor Ativado</span>
-    </div>
-    <p class="promoter-text">
-      Você foi indicado(a) por <strong data-promoter-name>${name}</strong>!
-      O valor promocional exclusivo foi aplicado em todos os planos.
-    </p>
-  </div>`;
-      topBanner.classList.remove('hidden');
-      topBanner.classList.add('is-visible');
-    } else {
-      topBanner.classList.remove('is-visible');
-      topBanner.classList.add('hidden');
-      topBanner.innerHTML = '';
-    }
-  }
 }
 
 export async function initDynamicPricing(resolvedAttr?: Attribution | null): Promise<void> {
@@ -327,25 +293,13 @@ export async function initDynamicPricing(resolvedAttr?: Attribution | null): Pro
       });
     }
   } catch {
-    if (hasRef) {
-      applyPricingToDom({
-        installment: 99,
-        installments: 12,
-        pix: 999,
-        anchor: 1615,
-        isPromo: true,
-        promoterName: null,
-      });
-    } else {
-      applyPricingToDom({
-        installment: 159.9,
-        installments: 12,
-        pix: 1615,
-        anchor: 1615,
-        isPromo: false,
-        promoterName: null,
-      });
-      document.querySelectorAll<HTMLElement>('[data-promo-scarcity], [data-price-old], [data-card-stamp], [data-floating-promo], [data-promoter-banner]').forEach(el => el.classList.add('hidden'));
-    }
+    applyPricingToDom({
+      installment: 99,
+      installments: 12,
+      pix: 999,
+      anchor: 1615,
+      isPromo: true,
+      promoterName: null,
+    });
   }
 }

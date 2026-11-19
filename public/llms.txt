@@ -9,7 +9,7 @@ Requisitos de idade mínima legal:
 - Ensino Médio: 18 anos completos
 
 Condições comerciais e valores canônicos:
-- Matrícula e curso completo: R$ 1.615,00 à vista no Pix ou em até 12x de R$ 159,90 no cartão de crédito
+- Matrícula e curso completo: R$ 999,00 à vista no Pix (com economia de R$ 616,00 sobre o valor âncora de R$ 1.615,00) ou em 12x de R$ 99,00 sem juros no cartão de crédito
 - Sem cobrança de mensalidades adicionais, com material didático digital e suporte pedagógico via WhatsApp inclusos
 
 ## Cursos e Páginas Principais
@@ -25,7 +25,3 @@ Condições comerciais e valores canônicos:
 - [Política de Privacidade](https://supletivo.net.br/privacidade/): Tratamento de dados pessoais em conformidade com a LGPD
 - [Sitemap XML](https://supletivo.net.br/sitemap.xml): Mapa oficial de rotas indexáveis da plataforma
 - [Versão Completa para Agentes](https://supletivo.net.br/llms-full.txt): Documentação consolidada em markdown com currículo, disciplinas e dúvidas frequentes
-
-## Optional
-
-- [Programa de Promotores](https://promotor.supletivo.net.br/): Portal de afiliação e captação de promotores educacionais
