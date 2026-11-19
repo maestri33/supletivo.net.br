@@ -61,42 +61,15 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
       ? description.replace(/\d{1,2}x\s+(?:de\s+)?R\$\s*[\d.,]+/g, card).replace(/R\$\s*[\d.,]+(?=\s*(?:no Pix|via Pix|à vista))/gi, formatBRL(price.pixTotal))
       : 'Conheça o Supletivo Brasil e consulte as condições comerciais assim que estiverem disponíveis.');
   } });
-  const isPromoEffective = Boolean(ref && price?.hasDiscount && (price.full - price.pixTotal > 0));
-  const savings = isPromoEffective && price
+  const savings = price && price.full - price.pixTotal > 0
     ? price.full - price.pixTotal
     : (price ? Math.max(0, Math.round((price.cardTotal - price.pixTotal) * 100) / 100) : 0);
 
-  rewriter.on('[data-price-old], [data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge], [data-floating-promo]', { element(element) {
-    const classes = (element.getAttribute('class') || '').split(/\s+/).filter(Boolean).filter(name => name !== 'hidden');
-    if (!isPromoEffective) classes.push('hidden');
+  rewriter.on('[data-promo-scarcity], [data-card-aleta], [data-card-stamp], [data-promo-badge], [data-floating-promo]', { element(element) {
+    const classes = (element.getAttribute('class') || '').split(/\s+/).filter(Boolean);
+    if (!classes.includes('hidden')) classes.push('hidden');
     element.setAttribute('class', classes.join(' '));
   } });
-  if (isPromoEffective) {
-    rewriter.on('[data-card-aleta]', {
-      element(element) {
-        element.setAttribute('class', 'card-aleta');
-        element.setInnerContent(`
-        <div class="aleta-flag">
-          <span class="aleta-dot" aria-hidden="true"></span>
-          <span class="aleta-text">CONDIÇÃO PROMOCIONAL ATIVA · LINK VERIFICADO <span data-aleta-promoter>${price?.promoterName ? `· CONSULTOR: ${price.promoterName}` : ''}</span></span>
-        </div>`, { html: true });
-      }
-    });
-
-    rewriter.on('[data-card-stamp]', {
-      element(element) {
-        element.setAttribute('class', 'card-stamp is-stamped');
-        element.setInnerContent(`
-        <div class="stamp-seal">
-          <div class="stamp-seal-inner">
-            <span class="stamp-seal-tag">★ SUPLETIVO BRASIL · CEE / LDB ★</span>
-            <strong class="stamp-seal-title">DESCONTO APLICADO</strong>
-            <span class="stamp-seal-sub">CONSULTOR AUTORIZADO · LOTE 01</span>
-          </div>
-        </div>`, { html: true });
-      }
-    });
-  }
   const replace = (selector: string, text: string) => rewriter.on(selector, { element: element => element.setInnerContent(text, { html: true }) });
   replace('[data-price-card-line]', card);
   replace('[data-price-card-line-short], .sticky-price strong', price ? `${price.installments}x ${month}` : unavailable);
@@ -105,17 +78,13 @@ export function rewritePricing(response: Response, payload: Record<string, unkno
   replace('[data-price-sr]', price ? `${month} por mês` : unavailable);
   replace('[data-price-old-val]', price ? formatBRL(price.full) : unavailable);
   replace('[data-price-card-total]', price ? formatBRL(price.cardTotal) : unavailable);
-  replace('[data-price-mode-line]', price ? `em ${price.installments}x no cartão de crédito` : 'Tente novamente em instantes.');
-  if (isPromoEffective && price) {
-    replace('[data-price-save-line]', `— você economiza <span data-price-savings>${formatBRL(savings)}</span>`);
-  } else if (price && savings > 0) {
-    replace('[data-price-save-line]', `— você economiza <span data-price-savings>${formatBRL(savings)}</span> no Pix`);
-  }
+  replace('[data-price-mode-line]', price ? `em ${price.installments}x de ${month} sem juros no cartão (total ${formatBRL(price.cardTotal)})` : 'Tente novamente em instantes.');
+  replace('[data-price-save-line]', price && savings > 0 ? `— você economiza <span data-price-savings>${formatBRL(savings)}</span> no Pix` : '');
   replace('[data-price-savings]', savings > 0 ? formatBRL(savings) : '');
   if (price?.promoterName) {
     replace('[data-promoter-name]', price.promoterName);
   }
-  replace('#pricing-title', isPromoEffective && price ? `Menos de ${formatBRL(Math.ceil(price.perMonth / 100) * 100)} por mês.` : 'Invista no seu futuro com segurança.');
+  replace('#pricing-title', 'Invista no seu futuro com segurança.');
   rewriter.on('body', { element(element) {
     element.setAttribute('data-pricing-state', price ? 'available' : 'unavailable');
     if (payload) element.append(`<script id="sb-pricing" type="application/json">${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>`, { html: true });
