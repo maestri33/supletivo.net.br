@@ -4,7 +4,7 @@
  * entrar em cena + spotlight seguindo o mouse (desktop) + shine periódico.
  */
 import CtaButton from './CtaButton.astro';
-import { PRICE, perMonthBRL, pixBRL, fullBRL, standardPixSavingsBRL } from '../data/price';
+import { PRICE, perMonthBRL, pixBRL, fullBRL, savingsBRL, cardTotalBRL } from '../data/price';
 
 // dígitos animados a partir da parcela vinda do backend ("R$ 159,90" ou "R$ 99")
 const priceChars = perMonthBRL.split('');
@@ -29,7 +29,7 @@ const priceChars = perMonthBRL.split('');
       <!-- Carimbo Grande Físico com Cores Fortes -->
       <div class="card-stamp hidden" data-card-stamp data-tilt-sublayer="55" aria-hidden="true"></div>
 
-      <p class="price-old hidden" data-price-old data-tilt-sublayer="20">
+      <p class="price-old" data-price-old data-tilt-sublayer="20">
         de <s><span data-price-old-val>{fullBRL}</span></s>
       </p>
 
@@ -46,11 +46,11 @@ const priceChars = perMonthBRL.split('');
         <span class="price-per" aria-hidden="true">/mês</span>
       </p>
 
-      <p class="price-mode-line" data-price-mode-line data-tilt-sublayer="25">em {PRICE.installments}x no cartão de crédito</p>
+      <p class="price-mode-line" data-price-mode-line data-tilt-sublayer="25">em {PRICE.installments}x de {perMonthBRL} sem juros no cartão (total {cardTotalBRL})</p>
 
       <p class="price-alt" data-tilt-sublayer="30">
         ou <strong data-price-pix-val>{pixBRL}</strong> à vista no Pix
-        <span class="price-save" data-price-save-line>— você economiza <span data-price-savings>{standardPixSavingsBRL}</span> no Pix</span>
+        <span class="price-save" data-price-save-line>— você economiza <span data-price-savings>{savingsBRL}</span> no Pix</span>
       </p>
 
       <!-- Tríade de Confiança Decisória -->
@@ -78,8 +78,22 @@ const priceChars = perMonthBRL.split('');
       <div data-tilt-sublayer="45" class="w-full">
         <CtaButton position="preco" class="btn-xl" />
       </div>
+      <div class="pricing-trust-trio" data-tilt-sublayer="30">
+        <div class="trust-badge-item">
+          <span class="trust-emoji" aria-hidden="true">🛡️</span>
+          <span>Amparado pela Lei Federal nº 9.394/96 (LDB)</span>
+        </div>
+        <div class="trust-badge-item">
+          <span class="trust-emoji" aria-hidden="true">📜</span>
+          <span>Prova presencial oficial com homologação em Diário Oficial</span>
+        </div>
+        <div class="trust-badge-item">
+          <span class="trust-emoji" aria-hidden="true">🔒</span>
+          <span>Garantia legal incondicional de 7 dias (Art. 49 CDC)</span>
+        </div>
+      </div>
       <p class="microcopy">
-        Material didático incluso · Sem mensalidades surpresa · Início imediato pelo celular
+        Taxa única cobrindo todo o ciclo até a prova final · Material didático incluso · Sem mensalidades · Início imediato pelo celular
       </p>
     </div>
   </div>
@@ -638,7 +652,30 @@ const priceChars = perMonthBRL.split('');
 
   .pricing .microcopy {
     color: var(--muted-on-dark);
-    max-width: 38ch;
+    max-width: 44ch;
     margin-inline: auto;
+  }
+
+  .pricing-trust-trio {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    color: var(--paper);
+  }
+
+  .trust-badge-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    text-align: center;
+  }
+
+  .trust-emoji {
+    font-size: 1rem;
+    flex-shrink: 0;
   }
 </style>

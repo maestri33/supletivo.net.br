@@ -1,9 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
-import { CAREERS_URL } from '../../src/config';
 
-describe('Trabalhe Conosco — Botão Animado no Navbar e Destaque no Footer', () => {
+describe('Remoção Definitiva de Promotor, Carreiras e Renda Extra', () => {
   const htmlPath = fs.existsSync(path.resolve(__dirname, '../../dist/client/index.html')) ? path.resolve(__dirname, '../../dist/client/index.html') : path.resolve(__dirname, '../../dist/index.html');
   const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, 'utf-8') : '';
 
@@ -11,32 +10,30 @@ describe('Trabalhe Conosco — Botão Animado no Navbar e Destaque no Footer', (
     expect(html.length).toBeGreaterThan(1000);
   });
 
-  it('navbar contém o botão animado de Trabalhe Conosco apontando diretamente para o portal de carreiras', () => {
-    expect(html).toContain('class="header-careers-btn"');
-    expect(html).toContain('class="careers-beacon"');
-    expect(html).toContain('class="beacon-pulse"');
-    expect(html).toContain('class="beacon-dot"');
-    expect(html).toContain(`href="${CAREERS_URL}"`);
-    expect(html).toContain('target="_blank"');
+  it('navbar NÃO contém o botão ou link de Trabalhe Conosco / Renda Extra', () => {
+    expect(html).not.toContain('class="header-careers-btn"');
+    expect(html).not.toContain('class="careers-beacon"');
+    expect(html).not.toContain('Trabalhe conosco');
+    expect(html).not.toContain('Renda Extra');
+    expect(html).not.toContain('https://promotor.supletivo.net.br');
   });
 
-  it('navbar mobile contém o link com beacon para Trabalhe Conosco', () => {
-    expect(html).toContain('class="mobile-careers-card"');
-
-    expect(html).toContain(`href="${CAREERS_URL}"`);
+  it('navbar mobile NÃO contém o link ou card para Trabalhe Conosco / Programa de Promotores', () => {
+    expect(html).not.toContain('class="mobile-careers-card"');
+    expect(html).not.toContain('Programa de Promotores');
   });
 
-  it('footer contém o botão de destaque para Trabalhe Conosco', () => {
-    expect(html).toContain('class="footer-careers-btn"');
-    expect(html).toContain('class="footer-careers-beacon"');
-    expect(html).toContain('class="footer-careers-badge"');
-    expect(html).toContain(`href="${CAREERS_URL}"`);
-    expect(html).toContain('target="_blank"');
+  it('footer NÃO contém o botão de destaque para Trabalhe Conosco ou Promotores', () => {
+    expect(html).not.toContain('class="footer-careers-btn"');
+    expect(html).not.toContain('class="footer-careers-beacon"');
+    expect(html).not.toContain('class="footer-careers-badge"');
+    expect(html).not.toContain('Programa oficial de promotores e polos');
   });
 
-  it('a seção extra de página inteira NÃO existe (mantendo a página limpa e focada no aluno)', () => {
+  it('não há componente de banner ou menção residual de promotores/afiliados na landing page', () => {
+    expect(html).not.toContain('id="promoter-banner"');
+    expect(html).not.toContain('data-promoter-banner');
     expect(html).not.toContain('id="trabalhe-conosco"');
     expect(html).not.toContain('data-section="trabalhe-conosco"');
-    expect(html).not.toContain('class="work-with-us');
   });
 });

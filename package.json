@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview --port 3011",
     "assets": "node tools/generate-assets.mjs",
-    "test": "vitest run",
+    "test": "NODE_OPTIONS=\"--no-experimental-webstorage\" vitest run",
     "check-types": "astro check",
     "test:e2e": "playwright test",
     "test:cli": "playwright-cli",

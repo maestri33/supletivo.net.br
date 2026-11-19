@@ -5,7 +5,7 @@
  * Padrão Editorial "Pátria Amada Refinada" em total conformidade com o DESIGN.md e WCAG AA/AAA.
  */
 import Logo from './Logo.astro';
-import { CTA_LABEL, CAREERS_URL } from '../config';
+import { CTA_LABEL } from '../config';
 
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/' || pathname === '';
@@ -29,23 +29,6 @@ const homePrefix = isHome ? '' : '/';
     </nav>
 
     <div class="header-action">
-      <!-- Botão Trabalhe Conosco (Desktop) -->
-      <a
-        href={CAREERS_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="header-careers-btn"
-        data-cta="header_careers"
-        aria-label="Trabalhe conosco como promotor ou polo parceiro (abre em nova aba)"
-      >
-        <span class="careers-beacon" aria-hidden="true">
-          <span class="beacon-pulse"></span>
-          <span class="beacon-dot"></span>
-        </span>
-        <span class="careers-btn-text">Trabalhe conosco</span>
-        <span class="careers-btn-tag">Renda Extra</span>
-      </a>
-
       <!-- Botão CTA Principal -->
       <a href={`${homePrefix}#preco`} class="header-cta" data-cta="header">
         <span class="header-cta-text cta-text-full">{CTA_LABEL}</span>
@@ -122,20 +105,6 @@ const homePrefix = isHome ? '' : '/';
         </div>
 
         <div class="mobile-nav-footer">
-          <a
-            href={CAREERS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mobile-careers-card"
-            data-mobile-link
-          >
-            <div class="mobile-careers-info">
-              <span class="mobile-careers-title">Programa de Promotores</span>
-              <span class="mobile-careers-desc">Ganhe renda extra indicando alunos</span>
-            </div>
-            <span class="mobile-careers-tag">Renda Extra ↗</span>
-          </a>
-
           <a href={`${homePrefix}#preco`} class="mobile-nav-cta-btn" data-cta="header_mobile" data-mobile-link>
             <span>{CTA_LABEL}</span>
             <span aria-hidden="true">→</span>
@@ -294,7 +263,6 @@ const homePrefix = isHome ? '' : '/';
 
   .site-nav a:focus-visible,
   .header-cta:focus-visible,
-  .header-careers-btn:focus-visible,
   .nav-toggle-btn:focus-visible,
   .mobile-nav-close:focus-visible,
   .mobile-nav-link:focus-visible {
@@ -307,132 +275,6 @@ const homePrefix = isHome ? '' : '/';
     align-items: center;
     gap: 0.65rem;
     flex-shrink: 0;
-  }
-
-  /* Botão Animado Trabalhe Conosco no Navbar Desktop */
-  .header-careers-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem 0.95rem;
-    min-height: 48px;
-    border-radius: 999px;
-    background: rgba(0, 115, 77, 0.4);
-    border: 1px solid rgba(0, 230, 153, 0.38);
-    color: #ffffff;
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-decoration: none;
-    overflow: clip;
-    white-space: nowrap;
-    box-shadow: none;
-    transition: transform 0.2s var(--ease-out), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .header-careers-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        105deg,
-        transparent 35%,
-        rgba(0, 230, 153, 0.35) 50%,
-        rgba(255, 255, 255, 0.55) 53%,
-        transparent 65%
-      );
-      transform: translateX(-140%) skewX(-12deg);
-      animation: careers-btn-shimmer 4.8s var(--ease-out) infinite;
-      pointer-events: none;
-    }
-  }
-
-  @keyframes careers-btn-shimmer {
-    0%, 65% {
-      transform: translateX(-140%) skewX(-12deg);
-    }
-    100% {
-      transform: translateX(140%) skewX(-12deg);
-    }
-  }
-
-  .header-careers-btn:hover {
-    transform: translateY(-1.5px);
-    border-color: var(--yellow);
-    background: linear-gradient(
-      135deg,
-      rgba(0, 115, 77, 0.35) 0%,
-      rgba(18, 29, 51, 0.95) 100%
-    );
-    box-shadow: 0 8px 24px -4px rgba(0, 115, 77, 0.5), 0 0 12px 0 rgba(255, 196, 0, 0.3);
-  }
-
-  .header-careers-btn:active {
-    transform: translateY(0) scale(0.99);
-  }
-
-  .careers-beacon {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 10px;
-    height: 10px;
-    flex-shrink: 0;
-  }
-
-  .beacon-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    background-color: #00e699;
-    box-shadow: 0 0 6px #00e699;
-  }
-
-  .beacon-pulse {
-    position: absolute;
-    inset: -3px;
-    border-radius: 999px;
-    background-color: rgba(0, 230, 153, 0.5);
-    animation: beacon-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  @keyframes beacon-ping {
-    0% {
-      transform: scale(0.8);
-      opacity: 0.95;
-    }
-    70%, 100% {
-      transform: scale(2.2);
-      opacity: 0;
-    }
-  }
-
-  .careers-btn-tag {
-    font-size: 0.68rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.15rem 0.45rem;
-    border-radius: 999px;
-    background: rgba(255, 196, 0, 0.18);
-    border: 1px solid rgba(255, 196, 0, 0.45);
-    color: var(--yellow-soft);
-    line-height: 1;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .header-careers-btn:hover .careers-btn-tag {
-    background: var(--yellow);
-    color: var(--ink);
-    border-color: var(--yellow);
-  }
-
-  @media (max-width: 1120px) {
-    .careers-btn-tag {
-      display: none;
-    }
   }
 
   /* Botão CTA Principal */
@@ -665,52 +507,6 @@ const homePrefix = isHome ? '' : '/';
     border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .mobile-careers-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-    padding: 0.75rem 0.9rem;
-    border-radius: 12px;
-    background: rgba(0, 115, 77, 0.25);
-    border: 1px solid rgba(0, 230, 153, 0.3);
-    text-decoration: none;
-    color: #ffffff;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .mobile-careers-card:hover {
-    background: rgba(0, 115, 77, 0.4);
-    border-color: var(--yellow);
-  }
-
-  .mobile-careers-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-  }
-
-  .mobile-careers-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-  }
-
-  .mobile-careers-desc {
-    font-size: 0.72rem;
-    color: var(--muted-on-dark);
-  }
-
-  .mobile-careers-tag {
-    font-size: 0.68rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    padding: 0.2rem 0.5rem;
-    border-radius: 999px;
-    background: var(--yellow);
-    color: var(--ink);
-    white-space: nowrap;
-  }
-
   .mobile-nav-cta-btn {
     display: inline-flex;
     align-items: center;
@@ -757,9 +553,6 @@ const homePrefix = isHome ? '' : '/';
   @media (max-width: 640px) {
     .site-header {
       padding-block: 0.45rem;
-    }
-    .header-careers-btn {
-      display: none;
     }
     .cta-text-full {
       display: none;
