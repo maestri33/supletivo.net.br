@@ -1,0 +1,123 @@
+---
+import ContentPage from '../../layouts/ContentPage.astro';
+import CtaButton from '../../components/CtaButton.astro';
+import { cardLine, pixBRL, cardTotalBRL } from '../../data/price';
+
+export async function getStaticPaths() {
+  const posts = import.meta.glob<{
+    frontmatter: {
+      title: string;
+      description: string;
+      kicker?: string;
+      date: string;
+      dateFormatted?: string;
+      author?: string;
+    };
+    default: any;
+  }>('../../content/artigos/*.md', { eager: true });
+
+  return Object.entries(posts).map(([path, post]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    return {
+      params: { slug },
+      props: { post, slug },
+    };
+  });
+}
+
+interface Props {
+  post: {
+    frontmatter: {
+      title: string;
+      description: string;
+      kicker?: string;
+      date: string;
+      dateFormatted?: string;
+      author?: string;
+    };
+    default: any;
+  };
+  slug: string;
+}
+
+const { post, slug } = Astro.props;
+const { frontmatter, default: Content } = post;
+const site = Astro.site!;
+const pageUrl = new URL(`/artigos/${slug}`, site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: frontmatter.title,
+  description: frontmatter.description,
+  datePublished: frontmatter.date,
+  dateModified: frontmatter.date,
+  author: {
+    '@type': 'Organization',
+    name: frontmatter.author || 'Redação Supletivo Brasil',
+    url: site.href,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Supletivo Brasil',
+    url: site.href,
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': pageUrl,
+  },
+};
+---
+
+<ContentPage
+  title={`${frontmatter.title} | Supletivo Brasil`}
+  description={frontmatter.description}
+  kicker={frontmatter.kicker || 'NOTÍCIAS & CARREIRA'}
+  h1={frontmatter.title}
+  schema={schema}
+>
+  <div class="article-meta">
+    <span class="meta-date">Publicado em {frontmatter.dateFormatted || frontmatter.date}</span>
+    <span class="meta-dot">•</span>
+    <span class="meta-author">Por {frontmatter.author || 'Redação Supletivo Brasil'}</span>
+  </div>
+
+  <Content />
+
+  <div class="cta-box">
+    <h2>Garanta sua vaga oficial com desconto</h2>
+    <p>
+      Conclua o Ensino Médio estudando pelo celular, faça a prova presencial e receba o certificado reconhecido com publicação em Diário Oficial.
+    </p>
+    <p class="cta-price">
+      Apenas <strong>{cardLine}</strong> ou <strong>{pixBRL}</strong> no Pix
+    </p>
+    <div class="cta-action">
+      <CtaButton label="Quero Me Matricular Agora" />
+    </div>
+  </div>
+</ContentPage>
+
+<style>
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--muted-on-light);
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .meta-dot {
+    opacity: 0.5;
+  }
+  .cta-price {
+    font-size: 1.15rem;
+    margin-top: 0.8rem;
+    color: #fff;
+  }
+  .cta-action {
+    margin-top: 1.2rem;
+  }
+</style>

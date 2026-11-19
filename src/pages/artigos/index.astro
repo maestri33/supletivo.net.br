@@ -1,0 +1,157 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import StickyCta from '../../components/StickyCta.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
+
+const posts = import.meta.glob<{
+  frontmatter: {
+    title: string;
+    description: string;
+    kicker?: string;
+    date: string;
+    dateFormatted?: string;
+  };
+}>('../../content/artigos/*.md', { eager: true });
+
+const articles = Object.entries(posts)
+  .map(([path, post]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    return {
+      slug,
+      title: post.frontmatter.title,
+      description: post.frontmatter.description,
+      kicker: post.frontmatter.kicker || 'NOTÍCIAS',
+      date: post.frontmatter.date,
+      dateFormatted: post.frontmatter.dateFormatted || post.frontmatter.date,
+    };
+  })
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const title = 'Notícias, Concursos e Carreira | Supletivo Brasil';
+const description =
+  'Confira as últimas notícias sobre concursos de nível médio, exigências do mercado de trabalho e como concluir seus estudos de forma 100% oficial.';
+---
+
+<Base {title} {description}>
+  <ProgressBar />
+  <Header />
+
+  <main id="conteudo" class="articles-main">
+    <div class="container narrow">
+      <p class="kicker content-kicker">BLOG & NOTÍCIAS</p>
+      <h1>Notícias e Oportunidades</h1>
+      <p class="subtitle">
+        Fique por dentro dos principais editais, exigências do mercado e prazos para quem quer conquistar o diploma do Ensino Médio com validade jurídica nacional.
+      </p>
+
+      <div class="articles-list">
+        {
+          articles.map((art) => (
+            <article class="article-card">
+              <span class="card-kicker">{art.kicker}</span>
+              <h2>
+                <a href={`/artigos/${art.slug}`}>{art.title}</a>
+              </h2>
+              <p>{art.description}</p>
+              <div class="card-footer">
+                <span class="card-date">{art.dateFormatted}</span>
+                <a href={`/artigos/${art.slug}`} class="read-more">
+                  Ler artigo completo →
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+  <StickyCta />
+</Base>
+
+<style>
+  .articles-main {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .content-kicker {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.05em;
+  }
+  .articles-main h1 {
+    font-size: clamp(2rem, 1.5rem + 3vw, 3rem);
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    color: var(--muted-on-light);
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 65ch;
+  }
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+  .article-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius-lg, 16px);
+    padding: clamp(1.4rem, 4vw, 2rem);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  .card-kicker {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--green);
+    text-transform: uppercase;
+  }
+  .article-card h2 {
+    font-size: clamp(1.2rem, 1.1rem + 0.8vw, 1.5rem);
+    margin-top: 0.4rem;
+    margin-bottom: 0.6rem;
+  }
+  .article-card h2 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .article-card h2 a:hover {
+    color: var(--blue);
+  }
+  .article-card p {
+    color: var(--muted-on-light);
+    font-size: 0.96rem;
+    line-height: 1.6;
+  }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.2rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.88rem;
+  }
+  .card-date {
+    color: var(--muted-on-light);
+  }
+  .read-more {
+    color: var(--green);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .read-more:hover {
+    text-decoration: underline;
+  }
+</style>
