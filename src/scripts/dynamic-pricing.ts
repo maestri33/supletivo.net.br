@@ -14,18 +14,17 @@ function applyPricingToDom(config: {
   isPromo: boolean;
   promoterName?: string | null;
 }): void {
-  const { installment, installments, pix, anchor, isPromo, promoterName } = config;
+  const { installment, installments, pix, anchor, isPromo } = config;
   const perMonthStr = brl(installment);
   const pixStr = brl(pix);
   const cardLine = `${installments}x de ${perMonthStr}`;
   const totalCard = installment * installments;
-  const underPerMonth = installment < 10 ? brl(Math.max(1, Math.ceil(installment))) : brl(Math.ceil(installment / 100) * 100);
   const savings = isPromo ? Math.max(0, anchor - pix) : Math.max(0, Math.round((totalCard - pix) * 100) / 100);
 
   // 1. Título da seção de preços
   const titleEl = document.querySelector<HTMLElement>('#pricing-title');
   if (titleEl) {
-    titleEl.textContent = isPromo ? `Menos de ${underPerMonth} por mês.` : `Invista no seu futuro com segurança.`;
+    titleEl.textContent = `Invista no seu futuro com segurança.`;
   }
 
   // 2. Dígitos animados e acessibilidade
@@ -85,7 +84,7 @@ function applyPricingToDom(config: {
 
   const modeLineEl = document.querySelector<HTMLElement>('[data-price-mode-line]');
   if (modeLineEl) {
-    modeLineEl.textContent = `em ${installments}x no cartão de crédito`;
+    modeLineEl.textContent = `em ${installments}x de ${perMonthStr} sem juros no cartão (total ${brl(totalCard)})`;
   }
 
   const stickyStrong = document.querySelector<HTMLElement>('.sticky-price strong');
@@ -165,7 +164,7 @@ function applyPricingToDom(config: {
         <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#00e699" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        Consultor Autorizado Supletivo Brasil
+        Condição Oficial Supletivo Brasil
       </span>
     </div>
   </div>`;
@@ -185,12 +184,9 @@ function applyPricingToDom(config: {
 
   const promoBadge = document.querySelector<HTMLElement>('[data-promo-badge]');
   if (promoBadge) {
-    if (isPromo && promoterName) {
+    if (isPromo) {
       promoBadge.classList.remove('hidden');
-      promoBadge.textContent = `Indicação de Consultor (${promoterName})`;
-    } else if (isPromo) {
-      promoBadge.classList.remove('hidden');
-      promoBadge.textContent = `Condição Exclusiva por Indicação`;
+      promoBadge.textContent = `Condição Especial de Matrícula`;
     } else {
       promoBadge.classList.add('hidden');
     }
@@ -203,7 +199,7 @@ function applyPricingToDom(config: {
       cardAleta.innerHTML = `
         <div class="aleta-flag">
           <span class="aleta-dot" aria-hidden="true"></span>
-          <span class="aleta-text">CONDIÇÃO PROMOCIONAL ATIVA · LINK VERIFICADO <span data-aleta-promoter>${promoterName ? `· CONSULTOR: ${promoterName}` : ''}</span></span>
+          <span class="aleta-text">CONDIÇÃO PROMOCIONAL ATIVA</span>
         </div>`;
       cardAleta.classList.remove('hidden');
     } else {
@@ -214,7 +210,6 @@ function applyPricingToDom(config: {
 
   // 9. Carimbo Grande Físico no Card de Preços com Cores Fortes
   const cardStamp = document.querySelector<HTMLElement>('[data-card-stamp]');
-  const priceCard = document.querySelector<HTMLElement>('.price-card');
   if (cardStamp) {
     if (isPromo) {
       cardStamp.innerHTML = `
@@ -222,17 +217,15 @@ function applyPricingToDom(config: {
           <div class="stamp-seal-inner">
             <span class="stamp-seal-tag">★ SUPLETIVO BRASIL · CEE / LDB ★</span>
             <strong class="stamp-seal-title">DESCONTO APLICADO</strong>
-            <span class="stamp-seal-sub">CONSULTOR AUTORIZADO · LOTE 01</span>
+            <span class="stamp-seal-sub">OFERTA ESPECIAL · LOTE 01</span>
           </div>
         </div>`;
       cardStamp.classList.remove('hidden');
       cardStamp.classList.add('is-stamped');
-      if (priceCard) priceCard.classList.add('has-consultant-discount');
     } else {
       cardStamp.innerHTML = '';
       cardStamp.classList.remove('is-stamped');
       cardStamp.classList.add('hidden');
-      if (priceCard) priceCard.classList.remove('has-consultant-discount');
     }
   }
 
