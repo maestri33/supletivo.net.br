@@ -2,6 +2,7 @@ import { onlyDigits } from "./phone";
 
 /** Progressive display mask for CPF: 000.000.000-00 */
 export function maskCpf(value: string): string {
+  if (!value) return "";
   const d = onlyDigits(value).slice(0, 11);
   if (d.length <= 3) return d;
   if (d.length <= 6) return `${d.slice(0, 3)}.${d.slice(3)}`;
@@ -15,6 +16,7 @@ export function maskCpf(value: string): string {
  * and validates both verification digits.
  */
 export function isValidCpf(value: string): boolean {
+  if (!value) return false;
   const d = onlyDigits(value);
   if (d.length !== 11) return false;
   if (/^(\d)\1{10}$/.test(d)) return false;
@@ -30,3 +32,6 @@ export function isValidCpf(value: string): boolean {
 
   return calculateDigit(9, 10) === Number(d[9]) && calculateDigit(10, 11) === Number(d[10]);
 }
+
+export const formatCPF = maskCpf;
+export const validateCPF = isValidCpf;

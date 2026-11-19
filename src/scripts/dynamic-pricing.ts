@@ -2,18 +2,9 @@
 import { initAttribution, type Attribution } from './attribution';
 import { track } from './track';
 import { BACKEND_URL } from '../config';
-import { parseCommercialPrice } from '../lib/commercial-pricing';
+import { parseCommercialPrice, formatBRL } from '../lib/commercial-pricing';
 
-function brl(value: number): string {
-  const hasCents = Math.round(value * 100) % 100 !== 0;
-  return (
-    'R$ ' +
-    value.toLocaleString('pt-BR', {
-      minimumFractionDigits: hasCents ? 2 : 0,
-      maximumFractionDigits: 2,
-    })
-  );
-}
+const brl = formatBRL;
 
 function applyPricingToDom(config: {
   installment: number;

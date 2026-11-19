@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 // Páginas fora do sitemap (404 e rotas redirecionadas).
-const EXCLUDE = new Set(['404/', 'supletivo-ensino-fundamental/']);
+const EXCLUDE = new Set(['404/']);
 
 /**
  * Normaliza o identificador da página vindo do Astro (string legada ou objeto { pathname } no Astro 5+).

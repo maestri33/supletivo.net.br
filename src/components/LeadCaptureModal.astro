@@ -557,8 +557,8 @@ import LeadSecurityFooter from './lead-modal/LeadSecurityFooter.astro';
 </style>
 
 <script>
-  import { validateCPF, formatCPF } from '../scripts/cpf-validator';
-  import { validatePhone, formatPhone } from '../scripts/phone-validator';
+  import { validateCPF, formatCPF } from '../lib/cpf';
+  import { validatePhone, formatPhone } from '../lib/phone';
   import { isEmailFormatValid, completeEmailWithDomain } from '../lib/email';
   import { initAttribution, cookieDomain } from '../scripts/attribution';
   import { track } from '../scripts/track';
