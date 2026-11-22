@@ -1,0 +1,6 @@
+{
+  "name": "Tidewell — Tides in Motion",
+  "description": "Coastal motion studio scroll-story landing page featuring kinetic typography, painterly card choreography, dawn sky camera reveal, and horizontal manifesto.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
