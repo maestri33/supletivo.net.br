@@ -141,23 +141,3 @@ test('card target pose transitions cleanly through hero fan, scatter, pile, and 
   const pile7 = computeCardTargetPose(7, 0.31, m, 5, false);
   assert.equal(pile7.opacity, 1);
 });
-
-test('computeCardScrollParallax creates depth-separated vertical offsets during story scroll and zeroes at rest/reducedMotion', () => {
-  const rest = computeCardScrollParallax(2, 0, 900, false, 0, false);
-  assert.equal(rest.dy, 0);
-  assert.equal(rest.dScale, 0);
-
-  const reduced = computeCardScrollParallax(2, 0.25, 900, false, 0.8, true);
-  assert.equal(reduced.dy, 0);
-  assert.equal(reduced.dScale, 0);
-
-  const bg = computeCardScrollParallax(0, 0.22, 900, false, 0.4, false);
-  const fg = computeCardScrollParallax(2, 0.22, 900, false, 0.4, false);
-  assert.ok(fg.depth > 0 && bg.depth < 0);
-  assert.ok(Math.abs(fg.dy - bg.dy) > 25, 'foreground and background cards should diverge vertically');
-  assert.ok(fg.dScale > 0 && bg.dScale < 0);
-
-  const skyDone = computeCardScrollParallax(2, 0.78, 900, false, 0, false);
-  assert.equal(skyDone.dy, 0);
-});
-

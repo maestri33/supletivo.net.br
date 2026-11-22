@@ -12,7 +12,6 @@ import {
 import {
   areCardsSettled,
   clamp,
-  computeCardScrollParallax,
   computeCardTargetPose,
   computeFanPose,
   computeHeroHeadlineOpacity,
@@ -410,8 +409,6 @@ export default function TidewellStory() {
     let pointerY = 0;
     let prevTrackX = 0;
     let trackSkew = 0;
-    let prevSy = 0;
-    let scrollVelNorm = 0;
 
     const onPointerMove = (e: PointerEvent) => {
       if (reducedMotion || !finePointer) return;
@@ -911,11 +908,7 @@ export default function TidewellStory() {
       pointerX += (pointerTargetX - pointerX) * kPtr;
       pointerY += (pointerTargetY - pointerY) * kPtr;
 
-      const rawSyVel = clamp((sy - prevSy) / Math.max(8, dtMs) / 1.8, -1.5, 1.5);
-      prevSy = sy;
-      scrollVelNorm += (rawSyVel - scrollVelNorm) * dampFactor(0.12, dtMs);
-
-      // 5. Cards pose, per-card inertia, subtle vertical scroll parallax & pointer depth
+      // 5. Cards pose, per-card inertia, ambient breathing & pointer depth parallax
       const cardTargets: CardPose[] = [];
       const snapNow = snapCardsRef.current;
       snapCardsRef.current = false;
@@ -941,30 +934,20 @@ export default function TidewellStory() {
             el.style.opacity = '0';
             el.style.visibility = 'hidden';
           } else {
-            const scrollPar = computeCardScrollParallax(
-              i,
-              p,
-              m.H,
-              m.mob,
-              scrollVelNorm,
-              reducedMotion
-            );
             const depth = 0.55 + (i % 3) * 0.45;
             const breathY = reducedMotion
               ? 0
               : Math.sin(nowSec * 1.15 + i * 0.85) * 3.2 * ptrInfluence;
             const pxOff = pointerX * 14 * depth * ptrInfluence;
-            const pyOff =
-              pointerY * 9 * depth * ptrInfluence + breathY + scrollPar.dy;
+            const pyOff = pointerY * 9 * depth * ptrInfluence + breathY;
             const pRot = pointerX * 1.15 * depth * ptrInfluence;
-            const finalScale = Math.max(0.05, c.scale + scrollPar.dScale);
             el.style.visibility = 'visible';
             el.style.opacity = c.opacity.toFixed(3);
             el.style.transform = `translate3d(${(c.x + pxOff).toFixed(2)}px, ${(
               c.y + pyOff
-            ).toFixed(2)}px, 0) rotate(${(c.rot + pRot).toFixed(
-              2
-            )}deg) scale(${finalScale.toFixed(3)})`;
+            ).toFixed(2)}px, 0) rotate(${(c.rot + pRot).toFixed(2)}deg) scale(${c.scale.toFixed(
+              3
+            )})`;
           }
         }
       }

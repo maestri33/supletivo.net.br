@@ -337,50 +337,6 @@ export function stepCardInertia(
   };
 }
 
-export interface CardScrollParallax {
-  dy: number;
-  dScale: number;
-  depth: number;
-}
-
-/**
- * Depth-layered vertical scroll parallax for `.tw-card` elements inside `#story`.
- * Cards on foreground, midground, and background planes shift at slightly different
- * vertical rates as the user scrolls, tapering smoothly at Hero rest (p = 0) and
- * before Dawn Sky takeover (p > 0.60).
- */
-export function computeCardScrollParallax(
-  index: number,
-  p: number,
-  H: number,
-  mob: boolean,
-  scrollVelNorm = 0,
-  reducedMotion = false
-): CardScrollParallax {
-  const depthPlanes = [-0.9, 0.18, 1.0, -0.45] as const;
-  const depth = depthPlanes[index % depthPlanes.length];
-
-  if (reducedMotion) {
-    return { dy: 0, dScale: 0, depth };
-  }
-
-  const enter = eInOutSine(clamp(p / 0.055, 0, 1));
-  const exit = 1 - eInOutSine(clamp((p - 0.6) / 0.12, 0, 1));
-  const envelope = enter * exit;
-  if (envelope <= 0.0001) {
-    return { dy: 0, dScale: 0, depth };
-  }
-
-  const amplitude = (mob ? 0.026 : 0.042) * H;
-  const wave =
-    Math.sin(p * Math.PI * 3.2 + index * 0.48) * 0.45 + (0.5 - p) * 0.85;
-  const velLag = clamp(scrollVelNorm, -1.5, 1.5) * (mob ? 7 : 13);
-
-  const dy = (depth * wave * amplitude + depth * velLag) * envelope;
-  const dScale = depth * 0.018 * envelope;
-  return { dy, dScale, depth };
-}
-
 export function areCardsSettled(
   currents: readonly CardPose[],
   targets: readonly CardPose[]
