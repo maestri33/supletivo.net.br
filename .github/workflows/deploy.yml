@@ -35,13 +35,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Workers (Pages)
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || 'e0814c592e43284a2f6f9984bef32631' }}
-          command: pages deploy dist --project-name=supletivo-net-br --branch=main
+          command: deploy
 
       - name: Aviso de Token Cloudflare
         if: ${{ env.CLOUDFLARE_API_TOKEN == '' }}
