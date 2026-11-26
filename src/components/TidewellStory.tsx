@@ -8,7 +8,7 @@ import {
   SPRITE_CROPS,
   STORY_CARDS,
   SUPLETIVO_ASSETS,
-} from '@/lib/supletivo-data';
+} from '../lib/supletivo-data';
 import {
   areCardsSettled,
   clamp,
@@ -30,7 +30,7 @@ import {
   stepCardInertia,
   type CardPose,
   type ViewportMetrics,
-} from '@/lib/tidewell-math';
+} from '../lib/tidewell-math';
 import {
   ArrowIcon,
   PixelIconSvg,

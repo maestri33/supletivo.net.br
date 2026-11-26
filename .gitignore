@@ -1,7 +1,26 @@
+# Build output
+dist/
+.output/
+
+# Node
 node_modules/
+npm-debug.log*
+
+# Astro
+.astro/
+
+# Next.js (legado — removido)
 .next/
-coverage/
+next-env.d.ts
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS
 .DS_Store
-*.log
-.env*
-!.env.example
+Thumbs.db
+
+# Wrangler
+.wrangler/

@@ -28,7 +28,7 @@ import {
   type AgeBracket,
   type EnrollmentFormInput,
   type StoryCardCategory,
-} from '@/lib/supletivo-data';
+} from '../lib/supletivo-data';
 import { SupletivoBrandMark } from './TidewellIcons';
 
 interface CardExplorerModalProps {

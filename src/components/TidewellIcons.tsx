@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, GraduationCap, Sparkles } from 'lucide-react';
-import { PIXEL_ICONS, PIXEL_PALETTE } from '@/lib/supletivo-data';
+import { PIXEL_ICONS, PIXEL_PALETTE } from '../lib/supletivo-data';
 
 export function SupletivoBrandMark() {
   return (
