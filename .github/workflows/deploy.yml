@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare Pages
+    name: Deploy to Cloudflare Workers Static Assets
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -35,12 +35,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to Cloudflare Workers (Pages)
+      - name: Deploy to Cloudflare Workers Static Assets
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || 'e0814c592e43284a2f6f9984bef32631' }}
+          wranglerVersion: '4'
           command: deploy
 
       - name: Aviso de Token Cloudflare
