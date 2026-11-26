@@ -6,5 +6,11 @@
     "directory": "./dist",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "supletivo.net.br/*",
+      "zone_name": "supletivo.net.br"
+    }
+  ]
 }
